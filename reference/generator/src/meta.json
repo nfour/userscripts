@@ -1,0 +1,9 @@
+{
+  "$schema": "file:../meta.schema.json",
+
+  "name": "foo",
+  "namespace": "asdsa",
+  "description": "as",
+  "version": "1.0.0",
+  "include": [ "*" ]
+}
