@@ -9,7 +9,7 @@ import metaData from './src/userscript.meta';
 const banner = generateUserScriptHeader(metaData);
 
 export default <webpack.Configuration> {
-  entry: './src/index.ts',
+  entry: ['./src/gitlabPipelines/index.ts'],
   mode: 'development',
 
   output: {

@@ -3,7 +3,7 @@
   "private": true,
   "scripts": {
     "build": "webpack --progress",
-    "build:prod": "webpack --progress --config webpack.prod.config.ts --define process.env.NODE_ENV=\"production\""
+    "build:prod": "webpack --progress --define process.env.NODE_ENV=\"production\""
   },
   "dependencies": {
     "tslint": "^5.11.0",
