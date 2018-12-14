@@ -2,10 +2,12 @@
   "name": "userscript",
   "private": true,
   "scripts": {
-    "build": "webpack --progress",
+    "build": "rm -rf build/*; webpack --progress",
     "build:prod": "webpack --progress --define process.env.NODE_ENV=\"production\""
   },
   "dependencies": {
+    "@types/lodash": "^4.14.119",
+    "lodash": "^4.17.11",
     "tslint": "^5.11.0",
     "tslint-config-temando": "^1.6.1",
     "typescript": "^3.2.2"
