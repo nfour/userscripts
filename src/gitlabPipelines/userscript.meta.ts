@@ -5,6 +5,6 @@ export default <IMetaSchema> {
   namespace: 'asdsa',
   description: 'as',
   version: '1.0.0',
-  include: ['src.temando.io'],
+  include: ['*src.temando.io/*'],
 
 };
