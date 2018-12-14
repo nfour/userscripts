@@ -4,7 +4,8 @@
     "module": "commonjs",
     "lib": ["es2015"],
     "strict": true,
+    "resolveJsonModule": true,
     "moduleResolution": "node"
   },
-  "include": ["src", "scripts"]
+  "include": ["src", "webpack.config.ts", "package.json"]
 }
