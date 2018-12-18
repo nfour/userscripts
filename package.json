@@ -2,7 +2,7 @@
   "name": "userscript",
   "private": true,
   "scripts": {
-    "build": "rm -rf build/*; webpack --progress",
+    "build": "webpack --progress",
     "build:prod": "webpack --progress --define process.env.NODE_ENV=\"production\""
   },
   "dependencies": {

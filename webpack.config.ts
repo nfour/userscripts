@@ -1,15 +1,16 @@
-import { cloneDeep } from 'lodash';
 import { resolve } from 'path';
 import * as webpack from 'webpack';
 
-import { createHeader } from './scripts/createHeader';
+import { WebpackUserScript } from './scripts/lib';
 import gitlabPipelines from './src/gitlabPipelines/userscript.meta';
-import { IMetaSchema } from './src/types/meta';
 
-const base: webpack.Configuration = {
+const buildDirectory = resolve(__dirname, './build');
+const sourceDirectory = resolve(__dirname, '../src');
+
+const createConfig = WebpackUserScript({
   mode: 'development',
   output: {
-    path: resolve(__dirname, './build'),
+    path: buildDirectory,
     filename: `[name].js`,
   },
   resolve: { extensions: ['.ts', '.tsx', '.js', '.json'] },
@@ -20,26 +21,8 @@ const base: webpack.Configuration = {
     ],
   },
   plugins: [],
-};
+});
 
 export default <webpack.Configuration[]> [
-  createScript(gitlabPipelines),
+  createConfig(`./src/gitlabPipelines/index.ts`, gitlabPipelines),
 ];
-
-/**
- * Notes:
- * - Expects your `meta.name` to be the directory name
- */
-function createScript (meta: IMetaSchema): webpack.Configuration {
-  return {
-    ...cloneDeep(base),
-    entry: { [meta.name]: `./src/${meta.name}/index.ts` },
-    plugins: [
-      new webpack.BannerPlugin({
-        banner: createHeader(meta),
-        raw: true,
-        entryOnly: true,
-      }),
-    ],
-  };
-}

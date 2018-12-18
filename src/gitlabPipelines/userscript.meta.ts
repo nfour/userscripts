@@ -2,9 +2,8 @@ import { IMetaSchema } from '../types/meta';
 
 export default <IMetaSchema> {
   name: 'gitlabPipelines',
+  version: '0.0.1',
   namespace: 'asdsa',
   description: 'as',
-  version: '1.0.0',
   include: ['*src.temando.io/*'],
-
 };
