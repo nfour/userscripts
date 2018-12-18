@@ -6,7 +6,9 @@
     "build:prod": "webpack --progress --define process.env.NODE_ENV=\"production\""
   },
   "dependencies": {
+    "@types/jquery": "^3.3.27",
     "@types/lodash": "^4.14.119",
+    "jquery": "^3.3.1",
     "lodash": "^4.17.11",
     "tslint": "^5.11.0",
     "tslint-config-temando": "^1.6.1",
