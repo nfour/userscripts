@@ -2529,6 +2529,18 @@ schema-utils@^1.0.0:
     ajv-errors "^1.0.0"
     ajv-keywords "^3.1.0"
 
+selector-observer@^2.1.3:
+  version "2.1.3"
+  resolved "https://registry.yarnpkg.com/selector-observer/-/selector-observer-2.1.3.tgz#e913ebf863d09505567d614abc79a2f4866d0b77"
+  integrity sha512-FHMw758bl45JAcLwtXDRr1447ogOTmfsWfDS424KNtnJrjwtmF4oxjiBhg2lQxsa9EF0PmN5jAoCTLR6HZTWGQ==
+  dependencies:
+    selector-set "^1.1"
+
+selector-set@^1.1:
+  version "1.1.3"
+  resolved "https://registry.yarnpkg.com/selector-set/-/selector-set-1.1.3.tgz#be886bda6cbaae8b4a7c94b110c15de499d7484f"
+  integrity sha512-l+E0lobC3qAq2flOSNMqXddHlysKFyQL+8OIjb4x5WqgDJGHZos3YXLirq2eunZFIMG8uooXobexLO5C3j1Pwg==
+
 semver@^5.0.1, semver@^5.3.0, semver@^5.5.0:
   version "5.6.0"
   resolved "https://registry.yarnpkg.com/semver/-/semver-5.6.0.tgz#7e74256fbaa49c75aa7c7a205cc22799cac80004"

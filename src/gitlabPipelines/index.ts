@@ -1,10 +1,23 @@
 import './index.css';
 
 import * as $ from 'jquery';
+import SelectorObserver from 'selector-observer';
 
 console.log('hello universe 2222');
 
-const $pipelineId = $('.pipeline-id');
-const pipelinesUrl = $pipelineId.attr('href');
+const $pipelineWigets = $('.ci-widget.media');
 
-console.log($pipelineId);
+// TODO: fix snippets
+
+$pipelineWigets.each((i, el) => {
+  const observer = new SelectorObserver(el);
+
+  observer.observe('.ci-job-component', {
+    initialize (el) {
+      console.log(el);
+
+      $(el).append('foo');
+    },
+  });
+
+});
