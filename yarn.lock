@@ -822,6 +822,11 @@ css-loader@^1.0.1:
     postcss-value-parser "^3.3.0"
     source-list-map "^2.0.0"
 
+css-selector-generator@^1.2.0:
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/css-selector-generator/-/css-selector-generator-1.2.0.tgz#5c8839ab3412d530d7548eda5168ecb799381b2c"
+  integrity sha512-LHj9xWzOBXy08JMUjEsG7MkEqLHcYFNGPMhAKxM2SzdDf7RLRFIT2JaJq3CHhHuLpHA+m4QfOjm5L+Yd+x9WLg==
+
 css-selector-tokenizer@^0.7.0:
   version "0.7.1"
   resolved "https://registry.yarnpkg.com/css-selector-tokenizer/-/css-selector-tokenizer-0.7.1.tgz#a177271a8bca5019172f4f891fc6eed9cbf68d5d"
@@ -1676,6 +1681,31 @@ lodash.debounce@^4.0.8:
   version "4.0.8"
   resolved "https://registry.yarnpkg.com/lodash.debounce/-/lodash.debounce-4.0.8.tgz#82d79bff30a67c4005ffd5e2515300ad9ca4d7af"
   integrity sha1-gteb/zCmfEAF/9XiUVMArZyk168=
+
+lodash.difference@^4.5.0:
+  version "4.5.0"
+  resolved "https://registry.yarnpkg.com/lodash.difference/-/lodash.difference-4.5.0.tgz#9ccb4e505d486b91651345772885a2df27fd017c"
+  integrity sha1-nMtOUF1Ia5FlE0V3KIWi3yf9AXw=
+
+lodash.flatmap@^4.5.0:
+  version "4.5.0"
+  resolved "https://registry.yarnpkg.com/lodash.flatmap/-/lodash.flatmap-4.5.0.tgz#ef8cbf408f6e48268663345305c6acc0b778702e"
+  integrity sha1-74y/QI9uSCaGYzRTBcaswLd4cC4=
+
+lodash.isfunction@^3.0.8:
+  version "3.0.9"
+  resolved "https://registry.yarnpkg.com/lodash.isfunction/-/lodash.isfunction-3.0.9.tgz#06de25df4db327ac931981d1bdb067e5af68d051"
+  integrity sha512-AirXNj15uRIMMPihnkInB4i3NHeb4iBtNg9WRWuK2o31S+ePwwNmDPaTL3o7dTJ+VXNZim7rFs4rxN4YU1oUJw==
+
+lodash.take@^4.1.1:
+  version "4.1.1"
+  resolved "https://registry.yarnpkg.com/lodash.take/-/lodash.take-4.1.1.tgz#0b4146dcb7a70c6153495187fc10b12b71fefadf"
+  integrity sha1-C0FG3LenDGFTSVGH/BCxK3H++t8=
+
+lodash.takeright@^4.1.1:
+  version "4.1.1"
+  resolved "https://registry.yarnpkg.com/lodash.takeright/-/lodash.takeright-4.1.1.tgz#c98d84aa9b80e4d2ff675335a62e02e9a65bb210"
+  integrity sha1-yY2EqpuA5NL/Z1M1pi4C6aZbshA=
 
 lodash@^4.17.11:
   version "4.17.11"
@@ -2605,6 +2635,17 @@ signal-exit@^3.0.0:
   version "3.0.2"
   resolved "https://registry.yarnpkg.com/signal-exit/-/signal-exit-3.0.2.tgz#b5fdc08f1287ea1178628e415e25132b73646c6d"
   integrity sha1-tf3AjxKH6hF4Yo5BXiUTK3NkbG0=
+
+simmerjs@^0.5.6:
+  version "0.5.6"
+  resolved "https://registry.yarnpkg.com/simmerjs/-/simmerjs-0.5.6.tgz#4bba4fd4cbac18d889037aa199dd742dd1402b96"
+  integrity sha512-Z00zGHUp2IVSDUuni6gzBxVVQwAEZ7jVHnqL97+2RaHVWTYKfgCNyCvgm68Uc1M6X84hjatxvtOc24Y9ECLPWQ==
+  dependencies:
+    lodash.difference "^4.5.0"
+    lodash.flatmap "^4.5.0"
+    lodash.isfunction "^3.0.8"
+    lodash.take "^4.1.1"
+    lodash.takeright "^4.1.1"
 
 snapdragon-node@^2.0.1:
   version "2.1.1"

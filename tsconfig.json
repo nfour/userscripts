@@ -7,5 +7,5 @@
     "resolveJsonModule": true,
     "moduleResolution": "node"
   },
-  "include": ["src", "scripts", "webpack.config.ts"]
+  "include": ["src", "scripts", "webpack.config.ts", "typings.d.ts"]
 }
