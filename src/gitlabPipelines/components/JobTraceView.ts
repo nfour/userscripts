@@ -5,9 +5,10 @@ import { extractProjectAndJobIdsFromUrl, reuseElement as reuseElement } from '..
 
 export class JobTraceView {
   $container: JQuery<Element>;
-  api: typeof fetch;
   $jobBox: JQuery<Element>;
-  intervals: Map<string, NodeJS.Timeout> = new Map();
+  api: typeof fetch;
+
+  intervals: Map<string, NodeJS.Timer> = new Map();
   pollingRate: number;
 
   constructor ({ $container, pollingRate = 5000, api }: {
@@ -48,7 +49,7 @@ export class JobTraceView {
       getJobTrace({ jobId, projectId, api: this.api });
     }, 1000);
 
-    this.intervals.set(traceId, interval);
+    this.intervals.set(traceId, interval as any);
   }
 }
 
