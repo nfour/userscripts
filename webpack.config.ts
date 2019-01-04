@@ -1,5 +1,6 @@
+import * as DotEnv from 'dotenv-webpack';
 import { resolve } from 'path';
-import { Configuration, DefinePlugin } from 'webpack';
+import { Configuration } from 'webpack';
 
 import { WebpackUserScript } from './scripts/lib';
 import gitlabPipelines from './src/gitlabPipelines/userscript.meta';
@@ -20,9 +21,7 @@ const createConfig = WebpackUserScript({
     ],
   },
   plugins: [
-    new DefinePlugin({
-      'process.env.GITLAB_TOKEN': process.env.GITLAB_TOKEN,
-    }),
+    new DotEnv({ path: './.env', safe: true }) as any,
   ],
 });
 

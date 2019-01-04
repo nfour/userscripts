@@ -13,6 +13,9 @@ This is a userscript project designed to be:
     - [ ] Add a button to quick-view the pipeline log output inline on the page
     - [ ] Find out if its possible to improve polling times for pipeline statuses
 
+Requirements:
+- `GITLAB_TOKEN` must be set. This is a private gitlab token you can create in your gitlab user settings page.
+
 ### Gitlab MR's (WIP)
 
 - The MR view
@@ -32,6 +35,7 @@ This is a userscript project designed to be:
 
 - `yarn build`
 - Copy the content of `./build/<name>.dev.js` and make a new userscript in your browser
+- Copy `.env.example` to `.env` in order to populate variables
 
 From then, the script will always reload whatever is at `./build/<name>.js`
 

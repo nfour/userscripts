@@ -5,7 +5,8 @@ import * as $ from 'jquery';
 import SelectorObserver from 'selector-observer';
 import Simmer from 'simmerjs';
 
-const gitlabToken = process.env.GITLAB_TOKEN!;
+console.log(process.env);
+const gitlabToken = <string> process.env.GITLAB_TOKEN;
 
 function GitlabApi ({ token }: {
   token: string,

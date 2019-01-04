@@ -18,10 +18,12 @@ export function WebpackUserScript (base: webpack.Configuration) {
 
     writeDevelopmentHeaderFile({ scriptName, meta, directory });
 
+    const clonedBase = cloneDeep(base);
     return {
-      ...cloneDeep(base),
+      ...clonedBase,
       entry: { [scriptName]: entry },
       plugins: [
+        ...clonedBase.plugins!,
         new webpack.BannerPlugin({
           banner: createUserScriptHeader(meta, { omitRequire: true }),
           raw: true,

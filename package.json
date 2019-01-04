@@ -18,10 +18,12 @@
     "typescript": "^3.2.2"
   },
   "devDependencies": {
+    "@types/dotenv-webpack": "^1.5.0",
     "@types/node": "^10.12.12",
     "@types/pad": "^1.0.1",
     "@types/webpack": "^4.4.20",
     "css-loader": "^1.0.1",
+    "dotenv-webpack": "^1.6.0",
     "pad": "^2.2.1",
     "style-loader": "^0.23.1",
     "ts-loader": "^5.3.1",
