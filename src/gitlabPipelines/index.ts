@@ -1,4 +1,4 @@
-import './index.css';
+import './styles.less';
 
 import * as AnsiToHtml from 'ansi-to-html';
 import * as $ from 'jquery';

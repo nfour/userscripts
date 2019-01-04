@@ -24,6 +24,8 @@
     "@types/webpack": "^4.4.20",
     "css-loader": "^1.0.1",
     "dotenv-webpack": "^1.6.0",
+    "less": "^3.9.0",
+    "less-loader": "^4.1.0",
     "pad": "^2.2.1",
     "style-loader": "^0.23.1",
     "ts-loader": "^5.3.1",
