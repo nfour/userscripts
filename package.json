@@ -2,8 +2,8 @@
   "name": "userscript",
   "private": true,
   "scripts": {
-    "build": "webpack --progress",
-    "build:prod": "webpack --progress --define process.env.NODE_ENV=\"production\""
+    "build": "source ./.env && webpack --progress",
+    "build:prod": "yarn build --define process.env.NODE_ENV=\"production\""
   },
   "dependencies": {
     "@types/jquery": "^3.3.27",

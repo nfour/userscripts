@@ -1,11 +1,10 @@
 import { resolve } from 'path';
-import * as webpack from 'webpack';
+import { Configuration, DefinePlugin } from 'webpack';
 
 import { WebpackUserScript } from './scripts/lib';
 import gitlabPipelines from './src/gitlabPipelines/userscript.meta';
 
 const buildDirectory = resolve(__dirname, './build');
-const sourceDirectory = resolve(__dirname, '../src');
 
 const createConfig = WebpackUserScript({
   mode: 'development',
@@ -20,9 +19,13 @@ const createConfig = WebpackUserScript({
       { test: /\.css$/, use: ['style-loader', 'css-loader'] },
     ],
   },
-  plugins: [],
+  plugins: [
+    new DefinePlugin({
+      'process.env.GITLAB_TOKEN': process.env.GITLAB_TOKEN,
+    }),
+  ],
 });
 
-export default <webpack.Configuration[]> [
+export default <Configuration[]> [
   createConfig(`./src/gitlabPipelines/index.ts`, gitlabPipelines),
 ];
