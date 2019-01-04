@@ -2,7 +2,7 @@
 export function GitlabApi ({ token }: {
   token: string,
 }) {
-  return (url: string, options: RequestInit = {}) => {
+  return <typeof fetch> ((url: string, options: RequestInit = {}) => {
     return fetch(`/api/v4${url}`, {
       headers: {
         'private-token': token,
@@ -10,7 +10,7 @@ export function GitlabApi ({ token }: {
       },
       ...options,
     });
-  };
+  });
 }
 
 export function extractProjectAndJobIdsFromUrl (url: string) {
@@ -18,4 +18,13 @@ export function extractProjectAndJobIdsFromUrl (url: string) {
   const projectId = encodeURIComponent(url.split('/').slice(1, 3).join('/'));
 
   return { jobId, projectId };
+}
+
+export function reuseElement ({ existing, html }: {
+  html: string;
+  existing: JQuery<Element>
+}): JQuery<Element> {
+  return existing && existing.length
+    ? existing
+    : $(html);
 }

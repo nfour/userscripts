@@ -13,6 +13,7 @@ const createConfig = WebpackUserScript({
     path: buildDirectory,
     filename: `[name].js`,
   },
+  devtool: 'inline-source-map',
   resolve: { extensions: ['.ts', '.tsx', '.js', '.json'] },
   module: {
     rules: [
