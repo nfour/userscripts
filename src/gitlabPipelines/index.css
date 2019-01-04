@@ -5,6 +5,11 @@
   overflow: scroll;
 }
 
+.gp--jobTrace pre {
+  color: white;
+  background: #222;
+}
+
 .gp-pipelineViewButton {
   font-weight: bold;
 }

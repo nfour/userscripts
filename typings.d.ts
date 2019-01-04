@@ -5,3 +5,11 @@ declare module 'simmerjs' {
 
   export default Simmer;
 }
+
+declare module 'ansi-to-html' {
+  const AnsiToHtml: {
+    new (): { toHtml (str: string): string };
+  };
+
+  export = AnsiToHtml;
+}

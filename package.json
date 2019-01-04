@@ -8,6 +8,7 @@
   "dependencies": {
     "@types/jquery": "^3.3.27",
     "@types/lodash": "^4.14.119",
+    "ansi-to-html": "^0.6.9",
     "jquery": "^3.3.1",
     "lodash": "^4.17.11",
     "selector-observer": "^2.1.3",

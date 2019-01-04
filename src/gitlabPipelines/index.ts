@@ -1,5 +1,6 @@
 import './index.css';
 
+import * as AnsiToHtml from 'ansi-to-html';
 import * as $ from 'jquery';
 import SelectorObserver from 'selector-observer';
 import Simmer from 'simmerjs';
@@ -68,16 +69,16 @@ async function showJobTraceView ({ $widget, source }: {
 
     if (existing.length) { return existing; }
 
-    const $viewEl = $(`<div class="gp--jobTrace" data-id="${uniqueTraceId}"><code></code></div>`);
+    const $viewEl = $(`<div class="gp--jobTrace" data-id="${uniqueTraceId}"><pre></pre></div>`);
 
     $widget.append($viewEl);
 
     return $viewEl;
   })();
 
-  const html = await getJobTrace({ jobId, projectId });
-
-  $view.find('code').html(html);
+  const text = await getJobTrace({ jobId, projectId });
+  const html = new AnsiToHtml().toHtml(text);
+  $view.find('pre').html(html);
 
   return $view;
 }
