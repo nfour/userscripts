@@ -5,17 +5,15 @@ import Simmer from 'simmerjs';
 import { classes, gitlabToken, paths } from '../constants';
 import { JobTraceView } from './JobTraceView';
 
-type IEl = JQuery<HTMLElement>;
-
 const getSelectorForElement = new Simmer();
 
-export function setupInputOnPipelineWidgets ($pipelineWidgets: IEl) {
+export function setupInputOnPipelineWidgets ($pipelineWidgets: JQuery<Element>) {
   $pipelineWidgets.each((i, widget) => {
     setupInputsOnPipelineList($(widget));
   });
 }
 
-function setupInputsOnPipelineList ($container: IEl) {
+function setupInputsOnPipelineList ($container: JQuery<Element>) {
   const jobTraceView = new JobTraceView({ $container, pollingRate: 2000 });
 
   function addButtonToList (row: Element) {
