@@ -17,13 +17,13 @@ Refesh your browser to see changes after file save.
 
 ### Gitlab Pipelines
 
-- Open a pipeline dropdown in an MR
-- Click the blue button:
+Open a pipeline dropdown in an MR and click the blue button:
 
-![./src/gitlabPipelines/docs/buttons.png](./src/gitlabPipelines/docs/buttons.png)
+> ![./src/gitlabPipelines/docs/buttons.png](./src/gitlabPipelines/docs/buttons.png)
 
-- See the job output:
-![./src/gitlabPipelines/docs/output.png](./src/gitlabPipelines/docs/output.png)
+See the job output:
+
+> ![./src/gitlabPipelines/docs/output.png](./src/gitlabPipelines/docs/output.png)
 
 
 Notes:
