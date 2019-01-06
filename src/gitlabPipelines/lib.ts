@@ -15,9 +15,10 @@ export function GitlabApi ({ token }: {
 
 export function extractProjectAndJobIdsFromUrl (url: string) {
   const jobId = url.split('/').slice(-1)[0];
-  const projectId = encodeURIComponent(url.split('/').slice(1, 3).join('/'));
+  const projectId = url.split('/').slice(1, 3).join('/');
+  const encodedProjectId = encodeURIComponent(projectId);
 
-  return { jobId, projectId };
+  return { jobId, projectId, encodedProjectId };
 }
 
 export function reuseElement ({ existing, html }: {

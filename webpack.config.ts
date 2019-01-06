@@ -18,6 +18,7 @@ const createConfig = WebpackUserScript({
   module: {
     rules: [
       { test: /\.tsx?$/, use: 'ts-loader' },
+      { test: /\.css/, use: ['style-loader', 'css-loader'] },
       { test: /\.less$/, use: ['style-loader', 'css-loader', 'less-loader'] },
     ],
   },
