@@ -17,15 +17,18 @@ Refesh your browser to see changes after file save.
 
 ### Gitlab Pipelines
 
-Usage:
 - Open a pipeline dropdown in an MR
-  - Click the new icon, this will open job output below
-  - Clicking a different job's icon will replace the current output
-  - The output will refresh every (default: 2 seconds) while the job is pending.
+- Click the blue button:
+
+![./src/gitlabPipelines/docs/buttons.png](./src/gitlabPipelines/docs/buttons.png)
+
+- See the job output:
+![./src/gitlabPipelines/docs/output.png](./src/gitlabPipelines/docs/output.png)
 
 
 Notes:
-- `GITLAB_TOKEN` does not need to be set at this time
+- Clicking a different job's button will replace the current output
+- The output will refresh every (default: 2 seconds) while the job is pending.
 
 ### Gitlab MR's (WIP)
 
