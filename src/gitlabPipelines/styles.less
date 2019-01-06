@@ -1,13 +1,32 @@
-.gp--jobTrace {
+.gp--jobTraceBox {
   flex-basis: 100%;
+  width: 100%;
+  margin-top: 10px;
+  border-radius: 6px;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.4) inset;
+  text-shadow: 1px 1px 0 rgba(0,0,0,0.5);
 
-  height: 400px;
   overflow: scroll;
+  background: #333;
+
+  .inactive { display: none }
+
+  pre {
+    font-size: 11px;
+    color: #ccc;
+    overflow: visible;
+    background: none;
+    border: none;
+
+    padding-bottom: 2em;
+  }
 }
 
-.gp--jobTrace pre {
-  color: white;
-  background: #222;
+.gp--jobTrace {
+  height: 400px;
+  overflow: visible;
+
+  .inactive { display: none }
 }
 
 .gp-pipelineViewButton {

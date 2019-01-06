@@ -2,8 +2,8 @@ export const gitlabToken = <string> process.env.GITLAB_TOKEN;
 
 export const classes = {
   openPipelineButton: 'gp--openPipelineButton',
+  jobTraceBox: 'gp--jobTraceBox',
   jobTrace: 'gp--jobTrace',
-  jobViewBox: 'gp--jobTrace',
 };
 
 export const paths = {

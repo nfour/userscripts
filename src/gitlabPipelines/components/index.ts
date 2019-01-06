@@ -26,7 +26,7 @@ function pipelineViewButton () {
 }
 
 function setupInputsOnPipelineList ($container: IEl) {
-  const jobTraceView = new JobTraceView({ $container, api });
+  const jobTraceView = new JobTraceView({ $container, api, pollingRate: 2000 });
 
   function addButtonToList (row: Element) {
     const $row = $(row);
