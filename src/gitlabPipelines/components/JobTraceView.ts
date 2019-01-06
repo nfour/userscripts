@@ -28,8 +28,18 @@ export class JobTraceView {
     this.$container.append(this.$jobBox);
   }
 
+  emptyJob () {
+    this.intervals.forEach((timer) => {
+      clearInterval(timer);
+    });
+
+    this.$jobBox.html('');
+  }
+
   /** @param url @example http://.../user.name/projectName/-/jobs/979858 */
-  async addJob (url: string) {
+  async setJob (url: string) {
+    this.emptyJob();
+
     const { jobId, projectId } = extractProjectAndJobIdsFromUrl(url);
 
     const traceId = `${projectId}_${jobId}`;

@@ -34,7 +34,7 @@ function setupInputsOnPipelineList ($container: IEl) {
 
     const $viewButton = pipelineViewButton();
 
-    $viewButton.on('click', () => jobTraceView.addJob(url));
+    $viewButton.on('click', () => jobTraceView.setJob(url));
 
     $row.append($viewButton);
   }
