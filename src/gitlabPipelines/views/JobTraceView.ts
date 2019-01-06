@@ -11,7 +11,8 @@ export class JobTraceView {
   $jobTraceView: JQuery<Element>;
   pollingRate: number;
 
-  private interval?: NodeJS.Timer;
+  private updateTimer?: NodeJS.Timer;
+  private checkCompletionTimer?: NodeJS.Timer;
 
   constructor ({ pollingRate = 5000, $container }: {
     $container: JQuery<Element>;
@@ -27,16 +28,6 @@ export class JobTraceView {
     $container.append(this.$jobTraceView);
   }
 
-  /** Stops any existing job trace */
-  stop () {
-    clearInterval(this.interval!);
-
-    this.$jobTraceView
-      .html('')
-      .removeClass('inactive')
-      .addClass('inactive');
-  }
-
   /**
    * Starts a trace for the provided job url
    *
@@ -46,6 +37,7 @@ export class JobTraceView {
     const ansi = new AnsiUp();
     let lastTrace: string = '';
 
+    /** On an interval, this will update the output if it has changed */
     const periodicUpdate = async () => {
       const trace = await fetchJobTrace({ jobId, projectId });
 
@@ -56,11 +48,18 @@ export class JobTraceView {
 
       const nextTrace = trace.slice(lastTrace.length);
 
-      if (nextTrace.length) {
-        render(ansi.ansi_to_html(nextTrace));
-      }
+      if (!nextTrace.length) { return; }
 
       lastTrace = lastTrace + nextTrace;
+
+      render(ansi.ansi_to_html(nextTrace));
+    };
+
+    /** Checks for completion and stops fetching data if its done */
+    const periodicStatusCheck = async () => {
+      const { complete } = await fetchJobTraceMeta({ jobId, projectId });
+
+      if (complete) { this.stop(); }
     };
 
     const render = (content: string) => {
@@ -70,6 +69,7 @@ export class JobTraceView {
     };
 
     this.stop();
+    this.hide();
 
     const { jobId, projectId, traceId } = extractProjectAndJobIdsFromUrl(url);
 
@@ -89,11 +89,26 @@ export class JobTraceView {
       .removeClass('inactive')
       .append($jobTrace);
 
-    this.interval = <any> setInterval(periodicUpdate, this.pollingRate);
+    this.updateTimer = <any> setInterval(periodicUpdate, this.pollingRate);
+    this.checkCompletionTimer = <any> setInterval(periodicStatusCheck, this.pollingRate * 4);
 
     await periodicUpdate();
   }
+
+  /** Stops any existing job trace */
+  stop () {
+    clearInterval(this.updateTimer!);
+    clearInterval(this.checkCompletionTimer!);
+  }
+
+  hide () {
+    this.$jobTraceView
+      .html('')
+      .removeClass('inactive')
+      .addClass('inactive');
+  }
 }
+
 /**
  * Fetches a job's trace ANSI CLI text from:
  * - /user/project/-/jobs/982180/raw
@@ -101,4 +116,24 @@ export class JobTraceView {
 async function fetchJobTrace ({ jobId, projectId }: { projectId: string; jobId: string; }) {
   return fetch(`/${projectId}/-/jobs/${jobId}/raw`)
     .then((res) => res.text());
+}
+
+interface IJobTraceMeta {
+  append: boolean;
+  complete: boolean;
+  html: string;
+  id: number;
+  offset: number;
+  size: number;
+  state: string;
+  status: 'success' | 'pending' | 'failed';
+  total: number;
+  truncated: boolean;
+}
+
+async function fetchJobTraceMeta ({ jobId, projectId }: { projectId: string; jobId: string; }) {
+  const data: IJobTraceMeta = await fetch(`/${projectId}/-/jobs/${jobId}/trace.json`, { headers: { accept: 'application/json' } })
+    .then((res) => res.json());
+
+  return data;
 }
