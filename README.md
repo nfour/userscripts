@@ -30,16 +30,23 @@ Notes:
 - Clicking a different job's button will replace the current output
 - The output will refresh every (default: 2 seconds) while the job is pending.
 
-### Gitlab MR's (WIP)
+### Gitlab MR diff performance (WIP)
 
-- The MR view
-  - The diff view
-    - [ ] Do not show all files - show only the selected file from the sidebar tree
-  - The discussion view
-    - [ ] Reformat information to be more like Github in readability
+Objectives:
+- On the MR diff section:
+  - [ ] Do not show all files - show only the selected file from the sidebar tree
+  - [ ] Do not collapse diffs
 
 ### Gitlab MR list view (WIP)
 
-- The project MR list view
+Objectives:
+- On a project's MR list view:
   - [ ] Show user icons next to names so that it's easier to spot them
+
+### Gitlab project front page (WIP)
+
+Objectives:
+- On a project's file/readme page:
+  - [ ] Place the readme at the top of the page, and cap its height
+  - [ ] Add the activity data as a capped height section between readme and files
 
