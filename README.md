@@ -21,7 +21,7 @@ Usage:
 - Open a pipeline dropdown in an MR
   - Click the new icon, this will open job output below
   - Clicking a different job's icon will replace the current output
-  - The output will refresh every (default: 2 seconds)
+  - The output will refresh every (default: 2 seconds) while the job is pending.
 
 
 Notes:
