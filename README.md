@@ -19,8 +19,9 @@ Refesh your browser to see changes after file save.
 
 Usage:
 - Open a pipeline dropdown in an MR
-- Click the new icon, this will open the output below.
-- Clicking a different job's icon will replace the current view
+  - Click the new icon, this will open job output below
+  - Clicking a different job's icon will replace the current output
+  - The output will refresh every (default: 2 seconds)
 
 
 Notes:
