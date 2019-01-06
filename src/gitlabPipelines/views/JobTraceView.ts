@@ -89,7 +89,7 @@ export class JobTraceView {
       .removeClass('inactive')
       .append($jobTrace);
 
-    this.interval = setInterval(periodicUpdate, this.pollingRate);
+    this.interval = <any> setInterval(periodicUpdate, this.pollingRate);
 
     await periodicUpdate();
   }
