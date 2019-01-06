@@ -2,7 +2,7 @@ import * as $ from 'jquery';
 import SelectorObserver from 'selector-observer';
 import Simmer from 'simmerjs';
 
-import { classes, gitlabToken, paths } from '../constants';
+import { classes, paths } from '../constants';
 import { JobTraceView } from './JobTraceView';
 
 const getSelectorForElement = new Simmer();
@@ -32,6 +32,7 @@ function setupInputsOnPipelineList ($container: JQuery<Element>) {
 
   const selectorForListItems = `${getSelectorForElement(widget)} ${paths.pipelineWidgetListItem}`;
 
+  /** Waits for the dom element to be loaded on the dom */
   observer.observe(selectorForListItems, { initialize: addButtonToList });
 }
 

@@ -36,7 +36,10 @@ export class JobTraceView {
   }
 
   /**
-   * Starts a trace for the provided job url
+   * Starts a trace for the provided job url.
+   *
+   * Polls for text using `this.pollingRate`.
+   * Polls for meta every `this.pollingRate * 4`
    *
    * @param url @example http://.../user.name/projectName/-/jobs/979858
    */
