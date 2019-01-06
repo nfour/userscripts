@@ -9,7 +9,7 @@
   overflow: scroll;
   background: #202020;
 
-  .inactive { display: none }
+  &.inactive { display: none }
 
   pre {
     font-size: 11px;
@@ -20,14 +20,37 @@
 
     padding-bottom: 2em;
   }
+
+  .gp--JobTraceClose {
+    position: absolute;
+    right: 2em;
+    padding: 0.5em 1em;
+    z-index: 3;
+    display: inline-block;
+    font-size: 16px;
+    text-align: center;
+
+    text-shadow: 0 1px 0 rgb(155, 69, 69, 0.5);
+    font-weight: bold;
+    color: #ddd;
+    background: #333;
+    border-radius: 0 0 0 4px;
+    cursor: pointer;
+    text-transform: lowercase;
+
+    &:hover {
+      transition: 0.25s ease;
+      background: #444;
+      color: #fff;
+    }
+  }
+
+  .gp--JobTrace {
+    height: 400px;
+    overflow: visible;
+  }
 }
 
-.gp--JobTrace {
-  height: 400px;
-  overflow: visible;
-
-  .inactive { display: none }
-}
 
 .gp--OpenPipelineButton {
   font-weight: bold;

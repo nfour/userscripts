@@ -21,9 +21,16 @@ export class JobTraceView {
     this.pollingRate = pollingRate;
 
     this.$jobTraceView = reuseElement({
-      html: `<div class="inactive ${classes.JobTraceView}"></div>`,
+      html: `
+        <div class="inactive ${classes.JobTraceView}">
+          <span class="${classes.JobTraceClose}">X</span>
+        </div>
+      `,
       existing: $container.find(`.${classes.JobTraceView}`),
     });
+
+    const $closeButton = this.$jobTraceView.find(`.${classes.JobTraceClose}`);
+    $closeButton.on('click', () => this.disable());
 
     $container.append(this.$jobTraceView);
   }
@@ -59,7 +66,7 @@ export class JobTraceView {
     const periodicStatusCheck = async () => {
       const { complete } = await fetchJobTraceMeta({ jobId, projectId });
 
-      if (complete) { this.stop(); }
+      if (complete) { this.stopUpdates(); }
     };
 
     const render = (content: string) => {
@@ -68,22 +75,12 @@ export class JobTraceView {
       this.$jobTraceView.scrollTop(this.$jobTraceView[0].scrollHeight);
     };
 
-    this.stop();
-    this.hide();
+    this.disable();
 
     const { jobId, projectId, traceId } = extractProjectAndJobIdsFromUrl(url);
 
-    const $jobTrace = $(`
-      <div class="${classes.JobTrace}" data-id="${traceId}">
-        <div class="${classes.JobTraceClose}">x</div>
-        <pre></pre>
-      </div>
-    `);
-
+    const $jobTrace = $(`<div class="${classes.JobTrace}" data-id="${traceId}"><pre></pre></div>`);
     const $text = $jobTrace.find('pre');
-    const $closeButton = $jobTrace.find(`.${classes.JobTraceClose}`);
-
-    $closeButton.on('click', () => this.stop());
 
     this.$jobTraceView
       .removeClass('inactive')
@@ -96,16 +93,21 @@ export class JobTraceView {
   }
 
   /** Stops any existing job trace */
-  stop () {
+  stopUpdates () {
     clearInterval(this.updateTimer!);
     clearInterval(this.checkCompletionTimer!);
   }
 
-  hide () {
+  close () {
     this.$jobTraceView
-      .html('')
       .removeClass('inactive')
-      .addClass('inactive');
+      .addClass('inactive')
+      .find(`.${classes.JobTrace}`).remove();
+  }
+
+  disable () {
+    this.stopUpdates();
+    this.close();
   }
 }
 
