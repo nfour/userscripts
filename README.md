@@ -1,20 +1,30 @@
 # Userscripts
 
-This is a userscript project designed to be:
-- Quick to develop within
-- Use TypeScript
+This userscript project is designed to be:
+- Intuitive to develop within
+- Use modern modules, TypeScript
+- Be webpacked
+
+## How to develop
+
+- `yarn build --watch`
+- Copy the content of `./build/<name>.dev.js` and make a new userscript in your browser
+
+From then, the script will always reload whatever is at `./build/<name>.js`.
+Refesh your browser to see changes after file save.
 
 ## Scripts
 
-### Gitlab Pipelines (WIP) (In progress)
+### Gitlab Pipelines
 
-- On the MR view
-  - When inspecting the pipeline dropdown
-    - [ ] Add a button to quick-view the pipeline log output inline on the page
-    - [ ] Find out if its possible to improve polling times for pipeline statuses
+Usage:
+- Open a pipeline dropdown in an MR
+- Click the new icon, this will open the output below.
+- Clicking a different job's icon will replace the current view
 
-Requirements:
-- `GITLAB_TOKEN` must be set. This is a private gitlab token you can create in your gitlab user settings page.
+
+Notes:
+- `GITLAB_TOKEN` does not need to be set at this time
 
 ### Gitlab MR's (WIP)
 
@@ -28,16 +38,4 @@ Requirements:
 
 - The project MR list view
   - [ ] Show user icons next to names so that it's easier to spot them
-
-## How to develop
-
-### Initial setup
-
-- `yarn build`
-- Copy the content of `./build/<name>.dev.js` and make a new userscript in your browser
-- Copy `.env.example` to `.env` in order to populate variables
-
-From then, the script will always reload whatever is at `./build/<name>.js`
-
-Then just run: `yarn build --watch` and refesh your the browser to see changes
 

@@ -1,4 +1,4 @@
-.gp--jobTraceBox {
+.gp--JobTraceView {
   flex-basis: 100%;
   width: 100%;
   margin-top: 10px;
@@ -29,8 +29,27 @@
   .inactive { display: none }
 }
 
-.gp-pipelineViewButton {
+.gp--openPipelineButton {
   font-weight: bold;
+  position: absolute;
+  top: 10px;
+  border: 1px solid #ccc;
+  border-radius: 24px;
+  right: 36px;
+  width: 22px;
+  height: 22px;
+
+  cursor: pointer;
+  background-color: #fff;
+
+  &:hover { background-color: transparent }
+
+  svg {
+    right: -4px;
+    top: -1px;
+    position: relative;
+    color: rgb(90, 139, 168);
+  }
 }
 
 /**
@@ -38,6 +57,11 @@
 OVERRIDES
 
 **/
+
+.mini-pipeline-graph-dropdown-menu {
+  width: 270px;
+  max-width: 270px;
+}
 
 .mr-state-widget .ci-widget {
   flex-wrap: wrap;

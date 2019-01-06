@@ -3,68 +3,54 @@ import AnsiUp from 'ansi_up';
 import { classes } from '../constants';
 import { extractProjectAndJobIdsFromUrl, reuseElement as reuseElement } from '../lib';
 
+/**
+ * Responsible for managing a view box underneath pipeline dropdown buttons to
+ * show the selected jobs ANSI CLI trace text.
+ */
 export class JobTraceView {
-  $container: JQuery<Element>;
-  $jobBox: JQuery<Element>;
-  api: typeof fetch;
-
-  intervals: Map<string, NodeJS.Timer> = new Map();
+  $jobTraceView: JQuery<Element>;
   pollingRate: number;
 
-  constructor ({ $container, pollingRate = 5000, api }: {
-    $container: JobTraceView['$container'];
+  private interval?: NodeJS.Timer;
+
+  constructor ({ pollingRate = 5000, $container }: {
+    $container: JQuery<Element>;
     pollingRate?: JobTraceView['pollingRate'];
-    api: JobTraceView['api']
   }) {
-    this.$container = $container;
     this.pollingRate = pollingRate;
-    this.api = api;
 
-    this.$jobBox = reuseElement({
-      html: `<div class="${classes.jobTraceBox}"></div>`,
-      existing: this.$container.find(`.${classes.jobTraceBox}`),
+    this.$jobTraceView = reuseElement({
+      html: `<div class="inactive ${classes.JobTraceView}"></div>`,
+      existing: $container.find(`.${classes.JobTraceView}`),
     });
 
-    this.$container.append(this.$jobBox);
+    $container.append(this.$jobTraceView);
   }
 
-  emptyJob () {
-    this.intervals.forEach((timer) => {
-      clearInterval(timer);
-    });
+  /** Stops any existing job trace */
+  stop () {
+    clearInterval(this.interval!);
 
-    this.$jobBox.html('');
+    this.$jobTraceView
+      .html('')
+      .removeClass('inactive')
+      .addClass('inactive');
   }
 
-  /** @param url @example http://.../user.name/projectName/-/jobs/979858 */
-  async setJob (url: string) {
-    this.emptyJob();
-
-    const { jobId, projectId } = extractProjectAndJobIdsFromUrl(url);
-
-    const traceId = `${projectId}_${jobId}`;
-
-    const $job = reuseElement({
-      html: `<div class=".build-page ${classes.jobTrace}" data-id="${traceId}"><pre></pre></div>`,
-      existing: this.$jobBox.find(`[data-id="${traceId}"]`),
-    });
-
-    this.$jobBox.append($job);
-
-    const $content = $job.find('pre');
-
-    // TODO: add close button
-
-    let lastTrace: string = '';
-    let firstRender = true;
-
+  /**
+   * Starts a trace for the provided job url
+   *
+   * @param url @example http://.../user.name/projectName/-/jobs/979858
+   */
+  async trace (url: string) {
     const ansi = new AnsiUp();
+    let lastTrace: string = '';
 
-    async function updateTrace () {
+    const periodicUpdate = async () => {
       const trace = await fetchJobTrace({ jobId, projectId });
 
       if (trace.length === lastTrace.length) {
-        console.log('no changes');
+        // No changes, exit
         return;
       }
 
@@ -75,32 +61,44 @@ export class JobTraceView {
       }
 
       lastTrace = lastTrace + nextTrace;
-    }
-
-    const render = (content: string) => {
-      $content.append(content);
-
-      this.$jobBox.scrollTop(this.$jobBox[0].scrollHeight);
-      firstRender = false;
     };
 
-    const interval = setInterval(updateTrace, this.pollingRate);
+    const render = (content: string) => {
+      $text.append(content);
 
-    this.intervals.set(traceId, interval as any);
+      this.$jobTraceView.scrollTop(this.$jobTraceView[0].scrollHeight);
+    };
 
-    await updateTrace();
+    this.stop();
+
+    const { jobId, projectId, traceId } = extractProjectAndJobIdsFromUrl(url);
+
+    const $jobTrace = $(`
+      <div class="${classes.JobTrace}" data-id="${traceId}">
+        <div class="${classes.JobTraceClose}">x</div>
+        <pre></pre>
+      </div>
+    `);
+
+    const $text = $jobTrace.find('pre');
+    const $closeButton = $jobTrace.find(`.${classes.JobTraceClose}`);
+
+    $closeButton.on('click', () => this.stop());
+
+    this.$jobTraceView
+      .removeClass('inactive')
+      .append($jobTrace);
+
+    this.interval = setInterval(periodicUpdate, this.pollingRate);
+
+    await periodicUpdate();
   }
 }
-
-async function fetchJobTrace ({ jobId, projectId }: {
-  projectId: string;
-  jobId: string;
-  api?: typeof fetch;
-}) {
-  // sam.johnson/temonodo/-/jobs/982180/raw
-  const trace: string = await fetch(`/${projectId}/-/jobs/${jobId}/raw`)
+/**
+ * Fetches a job's trace ANSI CLI text from:
+ * - /user/project/-/jobs/982180/raw
+ */
+async function fetchJobTrace ({ jobId, projectId }: { projectId: string; jobId: string; }) {
+  return fetch(`/${projectId}/-/jobs/${jobId}/raw`)
     .then((res) => res.text());
-    // .then((body) => body.html);
-
-  return trace;
 }
