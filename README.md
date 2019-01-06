@@ -8,7 +8,8 @@ This userscript project is designed to be:
 ## How to develop
 
 - `yarn build --watch`
-- Copy the content of `./build/<name>.dev.js` and make a new userscript in your browser
+- Copy the content of `./build/<name>.dev.js` and make a new userscript in your browser.
+  - Try [Tampermonkey](https://chrome.google.com/webstore/detail/tampermonkey/dhdgffkkebhmkfjojejmpbldmpobfkfo?hl=en) if you're on Chrome
 
 From then, the script will always reload whatever is at `./build/<name>.js`.
 Refesh your browser to see changes after file save.
