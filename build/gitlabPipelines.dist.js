@@ -7,6 +7,7 @@
 // @include     *gitlab.com*
 // @author      nfour
 // @license     MIT
+// @homepageURL https://github.com/nfour/userscripts
 // @require     https://github.com/nfour/userscripts/raw/master/build/gitlabPipelines.js
 // @updateURL   https://github.com/nfour/userscripts/raw/master/build/gitlabPipelines.dist.js
 // ==/UserScript==

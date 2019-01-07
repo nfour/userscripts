@@ -10,6 +10,7 @@ export interface IMetaSchema {
   version: INonEmptyString;
   downloadURL?: INonEmptyString;
   updateURL?: INonEmptyString;
+  homepageURL?: INonEmptyString;
   icon?: INonEmptyString;
   include?: IMultiString;
   exclude?: IMultiString;

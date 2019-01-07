@@ -1,3 +1,4 @@
+import { repository } from '../../package.json';
 import { IMetaSchema } from '../types/meta';
 
 export default <IMetaSchema> {
@@ -8,4 +9,5 @@ export default <IMetaSchema> {
   include: ['*src.temando.io/*', '*gitlab.com*'],
   author: 'nfour',
   license: 'MIT',
+  homepageURL: repository.url,
 };
