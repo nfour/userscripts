@@ -5,6 +5,14 @@ This userscript project is designed to be:
 - Use modern modules, TypeScript
 - Be webpacked
 
+## How to install
+
+Example: **Gitlab Pipelines**
+
+- Copy the content from: [./build/gitlabPipelines.dist.js](./build/gitlabPipelines.dist.js)
+- Open TamperMonkey, create a new script, paste
+- Done
+
 ## How to develop
 
 - `yarn build --watch`
