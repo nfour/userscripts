@@ -4,6 +4,7 @@ import * as pad from 'pad';
 import { resolve } from 'path';
 import * as webpack from 'webpack';
 
+import { repository } from '../package.json';
 import { IMetaSchema } from '../src/types/meta';
 
 export function WebpackUserScript (base: webpack.Configuration) {
@@ -17,6 +18,7 @@ export function WebpackUserScript (base: webpack.Configuration) {
     const { name: scriptName } = meta;
 
     writeDevelopmentHeaderFile({ scriptName, meta, directory });
+    writeDistributionHeaderFile({ scriptName, meta, directory });
 
     const clonedBase = cloneDeep(base);
     return {
@@ -46,6 +48,23 @@ export function writeDevelopmentHeaderFile ({ scriptName, meta, directory }: {
   return writeFileSync(filePath, createUserScriptHeader({
     ...meta,
     require: `file://${requireFilePath}`,
+  }));
+}
+
+/**
+ * Writes a file with just the header, with a @require pointing to the real script
+ */
+export function writeDistributionHeaderFile ({ scriptName, meta, directory }: {
+  scriptName: string, meta: IMetaSchema, directory: string,
+}) {
+  const filePath = resolve(directory, `${scriptName}.dist.js`);
+  const repoUrl = `${repository.url}/raw/master/build/${scriptName}.js`;
+  const updateUrl = `${repository.url}/raw/master/build/${scriptName}.dist.js`;
+
+  return writeFileSync(filePath, createUserScriptHeader({
+    ...meta,
+    require: repoUrl,
+    updateURL: updateUrl,
   }));
 }
 

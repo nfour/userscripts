@@ -5,6 +5,10 @@
     "build": "webpack --progress",
     "build:prod": "yarn build --define process.env.NODE_ENV=\"production\""
   },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/nfour/userscripts"
+  },
   "dependencies": {
     "@types/jquery": "^3.3.27",
     "@types/lodash": "^4.14.119",
