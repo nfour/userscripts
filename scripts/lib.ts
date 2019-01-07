@@ -61,14 +61,18 @@ export function writeDistributionHeaderFile ({ scriptName, meta, directory }: {
   const repoUrl = `${repository.url}/raw/master/build/${scriptName}.js`;
   const updateUrl = `${repository.url}/raw/master/build/${scriptName}.dist.js`;
 
-  return writeFileSync(filePath, createUserScriptHeader({
+  const header = createUserScriptHeader({
     ...meta,
     require: repoUrl,
     updateURL: updateUrl,
-  }));
+  });
+
+  const openUserJsHeader = createUserScriptHeader({ author: meta.author }, { name: 'OpenUserJS' });
+
+  return writeFileSync(filePath, `${header}\n${openUserJsHeader}`);
 }
 
-export function createUserScriptHeader (metadata: IMetaSchema, { omitRequire = false } = {}) {
+export function createUserScriptHeader (metadata: Partial<IMetaSchema>, { omitRequire = false, name = 'UserScript' } = {}) {
   const lines: string[] = [];
   const padLength = Math.max(...Object.keys(metadata).map((k) => k.length));
 
@@ -78,7 +82,7 @@ export function createUserScriptHeader (metadata: IMetaSchema, { omitRequire = f
     lines.push(`// @${pad(key, padLength)} ${value}`);
   };
 
-  lines.push('// ==UserScript==');
+  lines.push(`// ==${name}==`);
 
   for (const key of Object.keys(metadata)) {
     if (key[0] === '$') { continue; }
@@ -96,7 +100,7 @@ export function createUserScriptHeader (metadata: IMetaSchema, { omitRequire = f
     }
   }
 
-  lines.push('// ==/UserScript==\n');
+  lines.push(`// ==/${name}==\n`);
 
   return lines.join('\n');
 }

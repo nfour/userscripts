@@ -8,5 +8,4 @@ export default <IMetaSchema> {
   include: ['*src.temando.io/*', '*gitlab.com*'],
   author: 'nfour',
   license: 'MIT',
-  copywrite: 'blah',
 };
