@@ -5,6 +5,8 @@
 // @description Shows job output when interacting with MR job dropdowns
 // @include     *src.temando.io/*
 // @include     *gitlab.com*
+// @author      nfour
+// @license     MIT
 // @require     https://github.com/nfour/userscripts/raw/master/build/gitlabPipelines.js
 // @updateURL   https://github.com/nfour/userscripts/raw/master/build/gitlabPipelines.dist.js
 // ==/UserScript==

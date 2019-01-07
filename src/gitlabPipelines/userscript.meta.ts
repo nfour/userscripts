@@ -6,5 +6,6 @@ export default <IMetaSchema> {
   namespace: 'nfour',
   description: 'Shows job output when interacting with MR job dropdowns',
   include: ['*src.temando.io/*', '*gitlab.com*'],
-
+  author: 'nfour',
+  license: 'MIT',
 };

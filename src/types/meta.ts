@@ -3,6 +3,8 @@ export type IMultiString = INonEmptyString | INonEmptyString[];
 
 export interface IMetaSchema {
   name: INonEmptyString;
+  author: string;
+  license: string;
   description?: string;
   namespace: INonEmptyString;
   version: INonEmptyString;
@@ -14,6 +16,7 @@ export interface IMetaSchema {
   match?: IMultiString;
   require?: IMultiString;
   resource?: IMultiString;
+
   grant?: (
     Array<
       | 'unsafeWindow'
