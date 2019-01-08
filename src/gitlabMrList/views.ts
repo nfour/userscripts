@@ -4,14 +4,12 @@ import { paths } from './constants';
 
 type IUserCache = Map<IGitlabUser['id'], Promise<IGitlabUser>>;
 
-export function setupMrList ($mrList: JQuery<Element>) {
+export async function setupMrList ($mrList: JQuery<Element>) {
   const users: IUserCache = new Map();
 
   const items = $mrList.find(paths.mrListItem).toArray().map((el) => $(el));
 
-  const operations = items.map(async ($listItem) => {
-    await addAvatarToMrItem({ $listItem, users });
-  });
+  const operations = items.map(($listItem) => addAvatarToMrItem({ $listItem, users }));
 
   return Promise.all(operations);
 }
@@ -42,6 +40,8 @@ async function addAvatarToMrItem ({ $listItem, users }: {
 
   // TODO: add it better than this
   $listItem.prepend($avatar);
+
+  return $avatar;
 }
 
 interface IGitlabUser {
@@ -62,7 +62,7 @@ interface IGitlabUser {
   website_url: string;
 }
 
-async function fetchUser ({ userId }: { userId: string }) {
+async function fetchUser ({ userId }: { userId: IGitlabUser['id'] }) {
   const user: IGitlabUser = await fetch(`/api/v4/users/${userId}`, { headers: { accept: 'application/json' } })
     .then((res) => res.json());
 

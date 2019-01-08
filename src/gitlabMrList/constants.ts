@@ -3,7 +3,7 @@ export const classes = {
 };
 
 export const paths = {
-  mrListContainer: '.merge-requests-holder .mr-list',
+  mrListContainer: '.mr-list',
   mrListItem: '.merge-request',
   mrListItemAuthor: '.author-link',
 };

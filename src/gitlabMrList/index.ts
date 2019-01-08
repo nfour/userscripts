@@ -6,5 +6,5 @@ import { setupMrList } from './views';
 void (async () => {
   const $mrList = $(paths.mrListContainer);
 
-  setupMrList($mrList);
+  await setupMrList($mrList);
 })();

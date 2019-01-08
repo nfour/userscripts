@@ -3,6 +3,7 @@ import { resolve } from 'path';
 import { Configuration } from 'webpack';
 
 import { WebpackUserScript } from './scripts/lib';
+import gitlabMrList from './src/gitlabMrList/userscript.meta';
 import gitlabPipelines from './src/gitlabPipelines/userscript.meta';
 
 const buildDirectory = resolve(__dirname, './build');
@@ -28,4 +29,5 @@ const createConfig = WebpackUserScript({
 
 export default <Configuration[]> [
   createConfig(`./src/gitlabPipelines/index.ts`, gitlabPipelines),
+  createConfig(`./src/gitlabMrList/index.ts`, gitlabMrList),
 ];
