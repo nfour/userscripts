@@ -39,18 +39,20 @@ Notes:
 - Clicking a different job's button will replace the current output
 - The output will refresh every (default: 2 seconds) while the job is pending.
 
+
+### Gitlab MR list view avatars
+
+This shows the MR authors avatar on any MR listing, for easier recognition.
+
+> ![./src/gitlabMrList/docs/example.png](./src/gitlabMrList/docs/example.png)
+
+
 ### Gitlab MR diff performance (WIP)
 
 Objectives:
 - On the MR diff section:
   - [ ] Do not show all files - show only the selected file from the sidebar tree
   - [ ] Do not collapse diffs
-
-### Gitlab MR list view (WIP)
-
-Objectives:
-- On a project's MR list view:
-  - [ ] Show user icons next to names so that it's easier to spot them
 
 ### Gitlab project front page (WIP)
 
