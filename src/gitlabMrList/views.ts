@@ -1,6 +1,6 @@
 import * as $ from 'jquery';
 
-import { paths } from './constants';
+import { classes, paths } from './constants';
 
 type IUserCache = Map<IGitlabUser['id'], Promise<IGitlabUser>>;
 
@@ -32,10 +32,10 @@ async function addAvatarToMrItem ({ $listItem, users }: {
 
   const $avatar = $(`<img
     src="${user.avatar_url}"
-    width="60" height="60"
+    width="50" height="50"
     alt="user avatar"
     data-src="${user.avatar_url}"
-    class="avatar s60 mr-2"
+    class="avatar s50 mr-2 ${classes.MrItemAvatar}"
   />`);
 
   // TODO: add it better than this

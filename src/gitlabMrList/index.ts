@@ -1,3 +1,5 @@
+import './styles.less';
+
 import * as $ from 'jquery';
 
 import { paths } from './constants';
