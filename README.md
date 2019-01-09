@@ -26,6 +26,8 @@ Refesh your browser to see changes after file save.
 
 ### Gitlab Pipelines
 
+> Get it: [./build/gitlabPipelines.dist.js](./build/gitlabPipelines.dist.js)
+
 Open a pipeline dropdown in an MR and click the blue button:
 
 > ![./src/gitlabPipelines/docs/buttons.png](./src/gitlabPipelines/docs/buttons.png)
@@ -42,6 +44,8 @@ Notes:
 
 ### Gitlab MR list view avatars
 
+> Get it: [./build/gitlabMrList.dist.js](./build/gitlabMrList.dist.js)
+
 This shows the MR authors avatar on any MR listing, for easier recognition.
 
 > ![./src/gitlabMrList/docs/example.png](./src/gitlabMrList/docs/example.png)
@@ -49,15 +53,7 @@ This shows the MR authors avatar on any MR listing, for easier recognition.
 
 ### Gitlab MR diff performance (WIP)
 
-Objectives:
+Objective:
 - On the MR diff section:
   - [ ] Do not show all files - show only the selected file from the sidebar tree
   - [ ] Do not collapse diffs
-
-### Gitlab project front page (WIP)
-
-Objectives:
-- On a project's file/readme page:
-  - [ ] Place the readme at the top of the page, and cap its height
-  - [ ] Add the activity data as a capped height section between readme and files
-
