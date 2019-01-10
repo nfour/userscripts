@@ -3,7 +3,7 @@ import { IMetaSchema } from '../types/meta';
 
 export default <IMetaSchema> {
   name: 'gitlabPipelines',
-  version: '0.1.0',
+  version: '0.2.0',
   namespace: 'nfour',
   description: 'Shows job output when interacting with MR job dropdowns',
   include: ['*src.temando.io/*', '*gitlab.com*'],
