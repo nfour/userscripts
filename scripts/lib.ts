@@ -65,6 +65,7 @@ export function writeDistributionHeaderFile ({ scriptName, meta, directory }: {
     ...meta,
     require: repoUrl,
     updateURL: updateUrl,
+    downloadURL: updateUrl,
   });
 
   const openUserJsHeader = createUserScriptHeader({ author: meta.author }, { name: 'OpenUserJS' });

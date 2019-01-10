@@ -10,6 +10,7 @@
 // @homepageURL https://github.com/nfour/userscripts
 // @require     https://github.com/nfour/userscripts/raw/master/build/gitlabMrList.js
 // @updateURL   https://github.com/nfour/userscripts/raw/master/build/gitlabMrList.dist.js
+// @downloadURL https://github.com/nfour/userscripts/raw/master/build/gitlabMrList.dist.js
 // ==/UserScript==
 
 // ==OpenUserJS==
