@@ -5,6 +5,16 @@ This userscript project is designed to be:
 - Use modern modules, TypeScript
 - Be webpacked
 
+- [Userscripts](#userscripts)
+  - [How to install](#how-to-install)
+  - [How to develop](#how-to-develop)
+  - [Scripts](#scripts)
+    - [Gitlab Pipelines](#gitlab-pipelines)
+    - [Gitlab MR list view avatars](#gitlab-mr-list-view-avatars)
+    - [Gitlab MR diff performance (WIP)](#gitlab-mr-diff-performance-wip)
+  - [Related links](#related-links)
+    - [Gitlab Dark Theme](#gitlab-dark-theme)
+
 ## How to install
 
 Example: **Gitlab Pipelines**
@@ -57,3 +67,9 @@ Objective:
 - On the MR diff section:
   - [ ] Do not show all files - show only the selected file from the sidebar tree
   - [ ] Do not collapse diffs
+
+## Related links
+
+### Gitlab Dark Theme
+
+Check out [gitlab.com/vednoc/dark-gitlab](https://gitlab.com/vednoc/dark-gitlab), it's pretty well done!
