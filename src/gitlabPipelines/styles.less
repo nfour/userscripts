@@ -55,23 +55,24 @@
 .gp--OpenPipelineButton {
   font-weight: bold;
   position: absolute;
-  top: 10px;
+  top: 8px;
   border: 1px solid #ccc;
   border-radius: 24px;
-  right: 36px;
-  width: 22px;
-  height: 22px;
+  right: 40px;
+  width: 24px;
+  height: 24px;
+  text-align: center;
+  color: rgb(109, 152, 207);
 
   cursor: pointer;
   background-color: #fff;
 
   &:hover { background-color: transparent }
 
-  svg {
-    right: -4px;
-    top: -1px;
+  &::before {
+    content: '•';
     position: relative;
-    color: rgb(90, 139, 168);
+    top: -1px;
   }
 }
 

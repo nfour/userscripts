@@ -38,10 +38,6 @@ function setupInputsOnPipelineList ($container: JQuery<Element>) {
 
 function pipelineViewButton () {
   return $(`
-    <span class="${classes.OpenPipelineButton}">
-      <svg aria-hidden="true" class="s12 ic-doc-text">
-        <use xlink:href="/assets/icons-ec735e9af30c747429d61fe78bd3073c9f4b10ae7fcb19f706d8ea0db2c170d7.svg#doc-text"></use>
-      </svg>
-    </span>
+    <span class="${classes.OpenPipelineButton}"></span>
   `);
 }
