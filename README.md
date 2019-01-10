@@ -72,4 +72,4 @@ Objective:
 
 ### Gitlab Dark Theme
 
-Check out [gitlab.com/vednoc/dark-gitlab](https://gitlab.com/vednoc/dark-gitlab), it's pretty well done!
+Check out [gitlab.com/vednoc/dark-gitlab](https://gitlab.com/vednoc/dark-gitlab)
