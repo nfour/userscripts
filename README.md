@@ -14,7 +14,7 @@
 
 ### Gitlab Inline Pipelines
 
-:heavy_dollar_sign: [Gitlab MR Inline Pipelines (gitlabPipelines.dist.user.js)](https://github.com/nfour/userscripts/raw/master/build/gitlabPipelines.dist.user.js)
+:tv: [Gitlab MR Inline Pipelines (gitlabPipelines.dist.user.js)](https://github.com/nfour/userscripts/raw/master/build/gitlabPipelines.dist.user.js)
 
 Open a pipeline dropdown on an MR, then click the new button:
 
@@ -30,7 +30,7 @@ Notes:
 
 ### Gitlab MR list avatars
 
-:heavy_dollar_sign: [Gitlab MR List Avatars (gitlabMrList.dist.user.js)](https://github.com/nfour/userscripts/raw/master/build/gitlabMrList.dist.user.js)
+:tv: [Gitlab MR List Avatars (gitlabMrList.dist.user.js)](https://github.com/nfour/userscripts/raw/master/build/gitlabMrList.dist.user.js)
 
 Shows the MR authors avatar on any MR listing.
 
