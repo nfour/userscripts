@@ -1,6 +1,13 @@
 # Userscripts
 
+> A repository dedicated to providing a good userscript development experience, and some scripts.
 
+- [Userscripts](#userscripts)
+  - [Install](#install)
+    - [Gitlab Inline Pipelines](#gitlab-inline-pipelines)
+    - [Gitlab MR list avatars](#gitlab-mr-list-avatars)
+    - [Gitlab MR diff performance (WIP)](#gitlab-mr-diff-performance-wip)
+  - [Contributing](#contributing)
 
 ## Install
 
