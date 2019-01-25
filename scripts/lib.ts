@@ -43,7 +43,7 @@ export function writeDevelopmentHeaderFile ({ scriptName, meta, directory }: {
   scriptName: string, meta: IMetaSchema, directory: string,
 }) {
   const filePath = resolve(directory, `${scriptName}.dev.user.js`);
-  const requireFilePath = resolve(directory, `${scriptName}.user.js`);
+  const requireFilePath = resolve(directory, `${scriptName}.js`);
 
   return writeFileSync(filePath, createUserScriptHeader({
     ...meta,
@@ -58,7 +58,7 @@ export function writeDistributionHeaderFile ({ scriptName, meta, directory }: {
   scriptName: string, meta: IMetaSchema, directory: string,
 }) {
   const filePath = resolve(directory, `${scriptName}.dist.user.js`);
-  const repoUrl = `${repository.url}/raw/master/build/${scriptName}.user.js`;
+  const repoUrl = `${repository.url}/raw/master/build/${scriptName}.js`;
   const updateUrl = `${repository.url}/raw/master/build/${scriptName}.dist.user.js`;
 
   const header = createUserScriptHeader({

@@ -3,7 +3,7 @@ import { IMetaSchema } from '../types/meta';
 
 export default <IMetaSchema> {
   name: 'gitlabMrList',
-  version: '0.0.1',
+  version: '0.0.2',
   namespace: 'nfour',
   description: 'Enhances the Gitlab MR List of a project',
   include: ['*src.temando.io/*', '*gitlab.com*'],
