@@ -9,12 +9,13 @@
     - [Gitlab MR diff performance (WIP)](#gitlab-mr-diff-performance-wip)
   - [Contributing](#contributing)
 
-
 ## Scripts
+
+Use [Tampermonkey](https://chrome.google.com/webstore/detail/tampermonkey/dhdgffkkebhmkfjojejmpbldmpobfkfo?hl=en) to installfrom the links below.
 
 ### Gitlab Inline Pipelines
 
-:tv: [Gitlab MR Inline Pipelines (gitlabPipelines.dist.user.js)](https://github.com/nfour/userscripts/raw/master/build/gitlabPipelines.dist.user.js)
+:tv: [Install (gitlabPipelines.dist.user.js)](https://github.com/nfour/userscripts/raw/master/build/gitlabPipelines.dist.user.js)
 
 Open a pipeline dropdown on an MR, then click the new button:
 
@@ -30,7 +31,7 @@ Notes:
 
 ### Gitlab MR list avatars
 
-:tv: [Gitlab MR List Avatars (gitlabMrList.dist.user.js)](https://github.com/nfour/userscripts/raw/master/build/gitlabMrList.dist.user.js)
+:tv: [Install (gitlabMrList.dist.user.js)](https://github.com/nfour/userscripts/raw/master/build/gitlabMrList.dist.user.js)
 
 Shows the MR authors avatar on any MR listing.
 
@@ -49,8 +50,7 @@ Objective:
 ## Contributing
 
 - `yarn build --watch`
-- Copy the content of `./build/<name>.dev.js` and make a new userscript in your browser.
-  - Try [Tampermonkey](https://chrome.google.com/webstore/detail/tampermonkey/dhdgffkkebhmkfjojejmpbldmpobfkfo?hl=en) if you're on Chrome
+- Install `./build/<name>.dev.js` as a new userscript in Tampermonkey.
 
 From then, the script will always reload whatever is at `./build/<name>.js`.
 Refesh your browser to see changes after file save.
