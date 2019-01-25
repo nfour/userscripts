@@ -25,7 +25,7 @@ export function WebpackUserScript (base: webpack.Configuration) {
       ...clonedBase,
       entry: { [scriptName]: entry },
       plugins: [
-        ...clonedBase.plugins!,
+        ...clonedBase.plugins || [],
         new webpack.BannerPlugin({
           banner: createUserScriptHeader(meta, { omitRequire: true }),
           raw: true,
@@ -42,8 +42,8 @@ export function WebpackUserScript (base: webpack.Configuration) {
 export function writeDevelopmentHeaderFile ({ scriptName, meta, directory }: {
   scriptName: string, meta: IMetaSchema, directory: string,
 }) {
-  const filePath = resolve(directory, `${scriptName}.dev.js`);
-  const requireFilePath = resolve(directory, `${scriptName}.js`);
+  const filePath = resolve(directory, `${scriptName}.dev.user.js`);
+  const requireFilePath = resolve(directory, `${scriptName}.user.js`);
 
   return writeFileSync(filePath, createUserScriptHeader({
     ...meta,
@@ -57,9 +57,9 @@ export function writeDevelopmentHeaderFile ({ scriptName, meta, directory }: {
 export function writeDistributionHeaderFile ({ scriptName, meta, directory }: {
   scriptName: string, meta: IMetaSchema, directory: string,
 }) {
-  const filePath = resolve(directory, `${scriptName}.dist.js`);
-  const repoUrl = `${repository.url}/raw/master/build/${scriptName}.js`;
-  const updateUrl = `${repository.url}/raw/master/build/${scriptName}.dist.js`;
+  const filePath = resolve(directory, `${scriptName}.dist.user.js`);
+  const repoUrl = `${repository.url}/raw/master/build/${scriptName}.user.js`;
+  const updateUrl = `${repository.url}/raw/master/build/${scriptName}.dist.user.js`;
 
   const header = createUserScriptHeader({
     ...meta,

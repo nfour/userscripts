@@ -1,4 +1,3 @@
-import * as DotEnv from 'dotenv-webpack';
 import { resolve } from 'path';
 import { Configuration } from 'webpack';
 
@@ -22,9 +21,6 @@ const createConfig = WebpackUserScript({
       { test: /\.less$/, use: ['style-loader', 'css-loader', 'less-loader'] },
     ],
   },
-  plugins: [
-    new DotEnv({ path: './.env', safe: true }) as any,
-  ],
 });
 
 export default <Configuration[]> [
