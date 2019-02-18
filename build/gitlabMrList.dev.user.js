@@ -8,5 +8,5 @@
 // @author      nfour
 // @license     MIT
 // @homepageURL https://github.com/nfour/userscripts
-// @require     file:///mnt/c/Users/Sam/W/userscripts/build/gitlabMrList.js
+// @require     file:///home/sam/W/tsUserscripts/build/gitlabMrList.js
 // ==/UserScript==
