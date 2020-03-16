@@ -14,6 +14,11 @@
   dependencies:
     "@types/webpack" "*"
 
+"@types/greasemonkey@^4.0.0":
+  version "4.0.0"
+  resolved "https://registry.yarnpkg.com/@types/greasemonkey/-/greasemonkey-4.0.0.tgz#c09c79bb6b5a45e0ab1bd65d7eb37323b04813af"
+  integrity sha512-l9Gvm6Bx40J3gtHZ8DfmyKkfTZ80IMEgGv3qjIZE5kmj+cVmY1Zji9oYXLG93qARv+aTvAjZ3+lXoARAfb6MnA==
+
 "@types/jquery@^3.3.27":
   version "3.3.27"
   resolved "https://registry.yarnpkg.com/@types/jquery/-/jquery-3.3.27.tgz#f27c3e793b743359d1ee2b926b4ef0d0c33e59f7"
@@ -2143,6 +2148,11 @@ mkdirp@^0.5.0, mkdirp@^0.5.1, mkdirp@~0.5.0:
   integrity sha1-MAV0OOrGz3+MR2fzhkjWaX11yQM=
   dependencies:
     minimist "0.0.8"
+
+mobx@^5.15.4:
+  version "5.15.4"
+  resolved "https://registry.yarnpkg.com/mobx/-/mobx-5.15.4.tgz#9da1a84e97ba624622f4e55a0bf3300fb931c2ab"
+  integrity sha512-xRFJxSU2Im3nrGCdjSuOTFmxVDGeqOHL+TyADCGbT0k4HHqGmx5u2yaHNryvoORpI4DfbzjJ5jPmuv+d7sioFw==
 
 move-concurrently@^1.0.1:
   version "1.0.1"
