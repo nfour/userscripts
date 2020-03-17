@@ -1,97 +1,133 @@
-// import $, { Cash } from 'cash-dom';
-// import { nodeToObj } from 'diff-dom';
-// import { ObservableMap } from 'mobx';
+import $, { Cash } from 'cash-dom';
+import cn from 'classnames';
+import { DiffDOM, nodeToObj } from 'diff-dom';
+import { action, observable, ObservableMap, observe } from 'mobx';
 
-// import { CLASSES, SELECTORS } from './constants';
+import { CLASSES, SELECTORS } from './constants';
 
-// class VideoThumbnail {
-//   $self: Cash;
-//   href: string;
+class VideoThumbnail {
+  $self: Cash;
+  id: string;
 
-//   isInit = false
-//   isDimmed = false
-//   isHighlighted = false
+  hasInit = false;
 
-//   $highlightBtn: Cash
+  $highlightBtn!: Cash;
 
-//   static $defaultHighlightBtn = $(`<div class="${CLASSES.highlightButton}" />`)
+  state = observable({
+    isHighlighted: false,
+    styles: {
+      highlightButton: `
+        display: inline-block;
+        position: relative;
+        bottom: 0;
+        right: 0;
+        width: 30px;
+        height: 30px;
+        outline: 2px solid rgb(29, 185, 84, 0.5);
+        padding: 1em;
+        text-align: center;
+        content: "✓";
+      `,
+      // highlightButton: {
+      //   display: 'inline-block',
+      //   position: 'relative',
+      //   bottom: '0',
+      //   right: '0',
+      //   width: '30px',
+      //   height: '30px',
+      //   outline: '2px solid rgb(29, 185, 84, 0.5)',
+      //   padding: '1em',
+      //   textAlign: 'center',
+      //   content: '"✓"',
+      // }
+    },
+  });
 
-//   constructor(el: Cash) {
-//     this.$self = el
-//     this.href = this.$self.attr('href')!;
-//     this.$highlightBtn = VideoThumbnail.$defaultHighlightBtn.clone();
-//   }
+  constructor (el: Cash) {
+    this.$self = el;
+    this.id = this.$self.attr('href')!;
+  }
 
-//   render () {
+  init () {
+    if (this.hasInit) { return; }
 
-//   }
+    console.log('initting', this);
 
-//   onHighlight() {
+    this.hasInit = true;
 
-//   }
+    this.$highlightBtn = $(`<div />`)
+      .attr('style', this.state.styles.highlightButton);
 
-//   onDim() {
+    const toggleHighlighted = action(() => { this.state.isHighlighted = !this.state.isHighlighted; });
 
-//   }
-// }
+    this.$highlightBtn.on('click', toggleHighlighted);
 
+    observe(this.state, (change) => {
+      console.log(`VideoThumbnail changed: ${change.type}`, change);
 
-// export function Renderer () {
-//   const store = {
-//     thumbnails: new ObservableMap<string, VideoThumbnail>(),
-//     addNewThumbnails (thumbnails: VideoThumbnail[]) {
-//       thumbnails
-//         .filter((tn) => !store.thumbnails.has(tn.href))
-//         .forEach((tn) => store.thumbnails.set(tn.href, tn));
+      this.render();
+    });
+  }
 
-//       store.thumbnails.forEach(setupThumbnailListeners);
-//     },
-//   };
+  render () {
+    this.init();
 
-//   // Debugging
-//   (global as any).store = store;
+    const $prev = this.$self;
+    const $next = $prev.clone();
 
-//   const render = () => {
-//     const thumbnails = findThumbnailsOnPage();
-//     store.addNewThumbnails(thumbnails);
-//   };
+    const classes = cn(
+      cn($prev.attr('class')),
+      { [CLASSES.isHighlighted]: this.state.isHighlighted },
+    );
 
-//   return render;
-// }
+    $next.attr('class', classes);
 
-// function findThumbnailsOnPage (): VideoThumbnail[] {
-//   const $thumbnails = $(SELECTORS.thumbnail);
+    $next.append(this.$highlightBtn);
 
-//   return $thumbnails.get() .map((el) => new VideoThumbnail(el));
-// }
+    console.log({ classes, $next, $prev });
+    console.log('22222');
 
+    const diffDom = new DiffDOM({ maxDepth: 4 });
 
-// function setupThumbnailListeners (tn) {
-//   if (tn.isSetup === true) { return tn as IThumbnailWithSetup; }
-//   tn.isSetup = true;
+    const diff = diffDom.diff($prev.get()[0], $next.get()[0]);
 
-//   const $highlight = $defaultHighlightButton.clone();
-//   const $dim = $defaultDimButton.clone();
+    diffDom.apply($prev.get()[0], diff);
+  }
 
-//   tn.$el.append($highlight, $dim);
+}
 
-//   $highlight.on('click', () => {
-//     tn.$el.
-//     tn.$el.removeClass(CLASSES.isDimmed);
-//     tn.$el.toggleClass(CLASSES.isHighlighted);
-//   });
+export function Renderer () {
+  console.log('renderer');
+  const store = {
+    thumbnails: new ObservableMap<string, VideoThumbnail>(),
+    addNewThumbnails (thumbnails: VideoThumbnail[]) {
+      return thumbnails
+        .filter((item) => !store.thumbnails.has(item.id))
+        .map((item) => {
+          store.thumbnails.set(item.id, item);
+          return item;
+        });
+    },
+  };
 
-//   $dim.on('click', () => {
-//     tn.$el.removeClass(CLASSES.isHighlighted);
-//     tn.$el.toggleClass(CLASSES.isDimmed);
-//   });
+  // Debugging
+  (window as any).store = store;
 
-//   return {
-//     ...tn,
-//     $dim, $highlight,
-//   };
-// }
+  const render = () => {
+    console.log('RENDER!!!!');
 
-// function domApplicator () {
+    const thumbnails = findThumbnailsOnPage();
+    store.addNewThumbnails(thumbnails);
 
-// }
+    thumbnails.forEach((tn) => tn.render());
+
+  };
+
+  return render;
+}
+
+function findThumbnailsOnPage (): VideoThumbnail[] {
+  const $thumbnails = $(SELECTORS.thumbnail);
+
+  return $thumbnails.get().map((el) => new VideoThumbnail($(el)));
+}

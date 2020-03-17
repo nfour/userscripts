@@ -12,7 +12,7 @@ const createConfig = WebpackUserScript({
   mode: 'development',
   output: {
     path: buildDirectory,
-    filename: `[name].js`,
+    filename: `[name].user.js`,
   },
   // devtool: 'inline-source-map',
   devtool: false,

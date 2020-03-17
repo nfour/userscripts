@@ -2,10 +2,12 @@ import { writeFileSync } from 'fs';
 import { cloneDeep } from 'lodash';
 import * as pad from 'pad';
 import { resolve } from 'path';
+import * as uuid from 'uuid';
 import * as webpack from 'webpack';
 
 import { repository } from '../package.json';
 import { IMetaSchema } from '../src/types/meta';
+import { WebpackUserscriptPlugin } from './WebpackUserscriptPlugin';
 
 const PORT = 9002;
 
@@ -19,8 +21,8 @@ export function WebpackUserScript (base: webpack.Configuration) {
   return (entry: string, meta: IMetaSchema): webpack.Configuration => {
     const { name: scriptName } = meta;
 
-    writeDevelopmentHeaderFile({ scriptName, meta, directory });
-    writeDistributionHeaderFile({ scriptName, meta, directory });
+    // writeDevelopmentHeaderFile({ scriptName, meta, directory });
+    // writeDistributionHeaderFile({ scriptName, meta, directory });
 
     const clonedBase = cloneDeep(base);
     return {
@@ -28,54 +30,25 @@ export function WebpackUserScript (base: webpack.Configuration) {
       entry: { [scriptName]: entry },
       plugins: [
         ...clonedBase.plugins || [],
-        new webpack.BannerPlugin({
-          banner: createUserScriptHeader(meta, { omitRequire: true }),
-          raw: true,
-          entryOnly: true,
+        // new webpack.BannerPlugin({
+        //   banner: createUserScriptHeader(meta, { omitRequire: true }),
+        //   raw: true,
+        //   entryOnly: true,
+        // }),
+
+        new WebpackUserscriptPlugin({
+          meta,
+          development: { baseUrl: `http://localhost:9002` },
         }),
       ],
     };
   };
 }
 
-/**
- * Writes a file with just the header, with a @require pointing to the real script
- */
-export function writeDevelopmentHeaderFile ({ scriptName, meta, directory }: {
-  scriptName: string, meta: IMetaSchema, directory: string,
-}) {
-  const filePath = resolve(directory, `${scriptName}.dev.user.js`);
-  const requireUrl = `http://localhost:${PORT}/build/${scriptName}.js`;
-
-  return writeFileSync(filePath, createUserScriptHeader({
-    ...meta,
-    require: requireUrl,
-  }));
-}
-
-/**
- * Writes a file with just the header, with a @require pointing to the real script
- */
-export function writeDistributionHeaderFile ({ scriptName, meta, directory }: {
-  scriptName: string, meta: IMetaSchema, directory: string,
-}) {
-  const filePath = resolve(directory, `${scriptName}.dist.user.js`);
-  const repoUrl = `${repository.url}/raw/master/build/${scriptName}.js`;
-  const updateUrl = `${repository.url}/raw/master/build/${scriptName}.dist.user.js`;
-
-  const header = createUserScriptHeader({
-    ...meta,
-    require: repoUrl,
-    updateURL: updateUrl,
-    downloadURL: updateUrl,
-  });
-
-  const openUserJsHeader = createUserScriptHeader({ author: meta.author }, { name: 'OpenUserJS' });
-
-  return writeFileSync(filePath, `${header}\n${openUserJsHeader}`);
-}
-
-export function createUserScriptHeader (metadata: Partial<IMetaSchema>, { omitRequire = false, name = 'UserScript' } = {}) {
+export function createUserScriptHeader (
+  metadata: Partial<IMetaSchema>,
+  { omitRequire = false, name = 'UserScript' } = {},
+): string {
   const lines: string[] = [];
   const padLength = Math.max(...Object.keys(metadata).map((k) => k.length));
 
@@ -106,4 +79,43 @@ export function createUserScriptHeader (metadata: Partial<IMetaSchema>, { omitRe
   lines.push(`// ==/${name}==\n`);
 
   return lines.join('\n');
+}
+
+/**
+ * Writes a file with just the header, with a @require pointing to the real script
+ */
+export function writeDevelopmentHeaderFile ({ scriptName, meta, directory }: {
+  scriptName: string, meta: IMetaSchema, directory: string,
+}) {
+  const filePath = resolve(directory, `${scriptName}.dev.user.js`);
+  const requireUrl = `http://localhost:${PORT}/${scriptName}.js`;
+
+  return writeFileSync(filePath, createUserScriptHeader({
+    ...meta,
+    require: requireUrl,
+    updateURL: requireUrl,
+    version: `${meta.version}-${uuid.v4()}`,
+  }));
+}
+
+/**
+ * Writes a file with just the header, with a @require pointing to the real script
+ */
+export function writeDistributionHeaderFile ({ scriptName, meta, directory }: {
+  scriptName: string, meta: IMetaSchema, directory: string,
+}) {
+  const filePath = resolve(directory, `${scriptName}.dist.user.js`);
+  const repoUrl = `${repository.url}/raw/master/build/${scriptName}.js`;
+  const updateUrl = `${repository.url}/raw/master/build/${scriptName}.dist.user.js`;
+
+  const header = createUserScriptHeader({
+    ...meta,
+    require: repoUrl,
+    updateURL: updateUrl,
+    downloadURL: updateUrl,
+  });
+
+  const openUserJsHeader = createUserScriptHeader({ author: meta.author }, { name: 'OpenUserJS' });
+
+  return writeFileSync(filePath, `${header}\n${openUserJsHeader}`);
 }

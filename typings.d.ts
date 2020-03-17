@@ -26,7 +26,7 @@ declare module 'diff-dom' {
     /** Limit for how many diffs are accepting when debugging. Inactive when debug is false. */
     diffcap: number;
     /** False or a numeral. If set to a numeral, limits the level of depth that the the diff mechanism looks for differences. If false, goes through the entire tree. */
-    maxDepth: boolean;
+    maxDepth: number | false;
     /** False or a numeral. If set to a numeral, only does a simplified form of diffing of contents so that the number of diffs cannot be higher than the number of child nodes. */
     maxChildCount: number;
     /** Whether to take into consideration the values of forms that differ from auto assigned values (when a user fills out a form). */
@@ -52,7 +52,7 @@ declare module 'diff-dom' {
   export function stringToObj (str: string): any;
   export class TraceLogger {}
   export class DiffDOM {
-    constructor (options: IOptions)
+    constructor (options: Partial<IOptions>)
 
     apply (...args: any[]): any;
     undo (...args: any[]): any;

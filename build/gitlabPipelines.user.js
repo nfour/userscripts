@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name        gitlabPipelines
-// @version     0.2.3
+// @version     0.2.3-c6dc38084f153ce15990
 // @namespace   nfour
 // @description Shows job output when interacting with MR job dropdowns
 // @include     *src.temando.io/*
@@ -8,102 +8,20 @@
 // @author      nfour
 // @license     MIT
 // @homepageURL https://github.com/nfour/userscripts
+// @updateURL   http://localhost:9002/gitlabPipelines.dev.user.js
 // ==/UserScript==
 
-/******/ (function(modules) { // webpackBootstrap
-/******/ 	// The module cache
-/******/ 	var installedModules = {};
-/******/
-/******/ 	// The require function
-/******/ 	function __webpack_require__(moduleId) {
-/******/
-/******/ 		// Check if module is in cache
-/******/ 		if(installedModules[moduleId]) {
-/******/ 			return installedModules[moduleId].exports;
-/******/ 		}
-/******/ 		// Create a new module (and put it into the cache)
-/******/ 		var module = installedModules[moduleId] = {
-/******/ 			i: moduleId,
-/******/ 			l: false,
-/******/ 			exports: {}
-/******/ 		};
-/******/
-/******/ 		// Execute the module function
-/******/ 		modules[moduleId].call(module.exports, module, module.exports, __webpack_require__);
-/******/
-/******/ 		// Flag the module as loaded
-/******/ 		module.l = true;
-/******/
-/******/ 		// Return the exports of the module
-/******/ 		return module.exports;
-/******/ 	}
-/******/
-/******/
-/******/ 	// expose the modules object (__webpack_modules__)
-/******/ 	__webpack_require__.m = modules;
-/******/
-/******/ 	// expose the module cache
-/******/ 	__webpack_require__.c = installedModules;
-/******/
-/******/ 	// define getter function for harmony exports
-/******/ 	__webpack_require__.d = function(exports, name, getter) {
-/******/ 		if(!__webpack_require__.o(exports, name)) {
-/******/ 			Object.defineProperty(exports, name, { enumerable: true, get: getter });
-/******/ 		}
-/******/ 	};
-/******/
-/******/ 	// define __esModule on exports
-/******/ 	__webpack_require__.r = function(exports) {
-/******/ 		if(typeof Symbol !== 'undefined' && Symbol.toStringTag) {
-/******/ 			Object.defineProperty(exports, Symbol.toStringTag, { value: 'Module' });
-/******/ 		}
-/******/ 		Object.defineProperty(exports, '__esModule', { value: true });
-/******/ 	};
-/******/
-/******/ 	// create a fake namespace object
-/******/ 	// mode & 1: value is a module id, require it
-/******/ 	// mode & 2: merge all properties of value into the ns
-/******/ 	// mode & 4: return value when already ns object
-/******/ 	// mode & 8|1: behave like require
-/******/ 	__webpack_require__.t = function(value, mode) {
-/******/ 		if(mode & 1) value = __webpack_require__(value);
-/******/ 		if(mode & 8) return value;
-/******/ 		if((mode & 4) && typeof value === 'object' && value && value.__esModule) return value;
-/******/ 		var ns = Object.create(null);
-/******/ 		__webpack_require__.r(ns);
-/******/ 		Object.defineProperty(ns, 'default', { enumerable: true, value: value });
-/******/ 		if(mode & 2 && typeof value != 'string') for(var key in value) __webpack_require__.d(ns, key, function(key) { return value[key]; }.bind(null, key));
-/******/ 		return ns;
-/******/ 	};
-/******/
-/******/ 	// getDefaultExport function for compatibility with non-harmony modules
-/******/ 	__webpack_require__.n = function(module) {
-/******/ 		var getter = module && module.__esModule ?
-/******/ 			function getDefault() { return module['default']; } :
-/******/ 			function getModuleExports() { return module; };
-/******/ 		__webpack_require__.d(getter, 'a', getter);
-/******/ 		return getter;
-/******/ 	};
-/******/
-/******/ 	// Object.prototype.hasOwnProperty.call
-/******/ 	__webpack_require__.o = function(object, property) { return Object.prototype.hasOwnProperty.call(object, property); };
-/******/
-/******/ 	// __webpack_public_path__
-/******/ 	__webpack_require__.p = "";
-/******/
-/******/
-/******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = "./src/gitlabPipelines/index.ts");
-/******/ })
-/************************************************************************/
-/******/ ({
+/******/ (() => { // webpackBootstrap
+/******/ 	var __webpack_modules__ = ({
 
 /***/ "./node_modules/ansi_up/ansi_up.js":
 /*!*****************************************!*\
   !*** ./node_modules/ansi_up/ansi_up.js ***!
   \*****************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
+/*! unknown exports (runtime-defined) */
+/*! exports [maybe provided (runtime-defined)] [maybe used (runtime-defined)] */
+/*! runtime requirements: top-level-this-exports, __webpack_exports__, module */
+/***/ (function(module, exports) {
 
 var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*  ansi_up.js
  *  author : Dru Nelson
@@ -114,9 +32,9 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
     if (true) {
         // AMD. Register as an anonymous module.
         !(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
-				__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
-				(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
-				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+		__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
+		(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
+		__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
     } else { var exp; }
 }(this, function (exports) {
 "use strict";
@@ -438,18 +356,20 @@ var AnsiUp = (function () {
 /***/ }),
 
 /***/ "./node_modules/css-loader/index.js!./node_modules/less-loader/dist/cjs.js!./src/gitlabPipelines/styles.less":
-/*!**********************************************************************************************************!*\
-  !*** ./node_modules/css-loader!./node_modules/less-loader/dist/cjs.js!./src/gitlabPipelines/styles.less ***!
-  \**********************************************************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
+/*!*******************************************************************************************************************!*\
+  !*** ./node_modules/css-loader/index.js!./node_modules/less-loader/dist/cjs.js!./src/gitlabPipelines/styles.less ***!
+  \*******************************************************************************************************************/
+/*! unknown exports (runtime-defined) */
+/*! exports [maybe provided (runtime-defined)] [maybe used (runtime-defined)] */
+/*! runtime requirements: __webpack_exports__, module, __webpack_require__, module.id */
+/***/ ((module, exports, __webpack_require__) => {
 
 exports = module.exports = __webpack_require__(/*! ../../node_modules/css-loader/lib/css-base.js */ "./node_modules/css-loader/lib/css-base.js")(false);
 // imports
 
 
 // module
-exports.push([module.i, ".gp--JobTraceView {\n  flex-basis: 100%;\n  width: 100%;\n  margin-top: 10px;\n  border-radius: 6px;\n  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.4) inset;\n  text-shadow: 1px 1px 0 rgba(0, 0, 0, 0.5);\n  overflow: scroll;\n  background: #202020;\n  resize: vertical;\n}\n.gp--JobTraceView.inactive {\n  display: none;\n}\n.gp--JobTraceView pre {\n  font-size: 11px;\n  color: #ccc;\n  overflow: visible;\n  background: none;\n  border: none;\n  padding-bottom: 2em;\n}\n.gp--JobTraceView .gp--JobTraceClose {\n  position: absolute;\n  right: 2em;\n  padding: 0.5em 1em;\n  z-index: 3;\n  display: inline-block;\n  font-size: 16px;\n  text-align: center;\n  text-shadow: 0 1px 0 #9b4545;\n  font-weight: bold;\n  color: #ddd;\n  background: #333;\n  border-radius: 0 0 0 4px;\n  cursor: pointer;\n  text-transform: lowercase;\n}\n.gp--JobTraceView .gp--JobTraceClose:hover {\n  transition: 0.25s ease;\n  background: #444;\n  color: #fff;\n}\n.gp--JobTraceView .gp--JobTrace {\n  height: 600px;\n  overflow: visible;\n}\n.gp--OpenPipelineButton {\n  font-weight: bold;\n  position: absolute;\n  top: 8px;\n  border: 1px solid #ccc;\n  border-radius: 24px;\n  right: 40px;\n  width: 24px;\n  height: 24px;\n  text-align: center;\n  color: #6d98cf;\n  cursor: pointer;\n  background-color: #fff;\n}\n.gp--OpenPipelineButton:hover {\n  background-color: transparent;\n}\n.gp--OpenPipelineButton::before {\n  content: '\\2022';\n  position: relative;\n  top: -1px;\n}\n/**\n\nOVERRIDES\n\n**/\n.mini-pipeline-graph-dropdown-menu {\n  width: 270px;\n  max-width: 270px;\n}\n.mr-state-widget .ci-widget {\n  flex-wrap: wrap;\n}\n", ""]);
+exports.push([module.id, ".gp--JobTraceView {\n  flex-basis: 100%;\n  width: 100%;\n  margin-top: 10px;\n  border-radius: 6px;\n  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.4) inset;\n  text-shadow: 1px 1px 0 rgba(0, 0, 0, 0.5);\n  overflow: scroll;\n  background: #202020;\n  resize: vertical;\n}\n.gp--JobTraceView.inactive {\n  display: none;\n}\n.gp--JobTraceView pre {\n  font-size: 11px;\n  color: #ccc;\n  overflow: visible;\n  background: none;\n  border: none;\n  padding-bottom: 2em;\n}\n.gp--JobTraceView .gp--JobTraceClose {\n  position: absolute;\n  right: 2em;\n  padding: 0.5em 1em;\n  z-index: 3;\n  display: inline-block;\n  font-size: 16px;\n  text-align: center;\n  text-shadow: 0 1px 0 #9b4545;\n  font-weight: bold;\n  color: #ddd;\n  background: #333;\n  border-radius: 0 0 0 4px;\n  cursor: pointer;\n  text-transform: lowercase;\n}\n.gp--JobTraceView .gp--JobTraceClose:hover {\n  transition: 0.25s ease;\n  background: #444;\n  color: #fff;\n}\n.gp--JobTraceView .gp--JobTrace {\n  height: 600px;\n  overflow: visible;\n}\n.gp--OpenPipelineButton {\n  font-weight: bold;\n  position: absolute;\n  top: 8px;\n  border: 1px solid #ccc;\n  border-radius: 24px;\n  right: 40px;\n  width: 24px;\n  height: 24px;\n  text-align: center;\n  color: #6d98cf;\n  cursor: pointer;\n  background-color: #fff;\n}\n.gp--OpenPipelineButton:hover {\n  background-color: transparent;\n}\n.gp--OpenPipelineButton::before {\n  content: '\\2022';\n  position: relative;\n  top: -1px;\n}\n/**\n\nOVERRIDES\n\n**/\n.mini-pipeline-graph-dropdown-menu {\n  width: 270px;\n  max-width: 270px;\n}\n.mr-state-widget .ci-widget {\n  flex-wrap: wrap;\n}\n", ""]);
 
 // exports
 
@@ -460,8 +380,10 @@ exports.push([module.i, ".gp--JobTraceView {\n  flex-basis: 100%;\n  width: 100%
 /*!*************************************************!*\
   !*** ./node_modules/css-loader/lib/css-base.js ***!
   \*************************************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
+/*! unknown exports (runtime-defined) */
+/*! exports [maybe provided (runtime-defined)] [maybe used (runtime-defined)] */
+/*! runtime requirements: module */
+/***/ ((module) => {
 
 /*
 	MIT License http://www.opensource.org/licenses/mit-license.php
@@ -547,8 +469,10 @@ function toComment(sourceMap) {
 /*!********************************************!*\
   !*** ./node_modules/jquery/dist/jquery.js ***!
   \********************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
+/*! unknown exports (runtime-defined) */
+/*! exports [maybe provided (runtime-defined)] [maybe used (runtime-defined)] */
+/*! runtime requirements: module, top-level-this-exports, __webpack_exports__ */
+/***/ (function(module, exports) {
 
 var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
  * jQuery JavaScript Library v3.3.1
@@ -10877,7 +10801,7 @@ if ( true ) {
 	!(__WEBPACK_AMD_DEFINE_ARRAY__ = [], __WEBPACK_AMD_DEFINE_RESULT__ = (function() {
 		return jQuery;
 	}).apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__),
-				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+		__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
 }
 
 
@@ -10923,10 +10847,12 @@ return jQuery;
 /*!*************************************************!*\
   !*** ./node_modules/lodash.difference/index.js ***!
   \*************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
+/*! unknown exports (runtime-defined) */
+/*! exports [maybe provided (runtime-defined)] [maybe used (runtime-defined)] */
+/*! runtime requirements: module, __webpack_require__.g, __webpack_require__.* */
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-/* WEBPACK VAR INJECTION */(function(global) {/**
+/**
  * lodash (Custom Build) <https://lodash.com/>
  * Build: `lodash modularize exports="npm" -o ./`
  * Copyright jQuery Foundation and other contributors <https://jquery.org/>
@@ -10959,7 +10885,7 @@ var reRegExpChar = /[\\^$.*+?()[\]{}|]/g;
 var reIsHostCtor = /^\[object .+?Constructor\]$/;
 
 /** Detect free variable `global` from Node.js. */
-var freeGlobal = typeof global == 'object' && global && global.Object === Object && global;
+var freeGlobal = typeof __webpack_require__.g == 'object' && __webpack_require__.g && __webpack_require__.g.Object === Object && __webpack_require__.g;
 
 /** Detect free variable `self`. */
 var freeSelf = typeof self == 'object' && self && self.Object === Object && self;
@@ -12097,7 +12023,6 @@ function isObjectLike(value) {
 
 module.exports = difference;
 
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./../webpack/buildin/global.js */ "./node_modules/webpack/buildin/global.js")))
 
 /***/ }),
 
@@ -12105,10 +12030,13 @@ module.exports = difference;
 /*!**********************************************!*\
   !*** ./node_modules/lodash.flatmap/index.js ***!
   \**********************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
+/*! unknown exports (runtime-defined) */
+/*! exports [maybe provided (runtime-defined)] [maybe used (runtime-defined)] */
+/*! runtime requirements: __webpack_exports__, module.loaded, module.id, module, __webpack_require__.nmd, __webpack_require__.g, __webpack_require__.* */
+/***/ ((module, exports, __webpack_require__) => {
 
-/* WEBPACK VAR INJECTION */(function(global, module) {/**
+/* module decorator */ module = __webpack_require__.nmd(module);
+/**
  * lodash (Custom Build) <https://lodash.com/>
  * Build: `lodash modularize exports="npm" -o ./`
  * Copyright jQuery Foundation and other contributors <https://jquery.org/>
@@ -12202,7 +12130,7 @@ typedArrayTags[setTag] = typedArrayTags[stringTag] =
 typedArrayTags[weakMapTag] = false;
 
 /** Detect free variable `global` from Node.js. */
-var freeGlobal = typeof global == 'object' && global && global.Object === Object && global;
+var freeGlobal = typeof __webpack_require__.g == 'object' && __webpack_require__.g && __webpack_require__.g.Object === Object && __webpack_require__.g;
 
 /** Detect free variable `self`. */
 var freeSelf = typeof self == 'object' && self && self.Object === Object && self;
@@ -12214,7 +12142,7 @@ var root = freeGlobal || freeSelf || Function('return this')();
 var freeExports =  true && exports && !exports.nodeType && exports;
 
 /** Detect free variable `module`. */
-var freeModule = freeExports && typeof module == 'object' && module && !module.nodeType && module;
+var freeModule = freeExports && "object" == 'object' && module && !module.nodeType && module;
 
 /** Detect the popular CommonJS extension `module.exports`. */
 var moduleExports = freeModule && freeModule.exports === freeExports;
@@ -14567,7 +14495,6 @@ function property(path) {
 
 module.exports = flatMap;
 
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./../webpack/buildin/global.js */ "./node_modules/webpack/buildin/global.js"), __webpack_require__(/*! ./../webpack/buildin/module.js */ "./node_modules/webpack/buildin/module.js")(module)))
 
 /***/ }),
 
@@ -14575,8 +14502,10 @@ module.exports = flatMap;
 /*!*******************************************!*\
   !*** ./node_modules/lodash.take/index.js ***!
   \*******************************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
+/*! unknown exports (runtime-defined) */
+/*! exports [maybe provided (runtime-defined)] [maybe used (runtime-defined)] */
+/*! runtime requirements: module */
+/***/ ((module) => {
 
 /**
  * lodash (Custom Build) <https://lodash.com/>
@@ -14884,8 +14813,10 @@ module.exports = take;
 /*!************************************************!*\
   !*** ./node_modules/lodash.takeright/index.js ***!
   \************************************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
+/*! unknown exports (runtime-defined) */
+/*! exports [maybe provided (runtime-defined)] [maybe used (runtime-defined)] */
+/*! runtime requirements: module */
+/***/ ((module) => {
 
 /**
  * lodash (Custom Build) <https://lodash.com/>
@@ -15191,213 +15122,27 @@ module.exports = takeRight;
 
 /***/ }),
 
-/***/ "./node_modules/process/browser.js":
-/*!*****************************************!*\
-  !*** ./node_modules/process/browser.js ***!
-  \*****************************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
-
-// shim for using process in browser
-var process = module.exports = {};
-
-// cached from whatever global is present so that test runners that stub it
-// don't break things.  But we need to wrap it in a try catch in case it is
-// wrapped in strict mode code which doesn't define any globals.  It's inside a
-// function because try/catches deoptimize in certain engines.
-
-var cachedSetTimeout;
-var cachedClearTimeout;
-
-function defaultSetTimout() {
-    throw new Error('setTimeout has not been defined');
-}
-function defaultClearTimeout () {
-    throw new Error('clearTimeout has not been defined');
-}
-(function () {
-    try {
-        if (typeof setTimeout === 'function') {
-            cachedSetTimeout = setTimeout;
-        } else {
-            cachedSetTimeout = defaultSetTimout;
-        }
-    } catch (e) {
-        cachedSetTimeout = defaultSetTimout;
-    }
-    try {
-        if (typeof clearTimeout === 'function') {
-            cachedClearTimeout = clearTimeout;
-        } else {
-            cachedClearTimeout = defaultClearTimeout;
-        }
-    } catch (e) {
-        cachedClearTimeout = defaultClearTimeout;
-    }
-} ())
-function runTimeout(fun) {
-    if (cachedSetTimeout === setTimeout) {
-        //normal enviroments in sane situations
-        return setTimeout(fun, 0);
-    }
-    // if setTimeout wasn't available but was latter defined
-    if ((cachedSetTimeout === defaultSetTimout || !cachedSetTimeout) && setTimeout) {
-        cachedSetTimeout = setTimeout;
-        return setTimeout(fun, 0);
-    }
-    try {
-        // when when somebody has screwed with setTimeout but no I.E. maddness
-        return cachedSetTimeout(fun, 0);
-    } catch(e){
-        try {
-            // When we are in I.E. but the script has been evaled so I.E. doesn't trust the global object when called normally
-            return cachedSetTimeout.call(null, fun, 0);
-        } catch(e){
-            // same as above but when it's a version of I.E. that must have the global object for 'this', hopfully our context correct otherwise it will throw a global error
-            return cachedSetTimeout.call(this, fun, 0);
-        }
-    }
-
-
-}
-function runClearTimeout(marker) {
-    if (cachedClearTimeout === clearTimeout) {
-        //normal enviroments in sane situations
-        return clearTimeout(marker);
-    }
-    // if clearTimeout wasn't available but was latter defined
-    if ((cachedClearTimeout === defaultClearTimeout || !cachedClearTimeout) && clearTimeout) {
-        cachedClearTimeout = clearTimeout;
-        return clearTimeout(marker);
-    }
-    try {
-        // when when somebody has screwed with setTimeout but no I.E. maddness
-        return cachedClearTimeout(marker);
-    } catch (e){
-        try {
-            // When we are in I.E. but the script has been evaled so I.E. doesn't  trust the global object when called normally
-            return cachedClearTimeout.call(null, marker);
-        } catch (e){
-            // same as above but when it's a version of I.E. that must have the global object for 'this', hopfully our context correct otherwise it will throw a global error.
-            // Some versions of I.E. have different rules for clearTimeout vs setTimeout
-            return cachedClearTimeout.call(this, marker);
-        }
-    }
-
-
-
-}
-var queue = [];
-var draining = false;
-var currentQueue;
-var queueIndex = -1;
-
-function cleanUpNextTick() {
-    if (!draining || !currentQueue) {
-        return;
-    }
-    draining = false;
-    if (currentQueue.length) {
-        queue = currentQueue.concat(queue);
-    } else {
-        queueIndex = -1;
-    }
-    if (queue.length) {
-        drainQueue();
-    }
-}
-
-function drainQueue() {
-    if (draining) {
-        return;
-    }
-    var timeout = runTimeout(cleanUpNextTick);
-    draining = true;
-
-    var len = queue.length;
-    while(len) {
-        currentQueue = queue;
-        queue = [];
-        while (++queueIndex < len) {
-            if (currentQueue) {
-                currentQueue[queueIndex].run();
-            }
-        }
-        queueIndex = -1;
-        len = queue.length;
-    }
-    currentQueue = null;
-    draining = false;
-    runClearTimeout(timeout);
-}
-
-process.nextTick = function (fun) {
-    var args = new Array(arguments.length - 1);
-    if (arguments.length > 1) {
-        for (var i = 1; i < arguments.length; i++) {
-            args[i - 1] = arguments[i];
-        }
-    }
-    queue.push(new Item(fun, args));
-    if (queue.length === 1 && !draining) {
-        runTimeout(drainQueue);
-    }
-};
-
-// v8 likes predictible objects
-function Item(fun, array) {
-    this.fun = fun;
-    this.array = array;
-}
-Item.prototype.run = function () {
-    this.fun.apply(null, this.array);
-};
-process.title = 'browser';
-process.browser = true;
-process.env = {};
-process.argv = [];
-process.version = ''; // empty string to avoid regexp issues
-process.versions = {};
-
-function noop() {}
-
-process.on = noop;
-process.addListener = noop;
-process.once = noop;
-process.off = noop;
-process.removeListener = noop;
-process.removeAllListeners = noop;
-process.emit = noop;
-process.prependListener = noop;
-process.prependOnceListener = noop;
-
-process.listeners = function (name) { return [] }
-
-process.binding = function (name) {
-    throw new Error('process.binding is not supported');
-};
-
-process.cwd = function () { return '/' };
-process.chdir = function (dir) {
-    throw new Error('process.chdir is not supported');
-};
-process.umask = function() { return 0; };
-
-
-/***/ }),
-
 /***/ "./node_modules/selector-observer/dist/index.esm.js":
 /*!**********************************************************!*\
   !*** ./node_modules/selector-observer/dist/index.esm.js ***!
   \**********************************************************/
-/*! exports provided: default, getDocumentObserver, observe, triggerObservers */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/*! namespace exports */
+/*! export default [provided] [maybe used (runtime-defined)] [usage prevents renaming] */
+/*! export getDocumentObserver [provided] [maybe used (runtime-defined)] [usage prevents renaming] */
+/*! export observe [provided] [maybe used (runtime-defined)] [usage prevents renaming] */
+/*! export triggerObservers [provided] [maybe used (runtime-defined)] [usage prevents renaming] */
+/*! other exports [not provided] [maybe used (runtime-defined)] */
+/*! runtime requirements: __webpack_require__, __webpack_exports__, __webpack_require__.r, __webpack_require__.d, __webpack_require__.* */
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getDocumentObserver", function() { return getDocumentObserver; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "observe", function() { return observe; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "triggerObservers", function() { return triggerObservers; });
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => __WEBPACK_DEFAULT_EXPORT__,
+/* harmony export */   "getDocumentObserver": () => /* binding */ getDocumentObserver,
+/* harmony export */   "observe": () => /* binding */ observe,
+/* harmony export */   "triggerObservers": () => /* binding */ triggerObservers
+/* harmony export */ });
 /* harmony import */ var selector_set__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! selector-set */ "./node_modules/selector-set/selector-set.next.js");
 
 
@@ -15889,7 +15634,7 @@ function SelectorObserver(rootNode) {
   this.observers = [];
 
   // Index of selectors to observer objects
-  this.selectorSet = new selector_set__WEBPACK_IMPORTED_MODULE_0__["default"]();
+  this.selectorSet = new selector_set__WEBPACK_IMPORTED_MODULE_0__.default();
 
   // Process all mutations from root element
   this.mutationObserver = new MutationObserver(handleRootMutations.bind(this, this));
@@ -16043,7 +15788,7 @@ function triggerObservers() {
   return (_getDocumentObserver2 = getDocumentObserver()).triggerObservers.apply(_getDocumentObserver2, arguments);
 }
 
-/* harmony default export */ __webpack_exports__["default"] = (SelectorObserver);
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (SelectorObserver);
 
 
 
@@ -16053,12 +15798,16 @@ function triggerObservers() {
 /*!********************************************************!*\
   !*** ./node_modules/selector-set/selector-set.next.js ***!
   \********************************************************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/*! namespace exports */
+/*! export default [provided] [used] [could be renamed] */
+/*! other exports [not provided] [unused] */
+/*! runtime requirements: __webpack_exports__, __webpack_require__.d, __webpack_require__.* */
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return SelectorSet; });
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => /* binding */ SelectorSet
+/* harmony export */ });
 // Public: Create a new SelectorSet.
 function SelectorSet() {
   // Construct new SelectorSet if called as a function.
@@ -16472,15 +16221,20 @@ SelectorSet.prototype.matches = function(el) {
 /*!****************************************************!*\
   !*** ./node_modules/simmerjs/lib/configuration.js ***!
   \****************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
+/*! flagged exports */
+/*! export DEFAULT_CONFIGURATION [provided] [maybe used (runtime-defined)] [usage prevents renaming] */
+/*! export __esModule [provided] [maybe used (runtime-defined)] [usage prevents renaming] */
+/*! export configure [provided] [maybe used (runtime-defined)] [usage prevents renaming] */
+/*! other exports [not provided] [maybe used (runtime-defined)] */
+/*! runtime requirements: __webpack_exports__ */
+/***/ ((__unused_webpack_module, exports) => {
 
 "use strict";
 
 
-Object.defineProperty(exports, "__esModule", {
+Object.defineProperty(exports, "__esModule", ({
   value: true
-});
+}));
 
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
@@ -16523,15 +16277,19 @@ function configure() {
 /*!**************************************************************************!*\
   !*** ./node_modules/simmerjs/lib/convertSelectorStateIntoCSSSelector.js ***!
   \**************************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
+/*! flagged exports */
+/*! export __esModule [provided] [maybe used (runtime-defined)] [usage prevents renaming] */
+/*! export default [provided] [maybe used (runtime-defined)] [usage prevents renaming] */
+/*! other exports [not provided] [maybe used (runtime-defined)] */
+/*! runtime requirements: __webpack_exports__, __webpack_require__ */
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 "use strict";
 
 
-Object.defineProperty(exports, "__esModule", {
+Object.defineProperty(exports, "__esModule", ({
   value: true
-});
+}));
 
 exports.default = function (state) {
   var depth = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : state.stack.length;
@@ -16558,15 +16316,19 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 /*!****************************************************!*\
   !*** ./node_modules/simmerjs/lib/methods/index.js ***!
   \****************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
+/*! flagged exports */
+/*! export __esModule [provided] [maybe used (runtime-defined)] [usage prevents renaming] */
+/*! export default [provided] [maybe used (runtime-defined)] [usage prevents renaming] */
+/*! other exports [not provided] [maybe used (runtime-defined)] */
+/*! runtime requirements: __webpack_exports__, __webpack_require__ */
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 "use strict";
 
 
-Object.defineProperty(exports, "__esModule", {
+Object.defineProperty(exports, "__esModule", ({
   value: true
-});
+}));
 
 var _inspectElementID = __webpack_require__(/*! ./inspectElementID */ "./node_modules/simmerjs/lib/methods/inspectElementID.js");
 
@@ -16619,15 +16381,19 @@ exports.default = parsingMethods;
 /*!***************************************************************!*\
   !*** ./node_modules/simmerjs/lib/methods/inspectElementID.js ***!
   \***************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
+/*! flagged exports */
+/*! export __esModule [provided] [maybe used (runtime-defined)] [usage prevents renaming] */
+/*! export default [provided] [maybe used (runtime-defined)] [usage prevents renaming] */
+/*! other exports [not provided] [maybe used (runtime-defined)] */
+/*! runtime requirements: __webpack_exports__, __webpack_require__ */
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 "use strict";
 
 
-Object.defineProperty(exports, "__esModule", {
+Object.defineProperty(exports, "__esModule", ({
   value: true
-});
+}));
 
 var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
 /**
@@ -16686,15 +16452,20 @@ var _validationHelpers = __webpack_require__(/*! ./validationHelpers */ "./node_
 /*!**************************************************************!*\
   !*** ./node_modules/simmerjs/lib/methods/inspectNthChild.js ***!
   \**************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
+/*! flagged exports */
+/*! export __esModule [provided] [maybe used (runtime-defined)] [usage prevents renaming] */
+/*! export analyzeElementSiblings [provided] [maybe used (runtime-defined)] [usage prevents renaming] */
+/*! export default [provided] [maybe used (runtime-defined)] [usage prevents renaming] */
+/*! other exports [not provided] [maybe used (runtime-defined)] */
+/*! runtime requirements: __webpack_exports__, __webpack_require__ */
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 "use strict";
 
 
-Object.defineProperty(exports, "__esModule", {
+Object.defineProperty(exports, "__esModule", ({
   value: true
-});
+}));
 exports.analyzeElementSiblings = analyzeElementSiblings;
 
 exports.default = function (hierarchy, state, validateSelector) {
@@ -16771,15 +16542,19 @@ var getNodeNames = function getNodeNames(siblings) {
 /*!**************************************************************!*\
   !*** ./node_modules/simmerjs/lib/methods/inspectSiblings.js ***!
   \**************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
+/*! flagged exports */
+/*! export __esModule [provided] [maybe used (runtime-defined)] [usage prevents renaming] */
+/*! export default [provided] [maybe used (runtime-defined)] [usage prevents renaming] */
+/*! other exports [not provided] [maybe used (runtime-defined)] */
+/*! runtime requirements: __webpack_exports__, __webpack_require__ */
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 "use strict";
 
 
-Object.defineProperty(exports, "__esModule", {
+Object.defineProperty(exports, "__esModule", ({
   value: true
-});
+}));
 
 exports.default = function (hierarchy, state) {
   return hierarchy.reduce(function (selectorState, currentElem, index) {
@@ -16810,15 +16585,19 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 /*!***********************************************************************!*\
   !*** ./node_modules/simmerjs/lib/methods/inspectSpecialAttributes.js ***!
   \***********************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
+/*! flagged exports */
+/*! export __esModule [provided] [maybe used (runtime-defined)] [usage prevents renaming] */
+/*! export default [provided] [maybe used (runtime-defined)] [usage prevents renaming] */
+/*! other exports [not provided] [maybe used (runtime-defined)] */
+/*! runtime requirements: __webpack_exports__ */
+/***/ ((__unused_webpack_module, exports) => {
 
 "use strict";
 
 
-Object.defineProperty(exports, "__esModule", {
+Object.defineProperty(exports, "__esModule", ({
   value: true
-});
+}));
 
 exports.default = function (hierarchy, state, validateSelector) {
   var elm = hierarchy[0];
@@ -16869,15 +16648,19 @@ var handlers = {
 /*!**********************************************************!*\
   !*** ./node_modules/simmerjs/lib/methods/inspectTags.js ***!
   \**********************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
+/*! flagged exports */
+/*! export __esModule [provided] [maybe used (runtime-defined)] [usage prevents renaming] */
+/*! export default [provided] [maybe used (runtime-defined)] [usage prevents renaming] */
+/*! other exports [not provided] [maybe used (runtime-defined)] */
+/*! runtime requirements: __webpack_exports__, __webpack_require__ */
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 "use strict";
 
 
-Object.defineProperty(exports, "__esModule", {
+Object.defineProperty(exports, "__esModule", ({
   value: true
-});
+}));
 
 exports.default = function (hierarchy, state) {
   return hierarchy.reduce(function (selectorState, currentElem, index) {
@@ -16897,15 +16680,21 @@ var _validationHelpers = __webpack_require__(/*! ./validationHelpers */ "./node_
 /*!****************************************************************!*\
   !*** ./node_modules/simmerjs/lib/methods/validationHelpers.js ***!
   \****************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
+/*! flagged exports */
+/*! export __esModule [provided] [maybe used (runtime-defined)] [usage prevents renaming] */
+/*! export attr [provided] [maybe used (runtime-defined)] [usage prevents renaming] */
+/*! export className [provided] [maybe used (runtime-defined)] [usage prevents renaming] */
+/*! export tagName [provided] [maybe used (runtime-defined)] [usage prevents renaming] */
+/*! other exports [not provided] [maybe used (runtime-defined)] */
+/*! runtime requirements: __webpack_exports__ */
+/***/ ((__unused_webpack_module, exports) => {
 
 "use strict";
 
 
-Object.defineProperty(exports, "__esModule", {
+Object.defineProperty(exports, "__esModule", ({
   value: true
-});
+}));
 exports.tagName = tagName;
 exports.attr = attr;
 exports.className = className;
@@ -16949,15 +16738,19 @@ function className(className) {
 /*!*********************************************!*\
   !*** ./node_modules/simmerjs/lib/parser.js ***!
   \*********************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
+/*! flagged exports */
+/*! export __esModule [provided] [maybe used (runtime-defined)] [usage prevents renaming] */
+/*! export default [provided] [maybe used (runtime-defined)] [usage prevents renaming] */
+/*! other exports [not provided] [maybe used (runtime-defined)] */
+/*! runtime requirements: __webpack_exports__ */
+/***/ ((__unused_webpack_module, exports) => {
 
 "use strict";
 
 
-Object.defineProperty(exports, "__esModule", {
+Object.defineProperty(exports, "__esModule", ({
   value: true
-});
+}));
 exports.default = Parser;
 function Parser(parsingMethods) {
   var queue = parsingMethods.getMethods();
@@ -16980,15 +16773,21 @@ function Parser(parsingMethods) {
 /*!**************************************************!*\
   !*** ./node_modules/simmerjs/lib/queryEngine.js ***!
   \**************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
+/*! flagged exports */
+/*! export __esModule [provided] [maybe used (runtime-defined)] [usage prevents renaming] */
+/*! export default [provided] [maybe used (runtime-defined)] [usage prevents renaming] */
+/*! export isUniqueElementID [provided] [maybe used (runtime-defined)] [usage prevents renaming] */
+/*! export wrap [provided] [maybe used (runtime-defined)] [usage prevents renaming] */
+/*! other exports [not provided] [maybe used (runtime-defined)] */
+/*! runtime requirements: __webpack_exports__ */
+/***/ ((__unused_webpack_module, exports) => {
 
 "use strict";
 
 
-Object.defineProperty(exports, "__esModule", {
+Object.defineProperty(exports, "__esModule", ({
   value: true
-});
+}));
 exports.isUniqueElementID = isUniqueElementID;
 exports.wrap = wrap;
 
@@ -17087,15 +16886,19 @@ var documentQuerySelector = function documentQuerySelector(scope) {
 /*!*********************************************!*\
   !*** ./node_modules/simmerjs/lib/simmer.js ***!
   \*********************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
+/*! flagged exports */
+/*! export __esModule [provided] [maybe used (runtime-defined)] [usage prevents renaming] */
+/*! export default [provided] [maybe used (runtime-defined)] [usage prevents renaming] */
+/*! other exports [not provided] [maybe used (runtime-defined)] */
+/*! runtime requirements: __webpack_exports__, __webpack_require__ */
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 "use strict";
 
 
-Object.defineProperty(exports, "__esModule", {
+Object.defineProperty(exports, "__esModule", ({
   value: true
-});
+}));
 
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
@@ -17251,15 +17054,19 @@ function createSimmer() {
 /*!*****************************************************!*\
   !*** ./node_modules/simmerjs/lib/stackHierarchy.js ***!
   \*****************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
+/*! flagged exports */
+/*! export __esModule [provided] [maybe used (runtime-defined)] [usage prevents renaming] */
+/*! export default [provided] [maybe used (runtime-defined)] [usage prevents renaming] */
+/*! other exports [not provided] [maybe used (runtime-defined)] */
+/*! runtime requirements: __webpack_exports__ */
+/***/ ((__unused_webpack_module, exports) => {
 
 "use strict";
 
 
-Object.defineProperty(exports, "__esModule", {
+Object.defineProperty(exports, "__esModule", ({
   value: true
-});
+}));
 exports.default = stackHierarchy;
 function push(arr, val) {
   arr.push(val);
@@ -17290,15 +17097,19 @@ function stackHierarchy(element, depth) {
 /*!*******************************************************!*\
   !*** ./node_modules/simmerjs/lib/validateSelector.js ***!
   \*******************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
+/*! flagged exports */
+/*! export __esModule [provided] [maybe used (runtime-defined)] [usage prevents renaming] */
+/*! export default [provided] [maybe used (runtime-defined)] [usage prevents renaming] */
+/*! other exports [not provided] [maybe used (runtime-defined)] */
+/*! runtime requirements: __webpack_exports__, __webpack_require__ */
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 "use strict";
 
 
-Object.defineProperty(exports, "__esModule", {
+Object.defineProperty(exports, "__esModule", ({
   value: true
-});
+}));
 
 exports.default = function (element, config, query, onError) {
   var selectorMaxLength = config.selectorMaxLength;
@@ -17341,12 +17152,46 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 /***/ }),
 
+/***/ "./src/gitlabPipelines/styles.less":
+/*!*****************************************!*\
+  !*** ./src/gitlabPipelines/styles.less ***!
+  \*****************************************/
+/*! unknown exports (runtime-defined) */
+/*! exports [maybe provided (runtime-defined)] [maybe used (runtime-defined)] */
+/*! runtime requirements: module, __webpack_require__, module.id */
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+
+var content = __webpack_require__(/*! !!../../node_modules/css-loader/index.js!../../node_modules/less-loader/dist/cjs.js!./styles.less */ "./node_modules/css-loader/index.js!./node_modules/less-loader/dist/cjs.js!./src/gitlabPipelines/styles.less");
+
+if(typeof content === 'string') content = [[module.id, content, '']];
+
+var transform;
+var insertInto;
+
+
+
+var options = {"hmr":true}
+
+options.transform = transform
+options.insertInto = undefined;
+
+var update = __webpack_require__(/*! !../../node_modules/style-loader/lib/addStyles.js */ "./node_modules/style-loader/lib/addStyles.js")(content, options);
+
+if(content.locals) module.exports = content.locals;
+
+if(false) {}
+
+/***/ }),
+
 /***/ "./node_modules/style-loader/lib/addStyles.js":
 /*!****************************************************!*\
   !*** ./node_modules/style-loader/lib/addStyles.js ***!
   \****************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
+/*! unknown exports (runtime-defined) */
+/*! exports [maybe provided (runtime-defined)] [maybe used (runtime-defined)] */
+/*! runtime requirements: module, __webpack_require__, __webpack_require__.nc, __webpack_require__.* */
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
 /*
 	MIT License http://www.opensource.org/licenses/mit-license.php
@@ -17754,8 +17599,10 @@ function updateLink (link, options, obj) {
 /*!***********************************************!*\
   !*** ./node_modules/style-loader/lib/urls.js ***!
   \***********************************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
+/*! unknown exports (runtime-defined) */
+/*! exports [maybe provided (runtime-defined)] [maybe used (runtime-defined)] */
+/*! runtime requirements: module */
+/***/ ((module) => {
 
 
 /**
@@ -17850,80 +17697,22 @@ module.exports = function (css) {
 
 /***/ }),
 
-/***/ "./node_modules/webpack/buildin/global.js":
-/*!***********************************!*\
-  !*** (webpack)/buildin/global.js ***!
-  \***********************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
-
-var g;
-
-// This works in non-strict mode
-g = (function() {
-	return this;
-})();
-
-try {
-	// This works if eval is allowed (see CSP)
-	g = g || new Function("return this")();
-} catch (e) {
-	// This works if the window reference is available
-	if (typeof window === "object") g = window;
-}
-
-// g can still be undefined, but nothing to do about it...
-// We return undefined, instead of nothing here, so it's
-// easier to handle this case. if(!global) { ...}
-
-module.exports = g;
-
-
-/***/ }),
-
-/***/ "./node_modules/webpack/buildin/module.js":
-/*!***********************************!*\
-  !*** (webpack)/buildin/module.js ***!
-  \***********************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
-
-module.exports = function(module) {
-	if (!module.webpackPolyfill) {
-		module.deprecate = function() {};
-		module.paths = [];
-		// module.parent = undefined by default
-		if (!module.children) module.children = [];
-		Object.defineProperty(module, "loaded", {
-			enumerable: true,
-			get: function() {
-				return module.l;
-			}
-		});
-		Object.defineProperty(module, "id", {
-			enumerable: true,
-			get: function() {
-				return module.i;
-			}
-		});
-		module.webpackPolyfill = 1;
-	}
-	return module;
-};
-
-
-/***/ }),
-
 /***/ "./src/gitlabPipelines/constants.ts":
 /*!******************************************!*\
   !*** ./src/gitlabPipelines/constants.ts ***!
   \******************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
+/*! flagged exports */
+/*! export __esModule [provided] [maybe used (runtime-defined)] [usage prevents renaming] */
+/*! export classes [provided] [maybe used (runtime-defined)] [usage prevents renaming] */
+/*! export gitlabToken [provided] [maybe used (runtime-defined)] [usage prevents renaming] */
+/*! export paths [provided] [maybe used (runtime-defined)] [usage prevents renaming] */
+/*! other exports [not provided] [maybe used (runtime-defined)] */
+/*! runtime requirements: __webpack_exports__ */
+/***/ ((__unused_webpack_module, exports) => {
 
 "use strict";
-/* WEBPACK VAR INJECTION */(function(process) {
-Object.defineProperty(exports, "__esModule", { value: true });
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
 /** Currently unused, hoping to stay that way! */
 exports.gitlabToken = process.env.GITLAB_TOKEN;
 exports.classes = {
@@ -17937,7 +17726,6 @@ exports.paths = {
     pipelineWidgetListItem: '.ci-job-component',
 };
 
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./../../node_modules/process/browser.js */ "./node_modules/process/browser.js")))
 
 /***/ }),
 
@@ -17945,24 +17733,27 @@ exports.paths = {
 /*!**************************************!*\
   !*** ./src/gitlabPipelines/index.ts ***!
   \**************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
+/*! unknown exports (runtime-defined) */
+/*! exports [maybe provided (runtime-defined)] [maybe used (runtime-defined)] */
+/*! runtime requirements: top-level-this-exports, __webpack_exports__, __webpack_require__ */
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
 "use strict";
 
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
         function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
         function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-Object.defineProperty(exports, "__esModule", { value: true });
+Object.defineProperty(exports, "__esModule", ({ value: true }));
 __webpack_require__(/*! ./styles.less */ "./src/gitlabPipelines/styles.less");
 const $ = __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js");
 const setup_1 = __webpack_require__(/*! ./views/setup */ "./src/gitlabPipelines/views/setup.ts");
-void (() => __awaiter(this, void 0, void 0, function* () {
+void (() => __awaiter(void 0, void 0, void 0, function* () {
     setup_1.setupInputOnPipelineWidgets($('.ci-widget.media'));
 }))();
 
@@ -17973,12 +17764,17 @@ void (() => __awaiter(this, void 0, void 0, function* () {
 /*!************************************!*\
   !*** ./src/gitlabPipelines/lib.ts ***!
   \************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
+/*! flagged exports */
+/*! export __esModule [provided] [maybe used (runtime-defined)] [usage prevents renaming] */
+/*! export extractProjectAndJobIdsFromUrl [provided] [maybe used (runtime-defined)] [usage prevents renaming] */
+/*! export reuseElement [provided] [maybe used (runtime-defined)] [usage prevents renaming] */
+/*! other exports [not provided] [maybe used (runtime-defined)] */
+/*! runtime requirements: __webpack_exports__ */
+/***/ ((__unused_webpack_module, exports) => {
 
 "use strict";
 
-Object.defineProperty(exports, "__esModule", { value: true });
+Object.defineProperty(exports, "__esModule", ({ value: true }));
 function extractProjectAndJobIdsFromUrl(url) {
     const jobId = url.split('/').slice(-1)[0];
     const projectId = url.split('/').slice(1, 3).join('/');
@@ -17997,54 +17793,27 @@ exports.reuseElement = reuseElement;
 
 /***/ }),
 
-/***/ "./src/gitlabPipelines/styles.less":
-/*!*****************************************!*\
-  !*** ./src/gitlabPipelines/styles.less ***!
-  \*****************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-
-var content = __webpack_require__(/*! !../../node_modules/css-loader!../../node_modules/less-loader/dist/cjs.js!./styles.less */ "./node_modules/css-loader/index.js!./node_modules/less-loader/dist/cjs.js!./src/gitlabPipelines/styles.less");
-
-if(typeof content === 'string') content = [[module.i, content, '']];
-
-var transform;
-var insertInto;
-
-
-
-var options = {"hmr":true}
-
-options.transform = transform
-options.insertInto = undefined;
-
-var update = __webpack_require__(/*! ../../node_modules/style-loader/lib/addStyles.js */ "./node_modules/style-loader/lib/addStyles.js")(content, options);
-
-if(content.locals) module.exports = content.locals;
-
-if(false) {}
-
-/***/ }),
-
 /***/ "./src/gitlabPipelines/views/JobTraceView.ts":
 /*!***************************************************!*\
   !*** ./src/gitlabPipelines/views/JobTraceView.ts ***!
   \***************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
+/*! unknown exports (runtime-defined) */
+/*! exports [maybe provided (runtime-defined)] [maybe used (runtime-defined)] */
+/*! runtime requirements: top-level-this-exports, __webpack_exports__, __webpack_require__ */
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
 "use strict";
 
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
         function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
         function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-Object.defineProperty(exports, "__esModule", { value: true });
+Object.defineProperty(exports, "__esModule", ({ value: true }));
 const ansi_up_1 = __webpack_require__(/*! ansi_up */ "./node_modules/ansi_up/ansi_up.js");
 const constants_1 = __webpack_require__(/*! ../constants */ "./src/gitlabPipelines/constants.ts");
 const lib_1 = __webpack_require__(/*! ../lib */ "./src/gitlabPipelines/lib.ts");
@@ -18158,12 +17927,16 @@ function fetchJobTraceMeta({ jobId, projectId }) {
 /*!********************************************!*\
   !*** ./src/gitlabPipelines/views/setup.ts ***!
   \********************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
+/*! flagged exports */
+/*! export __esModule [provided] [maybe used (runtime-defined)] [usage prevents renaming] */
+/*! export setupInputOnPipelineWidgets [provided] [maybe used (runtime-defined)] [usage prevents renaming] */
+/*! other exports [not provided] [maybe used (runtime-defined)] */
+/*! runtime requirements: __webpack_exports__, __webpack_require__ */
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 "use strict";
 
-Object.defineProperty(exports, "__esModule", { value: true });
+Object.defineProperty(exports, "__esModule", ({ value: true }));
 const $ = __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js");
 const selector_observer_1 = __webpack_require__(/*! selector-observer */ "./node_modules/selector-observer/dist/index.esm.js");
 const simmerjs_1 = __webpack_require__(/*! simmerjs */ "./node_modules/simmerjs/lib/simmer.js");
@@ -18200,4 +17973,88 @@ function pipelineViewButton() {
 
 /***/ })
 
-/******/ });
+/******/ 	});
+/************************************************************************/
+/******/ 	// The module cache
+/******/ 	var __webpack_module_cache__ = {};
+/******/ 	
+/******/ 	// The require function
+/******/ 	function __webpack_require__(moduleId) {
+/******/ 		// Check if module is in cache
+/******/ 		if(__webpack_module_cache__[moduleId]) {
+/******/ 			return __webpack_module_cache__[moduleId].exports;
+/******/ 		}
+/******/ 		// Create a new module (and put it into the cache)
+/******/ 		var module = __webpack_module_cache__[moduleId] = {
+/******/ 			id: moduleId,
+/******/ 			loaded: false,
+/******/ 			exports: {}
+/******/ 		};
+/******/ 	
+/******/ 		// Execute the module function
+/******/ 		__webpack_modules__[moduleId].call(module.exports, module, module.exports, __webpack_require__);
+/******/ 	
+/******/ 		// Flag the module as loaded
+/******/ 		module.loaded = true;
+/******/ 	
+/******/ 		// Return the exports of the module
+/******/ 		return module.exports;
+/******/ 	}
+/******/ 	
+/************************************************************************/
+/******/ 	/* webpack/runtime/define property getters */
+/******/ 	(() => {
+/******/ 		// define getter functions for harmony exports
+/******/ 		__webpack_require__.d = (exports, definition) => {
+/******/ 			for(var key in definition) {
+/******/ 				if(__webpack_require__.o(definition, key) && !__webpack_require__.o(exports, key)) {
+/******/ 					Object.defineProperty(exports, key, { enumerable: true, get: definition[key] });
+/******/ 				}
+/******/ 			}
+/******/ 		};
+/******/ 	})();
+/******/ 	
+/******/ 	/* webpack/runtime/global */
+/******/ 	(() => {
+/******/ 		__webpack_require__.g = (function() {
+/******/ 			if (typeof globalThis === 'object') return globalThis;
+/******/ 			try {
+/******/ 				return this || new Function('return this')();
+/******/ 			} catch (e) {
+/******/ 				if (typeof window === 'object') return window;
+/******/ 			}
+/******/ 		})();
+/******/ 	})();
+/******/ 	
+/******/ 	/* webpack/runtime/hasOwnProperty shorthand */
+/******/ 	(() => {
+/******/ 		__webpack_require__.o = (obj, prop) => Object.prototype.hasOwnProperty.call(obj, prop)
+/******/ 	})();
+/******/ 	
+/******/ 	/* webpack/runtime/make namespace object */
+/******/ 	(() => {
+/******/ 		// define __esModule on exports
+/******/ 		__webpack_require__.r = (exports) => {
+/******/ 			if(typeof Symbol !== 'undefined' && Symbol.toStringTag) {
+/******/ 				Object.defineProperty(exports, Symbol.toStringTag, { value: 'Module' });
+/******/ 			}
+/******/ 			Object.defineProperty(exports, '__esModule', { value: true });
+/******/ 		};
+/******/ 	})();
+/******/ 	
+/******/ 	/* webpack/runtime/node module decorator */
+/******/ 	(() => {
+/******/ 		__webpack_require__.nmd = (module) => {
+/******/ 			module.paths = [];
+/******/ 			if (!module.children) module.children = [];
+/******/ 			return module;
+/******/ 		};
+/******/ 	})();
+/******/ 	
+/************************************************************************/
+/******/ 	// startup
+/******/ 	// Load entry module
+/******/ 	// This entry module is referenced by other modules so it can't be inlined
+/******/ 	__webpack_require__("./src/gitlabPipelines/index.ts");
+/******/ })()
+;

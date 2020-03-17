@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name        gitlabMrList
-// @version     0.0.2
+// @version     0.0.2-08c36237edcdfc838a8d
 // @namespace   nfour
 // @description Enhances the Gitlab MR List of a project
 // @include     *src.temando.io/*
@@ -8,5 +8,6 @@
 // @author      nfour
 // @license     MIT
 // @homepageURL https://github.com/nfour/userscripts
-// @require     http://localhost:9002/build/gitlabMrList.js
+// @updateURL   http://localhost:9002/gitlabMrList.dev.user.js
+// @require     http://localhost:9002/gitlabMrList.user.js
 // ==/UserScript==

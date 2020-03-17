@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name        gitlabPipelines
-// @version     0.2.3
+// @version     0.2.3-c6dc38084f153ce15990
 // @namespace   nfour
 // @description Shows job output when interacting with MR job dropdowns
 // @include     *src.temando.io/*
@@ -8,5 +8,6 @@
 // @author      nfour
 // @license     MIT
 // @homepageURL https://github.com/nfour/userscripts
-// @require     http://localhost:9002/build/gitlabPipelines.js
+// @updateURL   http://localhost:9002/gitlabPipelines.dev.user.js
+// @require     http://localhost:9002/gitlabPipelines.user.js
 // ==/UserScript==

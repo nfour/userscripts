@@ -4,6 +4,7 @@
     "module": "commonjs",
     "lib": ["es2015", "dom"],
     "strict": true,
+    "incremental": true,
     "resolveJsonModule": true,
     "moduleResolution": "node"
   },
