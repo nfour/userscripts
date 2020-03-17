@@ -1,7 +1,10 @@
+import * as $$ from 'blissfuljs';
 import $, { Cash } from 'cash-dom';
 import cn from 'classnames';
 import { DiffDOM, nodeToObj } from 'diff-dom';
 import { action, observable, ObservableMap, observe } from 'mobx';
+import * as snab from 'snabbdom';
+import toVNode from 'snabbdom/tovnode';
 
 import { CLASSES, SELECTORS } from './constants';
 
@@ -50,17 +53,18 @@ class VideoThumbnail {
 
   init () {
     if (this.hasInit) { return; }
-
-    console.log('initting', this);
-
     this.hasInit = true;
 
-    this.$highlightBtn = $(`<div />`)
-      .attr('style', this.state.styles.highlightButton);
+    console.log({ vnode: toVNode(this.$self.get()[0]) });
 
-    const toggleHighlighted = action(() => { this.state.isHighlighted = !this.state.isHighlighted; });
+    const toggleHighlighted = action(() => {
+      console.log('clicked', this.id);
+      this.state.isHighlighted = !this.state.isHighlighted;
+    });
 
-    this.$highlightBtn.on('click', toggleHighlighted);
+    this.$highlightBtn = $(`<div></div>`)
+      .attr('style', this.state.styles.highlightButton)
+      .on('click', toggleHighlighted);
 
     observe(this.state, (change) => {
       console.log(`VideoThumbnail changed: ${change.type}`, change);
@@ -69,29 +73,13 @@ class VideoThumbnail {
     });
   }
 
+  // try this https://github.com/snabbdom/snabbdom#snabbdomtovnode
   render () {
     this.init();
 
-    const $prev = this.$self;
-    const $next = $prev.clone();
+    $$.set(this.$self.get(0)!, {
 
-    const classes = cn(
-      cn($prev.attr('class')),
-      { [CLASSES.isHighlighted]: this.state.isHighlighted },
-    );
-
-    $next.attr('class', classes);
-
-    $next.append(this.$highlightBtn);
-
-    console.log({ classes, $next, $prev });
-    console.log('111111111111111111111111111111111111111111111111111111');
-
-    const diffDom = new DiffDOM({ maxDepth: 4 });
-
-    const diff = diffDom.diff($prev.get()[0], $next.get()[0]);
-
-    diffDom.apply($prev.get()[0], diff);
+    });
   }
 
 }
