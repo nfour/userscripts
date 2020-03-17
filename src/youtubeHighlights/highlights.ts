@@ -85,7 +85,7 @@ class VideoThumbnail {
     $next.append(this.$highlightBtn);
 
     console.log({ classes, $next, $prev });
-    console.log('22222');
+    console.log('111111111111111111111111111111111111111111111111111111');
 
     const diffDom = new DiffDOM({ maxDepth: 4 });
 

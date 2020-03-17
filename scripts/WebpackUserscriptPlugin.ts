@@ -32,7 +32,6 @@ export class WebpackUserscriptPlugin implements Plugin {
           if (this.options.development) {
             return {
               updateURL: resolve(this.options.development.baseUrl, devFilename),
-              version: `${this.options.meta.version}-${compilation.hash}`,
             };
           }
         })(),
@@ -42,8 +41,6 @@ export class WebpackUserscriptPlugin implements Plugin {
 
       compilation.chunks.forEach((chunk: CompilationNS.Chunk) => {
         if (!chunk.canBeInitial()) { return; }
-
-        console.dir({ chunk }, { depth: 2, colors: true });
 
         chunk.files.forEach((filename) => {
           (compilation as any).updateAsset(
@@ -56,11 +53,9 @@ export class WebpackUserscriptPlugin implements Plugin {
       if (this.options.development) {
         const devHeaderFile = createUserScriptHeader({
           ...meta,
-          // Self reference due to hash in the version
           require: resolve(this.options.development.baseUrl, mainFilename),
         });
 
-        // compilation.assets[devFilename] = new RawSource(devHeaderFile);
         (compilation as any).emitAsset(devFilename, new RawSource(devHeaderFile));
       }
     });

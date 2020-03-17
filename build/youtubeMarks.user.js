@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name        youtubeMarks
-// @version     0.0.1-35af6ef3ac78b17e087c
+// @version     0.0.1
 // @namespace   nfour
 // @description Ability to mark videos to watch, queue etc.
 // @include     *.youtube.com/*
@@ -8035,7 +8035,7 @@ class VideoThumbnail {
         $next.attr('class', classes);
         $next.append(this.$highlightBtn);
         console.log({ classes, $next, $prev });
-        console.log('22222');
+        console.log('111111111111111111111111111111111111111111111111111111');
         const diffDom = new diff_dom_1.DiffDOM({ maxDepth: 4 });
         const diff = diffDom.diff($prev.get()[0], $next.get()[0]);
         diffDom.apply($prev.get()[0], diff);

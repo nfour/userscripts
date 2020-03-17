@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name        gitlabPipelines
-// @version     0.2.3-c6dc38084f153ce15990
+// @version     0.2.3
 // @namespace   nfour
 // @description Shows job output when interacting with MR job dropdowns
 // @include     *src.temando.io/*

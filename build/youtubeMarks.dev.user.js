@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name        youtubeMarks
-// @version     0.0.1-35af6ef3ac78b17e087c
+// @version     0.0.1
 // @namespace   nfour
 // @description Ability to mark videos to watch, queue etc.
 // @include     *.youtube.com/*
