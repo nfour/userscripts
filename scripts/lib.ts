@@ -7,6 +7,8 @@ import * as webpack from 'webpack';
 import { repository } from '../package.json';
 import { IMetaSchema } from '../src/types/meta';
 
+const PORT = 9002;
+
 export function WebpackUserScript (base: webpack.Configuration) {
   const directory = base.output!.path!;
 
@@ -43,11 +45,11 @@ export function writeDevelopmentHeaderFile ({ scriptName, meta, directory }: {
   scriptName: string, meta: IMetaSchema, directory: string,
 }) {
   const filePath = resolve(directory, `${scriptName}.dev.user.js`);
-  const requireFilePath = resolve(directory, `${scriptName}.js`);
+  const requireUrl = `http://localhost:${PORT}/build/${scriptName}.js`;
 
   return writeFileSync(filePath, createUserScriptHeader({
     ...meta,
-    require: `file://${requireFilePath}`,
+    require: requireUrl,
   }));
 }
 

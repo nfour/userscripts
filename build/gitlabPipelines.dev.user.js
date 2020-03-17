@@ -8,5 +8,5 @@
 // @author      nfour
 // @license     MIT
 // @homepageURL https://github.com/nfour/userscripts
-// @require     file:///home/sam/W/tsUserscripts/build/gitlabPipelines.js
+// @require     http://localhost:9002/build/gitlabPipelines.js
 // ==/UserScript==

@@ -1,11 +1,18 @@
-import './styles.less';
+import $ from 'cash-dom';
+import { nodeToObj } from 'diff-dom';
 
-import * as $ from 'jquery';
+import { SELECTORS } from './constants';
 
-import { Renderer } from './highlights';
+console.log('YTHL INIT', { $, nodeToObj });
 
 void (async () => {
-  const render = Renderer();
+  $(() => {
+    console.log('YTHL dom ready');
+    const tnel = $(SELECTORS.thumbnail).get()[0];
 
-  render();
+    console.log(
+      'node',
+      nodeToObj(tnel),
+    );
+  });
 })();
