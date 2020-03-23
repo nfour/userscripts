@@ -2,11 +2,11 @@
   "name": "userscript",
   "private": true,
   "scripts": {
-    "start": "run-p build:watch serve",
-    "build": "rimraf build/* && webpack --progress",
+    "start": "concurrently 'yarn build:watch' 'yarn serve'",
+    "build": "rimraf build/* && webpack",
     "build:watch": "yarn build --watch",
     "serve": "serve -l 9002 build",
-    "build:prod": "yarn build --define process.env.NODE_ENV=\"production\""
+    "build:prod": "yarn build --env.production"
   },
   "repository": {
     "type": "git",
@@ -45,6 +45,7 @@
     "@types/pad": "^1.0.1",
     "@types/webpack": "4",
     "@types/webpack-sources": "^0.1.6",
+    "concurrently": "^5.1.0",
     "css-loader": "^1.0.1",
     "dotenv-webpack": "^1.6.0",
     "less": "^3.9.0",

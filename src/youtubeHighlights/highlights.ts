@@ -85,7 +85,6 @@ class VideoThumbnail {
 }
 
 export function Renderer () {
-  console.log('renderer');
   const store = {
     thumbnails: new ObservableMap<string, VideoThumbnail>(),
     addNewThumbnails (thumbnails: VideoThumbnail[]) {

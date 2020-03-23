@@ -22,10 +22,7 @@ const createConfig = WebpackUserScript({
   },
   module: {
     rules: [
-      {
-        test: /\.tsx?$/, use: 'ts-loader',
-
-      },
+      { test: /\.tsx?$/, use: 'ts-loader' },
       { test: /\.less$/, use: ['style-loader', 'css-loader', 'less-loader'] },
     ],
   },
