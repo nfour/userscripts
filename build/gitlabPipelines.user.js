@@ -3,12 +3,12 @@
 // @version     0.2.3
 // @namespace   nfour
 // @description Shows job output when interacting with MR job dropdowns
-// @include     *src.temando.io/*
 // @include     *gitlab.com*
 // @author      nfour
 // @license     MIT
 // @homepageURL https://github.com/nfour/userscripts
-// @updateURL   http://localhost:9002/gitlabPipelines.dev.user.js
+// @updateURL   https://github.com/nfour/userscripts/master/tree/build/gitlabPipelines.user.js
+// @downloadURL https://github.com/nfour/userscripts/master/tree/build/gitlabPipelines.user.js
 // ==/UserScript==
 
 /******/ (() => { // webpackBootstrap
@@ -15420,6 +15420,10 @@ function detectInnerHTMLReplacementBuggy(document) {
   return innerHTMLReplacementIsBuggy;
 }
 
+function supportsSelectorMatching(node) {
+  return 'matches' in node || 'webkitMatchesSelector' in node || 'mozMatchesSelector' in node || 'oMatchesSelector' in node || 'msMatchesSelector' in node;
+}
+
 // selector-observer processes dom mutations in two phases. This module
 // processes DOM mutations, revalidates selectors against the target element and
 // enqueues a Change for an observers hooks to be ran.
@@ -15472,7 +15476,7 @@ function addNodes(selectorObserver, changes, nodes) {
   for (var i = 0; i < nodes.length; i++) {
     var node = nodes[i];
 
-    if ('matches' in node) {
+    if (supportsSelectorMatching(node)) {
       var matches = selectorObserver.selectorSet.matches(node);
       for (var j = 0; j < matches.length; j++) {
         var data = matches[j].data;
@@ -15526,7 +15530,7 @@ function removeNodes(selectorObserver, changes, nodes) {
 //
 // Returns nothing.
 function revalidateObservers(selectorObserver, changes, node) {
-  if ('matches' in node) {
+  if (supportsSelectorMatching(node)) {
     var matches = selectorObserver.selectorSet.matches(node);
     for (var i = 0; i < matches.length; i++) {
       var data = matches[i].data;
@@ -15686,7 +15690,7 @@ SelectorObserver.prototype.observe = function (a, b) {
     remove: handlers.remove,
     subscribe: handlers.subscribe,
     elements: [],
-    elementConstructor: handlers.hasOwnProperty('constructor') ? handlers.constructor : Element,
+    elementConstructor: handlers.hasOwnProperty('constructor') ? handlers.constructor : this.ownerDocument.defaultView.Element,
     abort: function abort() {
       self._abortObserving(observer);
     }
@@ -17733,29 +17737,22 @@ exports.paths = {
 /*!**************************************!*\
   !*** ./src/gitlabPipelines/index.ts ***!
   \**************************************/
-/*! unknown exports (runtime-defined) */
-/*! exports [maybe provided (runtime-defined)] [maybe used (runtime-defined)] */
-/*! runtime requirements: top-level-this-exports, __webpack_exports__, __webpack_require__ */
-/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+/*! flagged exports */
+/*! export __esModule [provided] [unused] [could be renamed] */
+/*! other exports [not provided] [unused] */
+/*! runtime requirements: __webpack_exports__, __webpack_require__ */
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 "use strict";
+var __webpack_unused_export__;
 
-var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
-    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
-};
-Object.defineProperty(exports, "__esModule", ({ value: true }));
+__webpack_unused_export__ = ({ value: true });
 __webpack_require__(/*! ./styles.less */ "./src/gitlabPipelines/styles.less");
 const $ = __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js");
 const setup_1 = __webpack_require__(/*! ./views/setup */ "./src/gitlabPipelines/views/setup.ts");
-void (() => __awaiter(void 0, void 0, void 0, function* () {
+void (async () => {
     setup_1.setupInputOnPipelineWidgets($('.ci-widget.media'));
-}))();
+})();
 
 
 /***/ }),
@@ -17797,22 +17794,15 @@ exports.reuseElement = reuseElement;
 /*!***************************************************!*\
   !*** ./src/gitlabPipelines/views/JobTraceView.ts ***!
   \***************************************************/
-/*! unknown exports (runtime-defined) */
-/*! exports [maybe provided (runtime-defined)] [maybe used (runtime-defined)] */
-/*! runtime requirements: top-level-this-exports, __webpack_exports__, __webpack_require__ */
-/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+/*! flagged exports */
+/*! export JobTraceView [provided] [maybe used (runtime-defined)] [usage prevents renaming] */
+/*! export __esModule [provided] [maybe used (runtime-defined)] [usage prevents renaming] */
+/*! other exports [not provided] [maybe used (runtime-defined)] */
+/*! runtime requirements: __webpack_exports__, __webpack_require__ */
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 "use strict";
 
-var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
-    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
-};
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 const ansi_up_1 = __webpack_require__(/*! ansi_up */ "./node_modules/ansi_up/ansi_up.js");
 const constants_1 = __webpack_require__(/*! ../constants */ "./src/gitlabPipelines/constants.ts");
@@ -17844,46 +17834,44 @@ class JobTraceView {
      *
      * @param url @example http://.../user.name/projectName/-/jobs/979858
      */
-    trace(url) {
-        return __awaiter(this, void 0, void 0, function* () {
-            const ansi = new ansi_up_1.default();
-            let lastTrace = '';
-            /** On an interval, this will update the output if it has changed */
-            const periodicUpdate = () => __awaiter(this, void 0, void 0, function* () {
-                const trace = yield fetchJobTrace({ jobId, projectId });
-                if (trace.length === lastTrace.length) {
-                    // No changes, exit
-                    return;
-                }
-                const nextTrace = trace.slice(lastTrace.length);
-                if (!nextTrace.length) {
-                    return;
-                }
-                lastTrace = lastTrace + nextTrace;
-                render(ansi.ansi_to_html(nextTrace));
-            });
-            /** Checks for completion and stops fetching data if its done */
-            const periodicStatusCheck = () => __awaiter(this, void 0, void 0, function* () {
-                const { complete } = yield fetchJobTraceMeta({ jobId, projectId });
-                if (complete) {
-                    this.stopUpdates();
-                }
-            });
-            const render = (content) => {
-                $text.append(content);
-                this.$jobTraceView.scrollTop(this.$jobTraceView[0].scrollHeight);
-            };
-            this.disable();
-            const { jobId, projectId, traceId } = lib_1.extractProjectAndJobIdsFromUrl(url);
-            const $jobTrace = $(`<div class="${constants_1.classes.JobTrace}" data-id="${traceId}"><pre></pre></div>`);
-            const $text = $jobTrace.find('pre');
-            this.$jobTraceView
-                .removeClass('inactive')
-                .append($jobTrace);
-            this.updateTimer = setInterval(periodicUpdate, this.pollingRate);
-            this.checkCompletionTimer = setInterval(periodicStatusCheck, this.pollingRate * 4);
-            yield periodicUpdate();
-        });
+    async trace(url) {
+        const ansi = new ansi_up_1.default();
+        let lastTrace = '';
+        /** On an interval, this will update the output if it has changed */
+        const periodicUpdate = async () => {
+            const trace = await fetchJobTrace({ jobId, projectId });
+            if (trace.length === lastTrace.length) {
+                // No changes, exit
+                return;
+            }
+            const nextTrace = trace.slice(lastTrace.length);
+            if (!nextTrace.length) {
+                return;
+            }
+            lastTrace = lastTrace + nextTrace;
+            render(ansi.ansi_to_html(nextTrace));
+        };
+        /** Checks for completion and stops fetching data if its done */
+        const periodicStatusCheck = async () => {
+            const { complete } = await fetchJobTraceMeta({ jobId, projectId });
+            if (complete) {
+                this.stopUpdates();
+            }
+        };
+        const render = (content) => {
+            $text.append(content);
+            this.$jobTraceView.scrollTop(this.$jobTraceView[0].scrollHeight);
+        };
+        this.disable();
+        const { jobId, projectId, traceId } = lib_1.extractProjectAndJobIdsFromUrl(url);
+        const $jobTrace = $(`<div class="${constants_1.classes.JobTrace}" data-id="${traceId}"><pre></pre></div>`);
+        const $text = $jobTrace.find('pre');
+        this.$jobTraceView
+            .removeClass('inactive')
+            .append($jobTrace);
+        this.updateTimer = setInterval(periodicUpdate, this.pollingRate);
+        this.checkCompletionTimer = setInterval(periodicStatusCheck, this.pollingRate * 4);
+        await periodicUpdate();
     }
     /** Stops any existing job trace */
     stopUpdates() {
@@ -17906,18 +17894,14 @@ exports.JobTraceView = JobTraceView;
  * Fetches a job's trace ANSI CLI text from:
  * - /user/project/-/jobs/982180/raw
  */
-function fetchJobTrace({ jobId, projectId }) {
-    return __awaiter(this, void 0, void 0, function* () {
-        return fetch(`/${projectId}/-/jobs/${jobId}/raw`)
-            .then((res) => res.text());
-    });
+async function fetchJobTrace({ jobId, projectId }) {
+    return fetch(`/${projectId}/-/jobs/${jobId}/raw`)
+        .then((res) => res.text());
 }
-function fetchJobTraceMeta({ jobId, projectId }) {
-    return __awaiter(this, void 0, void 0, function* () {
-        const data = yield fetch(`/${projectId}/-/jobs/${jobId}/trace.json`, { headers: { accept: 'application/json' } })
-            .then((res) => res.json());
-        return data;
-    });
+async function fetchJobTraceMeta({ jobId, projectId }) {
+    const data = await fetch(`/${projectId}/-/jobs/${jobId}/trace.json`, { headers: { accept: 'application/json' } })
+        .then((res) => res.json());
+    return data;
 }
 
 
@@ -18054,7 +18038,7 @@ function pipelineViewButton() {
 /************************************************************************/
 /******/ 	// startup
 /******/ 	// Load entry module
-/******/ 	// This entry module is referenced by other modules so it can't be inlined
 /******/ 	__webpack_require__("./src/gitlabPipelines/index.ts");
+/******/ 	// This entry module used 'exports' so it can't be inlined
 /******/ })()
 ;

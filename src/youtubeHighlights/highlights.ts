@@ -1,12 +1,7 @@
-import * as $$ from 'blissfuljs';
 import $, { Cash } from 'cash-dom';
-import cn from 'classnames';
-import { DiffDOM, nodeToObj } from 'diff-dom';
 import { action, observable, ObservableMap, observe } from 'mobx';
-import * as snab from 'snabbdom';
 import toVNode from 'snabbdom/tovnode';
-
-import { CLASSES, SELECTORS } from './constants';
+import { SELECTORS } from './constants';
 
 class VideoThumbnail {
   $self: Cash;
@@ -46,13 +41,15 @@ class VideoThumbnail {
     },
   });
 
-  constructor (el: Cash) {
+  constructor(el: Cash) {
     this.$self = el;
     this.id = this.$self.attr('href')!;
   }
 
-  init () {
-    if (this.hasInit) { return; }
+  init() {
+    if (this.hasInit) {
+      return;
+    }
     this.hasInit = true;
 
     console.log({ vnode: toVNode(this.$self.get()[0]) });
@@ -74,20 +71,17 @@ class VideoThumbnail {
   }
 
   // try this https://github.com/snabbdom/snabbdom#snabbdomtovnode
-  render () {
+  render() {
     this.init();
 
-    $$.set(this.$self.get(0)!, {
-
-    });
+    // $$.set(this.$self.get(0)!, {});
   }
-
 }
 
-export function Renderer () {
+export function Renderer() {
   const store = {
     thumbnails: new ObservableMap<string, VideoThumbnail>(),
-    addNewThumbnails (thumbnails: VideoThumbnail[]) {
+    addNewThumbnails(thumbnails: VideoThumbnail[]) {
       return thumbnails
         .filter((item) => !store.thumbnails.has(item.id))
         .map((item) => {
@@ -107,13 +101,12 @@ export function Renderer () {
     store.addNewThumbnails(thumbnails);
 
     thumbnails.forEach((tn) => tn.render());
-
   };
 
   return render;
 }
 
-function findThumbnailsOnPage (): VideoThumbnail[] {
+function findThumbnailsOnPage(): VideoThumbnail[] {
   const $thumbnails = $(SELECTORS.thumbnail);
 
   return $thumbnails.get().map((el) => new VideoThumbnail($(el)));

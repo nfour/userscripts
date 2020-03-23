@@ -7,2039 +7,1315 @@
 // @author      nfour
 // @license     MIT
 // @homepageURL https://github.com/nfour/userscripts
-// @updateURL   http://localhost:9002/youtubeMarks.dev.user.js
+// @updateURL   https://github.com/nfour/userscripts/master/tree/build/youtubeHighlights.user.js
+// @downloadURL https://github.com/nfour/userscripts/master/tree/build/youtubeHighlights.user.js
 // ==/UserScript==
 
 /******/ (() => { // webpackBootstrap
 /******/ 	var __webpack_modules__ = ({
 
-/***/ "./node_modules/blissfuljs/bliss.js":
-/*!******************************************!*\
-  !*** ./node_modules/blissfuljs/bliss.js ***!
-  \******************************************/
+/***/ "./node_modules/cash-dom/dist/cash.js":
+/*!********************************************!*\
+  !*** ./node_modules/cash-dom/dist/cash.js ***!
+  \********************************************/
 /*! unknown exports (runtime-defined) */
 /*! exports [maybe provided (runtime-defined)] [maybe used (runtime-defined)] */
-/*! runtime requirements:  */
-/***/ (() => {
+/*! runtime requirements: module */
+/***/ ((module) => {
 
-(function() {
-"use strict";
-
-function overload(callback, start, end) {
-	start = start === undefined ? 1 : start;
-	end = end || start + 1;
-
-	if (end - start <= 1) {
-		return function() {
-			if (arguments.length <= start || $.type(arguments[start]) === "string") {
-				return callback.apply(this, arguments);
-			}
-
-			var obj = arguments[start];
-			var ret;
-
-			for (var key in obj) {
-				var args = Array.prototype.slice.call(arguments);
-				args.splice(start, 1, key, obj[key]);
-				ret = callback.apply(this, args);
-			}
-
-			return ret;
-		};
-	}
-
-	return overload(overload(callback, start + 1, end), start, end - 1);
-}
-
-// Copy properties from one object to another. Overwrites allowed.
-// Subtle difference of array vs string whitelist: If property doesn't exist in from, array will not define it.
-function extend(to, from, whitelist) {
-	var whitelistType = type(whitelist);
-
-	if (whitelistType === "string") {
-		// To copy gettters/setters, preserve flags etc
-		var descriptor = Object.getOwnPropertyDescriptor(from, whitelist);
-
-		if (descriptor && (!descriptor.writable || !descriptor.configurable || !descriptor.enumerable || descriptor.get || descriptor.set)) {
-			delete to[whitelist];
-			Object.defineProperty(to, whitelist, descriptor);
-		}
-		else {
-			to[whitelist] = from[whitelist];
-		}
-	}
-	else if (whitelistType === "array") {
-		whitelist.forEach(function(property) {
-			if (property in from) {
-				extend(to, from, property);
-			}
-		});
-	}
-	else {
-		for (var property in from) {
-			if (whitelist) {
-				if (whitelistType === "regexp" && !whitelist.test(property) ||
-					whitelistType === "function" && !whitelist.call(from, property)) {
-					continue;
-				}
-			}
-
-			extend(to, from, property);
-		}
-	}
-
-	return to;
-}
-
-/**
- * Returns the [[Class]] of an object in lowercase (eg. array, date, regexp, string etc)
- */
-function type(obj) {
-	if (obj === null) {
-		return "null";
-	}
-
-	if (obj === undefined) {
-		return "undefined";
-	}
-
-	var ret = (Object.prototype.toString.call(obj).match(/^\[object\s+(.*?)\]$/)[1] || "").toLowerCase();
-
-	if (ret == "number" && isNaN(obj)) {
-		return "nan";
-	}
-
-	return ret;
-}
-
-var $ = self.Bliss = extend(function(expr, context) {
-	if (arguments.length == 2 && !context || !expr) {
-		return null;
-	}
-
-	return $.type(expr) === "string"? (context || document).querySelector(expr) : expr || null;
-}, self.Bliss);
-
-extend($, {
-	extend: extend,
-	overload: overload,
-	type: type,
-
-	property: $.property || "_",
-	listeners: self.WeakMap? new WeakMap() : new Map(),
-
-	original: {
-		addEventListener: (self.EventTarget || Node).prototype.addEventListener,
-		removeEventListener: (self.EventTarget || Node).prototype.removeEventListener
-	},
-
-	sources: {},
-
-	noop: function() {},
-
-	$: function(expr, context) {
-		if (expr instanceof Node || expr instanceof Window) {
-			return [expr];
-		}
-
-		if (arguments.length == 2 && !context) {
-			return [];
-		}
-
-		return Array.prototype.slice.call(typeof expr == "string"? (context || document).querySelectorAll(expr) : expr || []);
-	},
-
-	/*
-	 * Return first non-undefined value. Mainly used internally.
-	 */
-	defined: function () {
-		for (var i=0; i<arguments.length; i++) {
-			if (arguments[i] !== undefined) {
-				return arguments[i];
-			}
-		}
-	},
-
-	create: function (tag, o) {
-		if (tag instanceof Node) {
-			return $.set(tag, o);
-		}
-
-		// 4 signatures: (tag, o), (tag), (o), ()
-		if (arguments.length === 1) {
-			if ($.type(tag) === "string") {
-				o = {};
-			}
-			else {
-				o = tag;
-				tag = o.tag;
-				o = $.extend({}, o, function(property) {
-					return property !== "tag";
-				});
-			}
-		}
-
-		return $.set(document.createElement(tag || "div"), o);
-	},
-
-	each: function(obj, callback, ret) {
-		ret = ret || {};
-
-		for (var property in obj) {
-			ret[property] = callback.call(obj, property, obj[property]);
-		}
-
-		return ret;
-	},
-
-	ready: function(context, callback, isVoid) {
-		if (typeof context === "function" && !callback) {
-			callback = context;
-			context = undefined;
-		}
-
-		context = context || document;
-
-		if (callback) {
-			if (context.readyState !== "loading") {
-				callback();
-			}
-			else {
-				$.once(context, "DOMContentLoaded", function() {
-					callback();
-				});
-			}
-		}
-
-		if (!isVoid) {
-			return new Promise(function(resolve) {
-				$.ready(context, resolve, true);
-			});
-		}
-	},
-
-	// Helper for defining OOP-like “classes”
-	Class: function(o) {
-		var special = ["constructor", "extends", "abstract", "static"].concat(Object.keys($.classProps));
-		var init = o.hasOwnProperty("constructor")? o.constructor : $.noop;
-		var Class;
-
-		if (arguments.length == 2) {
-			// Existing class provided
-			Class = arguments[0];
-			o = arguments[1];
-		}
-		else {
-			Class = function() {
-				if (this.constructor.__abstract && this.constructor === Class) {
-					throw new Error("Abstract classes cannot be directly instantiated.");
-				}
-
-				Class.super && Class.super.apply(this, arguments);
-
-				init.apply(this, arguments);
-			};
-
-			Class.super = o.extends || null;
-
-			Class.prototype = $.extend(Object.create(Class.super? Class.super.prototype : Object), {
-				constructor: Class
-			});
-
-			// For easier calling of super methods
-			// This doesn't save us from having to use .call(this) though
-			Class.prototype.super = Class.super? Class.super.prototype : null;
-
-			Class.__abstract = !!o.abstract;
-		}
-
-		var specialFilter = function(property) {
-			return this.hasOwnProperty(property) && special.indexOf(property) === -1;
-		};
-
-		// Static methods
-		if (o.static) {
-			$.extend(Class, o.static, specialFilter);
-
-			for (var property in $.classProps) {
-				if (property in o.static) {
-					$.classProps[property](Class, o.static[property]);
-				}
-			}
-		}
-
-		// Instance methods
-		$.extend(Class.prototype, o, specialFilter);
-
-		for (var property in $.classProps) {
-			if (property in o) {
-				$.classProps[property](Class.prototype, o[property]);
-			}
-		}
-
-		return Class;
-	},
-
-	// Properties with special handling in classes
-	classProps: {
-		// Lazily evaluated properties
-		lazy: overload(function(obj, property, getter) {
-			Object.defineProperty(obj, property, {
-				get: function() {
-					var value = getter.call(this);
-
-					Object.defineProperty(this, property, {
-						value: value,
-						configurable: true,
-						enumerable: true,
-						writable: true
-					});
-
-					return value;
-				},
-				set: function(value) {
-					// Blind write: skip running the getter
-					Object.defineProperty(this, property, {
-						value: value,
-						configurable: true,
-						enumerable: true,
-						writable: true
-					});
-				},
-				configurable: true,
-				enumerable: true
-			});
-
-			return obj;
-		}),
-
-		// Properties that behave like normal properties but also execute code upon getting/setting
-		live: overload(function(obj, property, descriptor) {
-			if ($.type(descriptor) === "function") {
-				descriptor = {set: descriptor};
-			}
-
-			Object.defineProperty(obj, property, {
-				get: function() {
-					var value = this["_" + property];
-					var ret = descriptor.get && descriptor.get.call(this, value);
-					return ret !== undefined? ret : value;
-				},
-				set: function(v) {
-					var value = this["_" + property];
-					var ret = descriptor.set && descriptor.set.call(this, v, value);
-					this["_" + property] = ret !== undefined? ret : v;
-				},
-				configurable: descriptor.configurable,
-				enumerable: descriptor.enumerable
-			});
-
-			return obj;
-		})
-
-	},
-
-	// Includes a script, returns a promise
-	include: function() {
-		var url = arguments[arguments.length - 1];
-		var loaded = arguments.length === 2? arguments[0] : false;
-
-		var script = document.createElement("script");
-
-		return loaded? Promise.resolve() : new Promise(function(resolve, reject) {
-			$.set(script, {
-				async: true,
-				onload: function() {
-					resolve(script);
-					script.parentNode && script.parentNode.removeChild(script);
-				},
-				onerror: function() {
-					reject(script);
-				},
-				src: url,
-				inside: document.head
-			});
-		});
-	},
-
-	// Dynamically load a CSS or JS resource
-	load: function load(url, base) {
-		base = base? new URL(base, location.href) : location.href;
-		url = new URL(url, base);
-
-		// Prevent double loading
-		var loading = load.loading = load.loading || {};
-
-		if (loading[url + ""]) {
-			return loading[url + ""];
-		}
-
-		if (/\.css$/.test(url.pathname)) {
-			// CSS file
-			return loading[url + ""] = new Promise(function(resolve, reject) {
-				var link = $.create("link", {
-					"href": url,
-					"rel": "stylesheet",
-					"inside": document.head,
-					onload: function() {
-						resolve(link);
-					},
-					onerror: function() {
-						reject(link);
-					}
-				});
-			});
-		}
-
-		// JS file
-		return loading[url + ""] = $.include(url);
-	},
-
-	/*
-	 * Fetch API inspired XHR wrapper. Returns promise.
-	 */
-	fetch: function(url, o) {
-		if (!url) {
-			throw new TypeError("URL parameter is mandatory and cannot be " + url);
-		}
-
-		// Set defaults & fixup arguments
-		var env = extend({
-			url: new URL(url, location),
-			data: "",
-			method: "GET",
-			headers: {},
-			xhr: new XMLHttpRequest()
-		}, o);
-
-		env.method = env.method.toUpperCase();
-
-		$.hooks.run("fetch-args", env);
-
-		// Start sending the request
-
-		if (env.method === "GET" && env.data) {
-			env.url.search += env.data;
-		}
-
-		document.body.setAttribute("data-loading", env.url);
-
-		env.xhr.open(env.method, env.url.href, env.async !== false, env.user, env.password);
-
-		for (var property in o) {
-			if (property === "upload") {
-				if (env.xhr.upload && typeof o[property] === "object") {
-					$.extend(env.xhr.upload, o[property]);
-				}
-			}
-			else if (property in env.xhr) {
-				try {
-					env.xhr[property] = o[property];
-				}
-				catch (e) {
-					self.console && console.error(e);
-				}
-			}
-		}
-
-		var headerKeys = Object.keys(env.headers).map(function(key) {
-			return key.toLowerCase();
-		});
-
-		if (env.method !== "GET" && headerKeys.indexOf("content-type") === -1) {
-			env.xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-		}
-
-		for (var header in env.headers) {
-			if (env.headers[header] !== undefined) {
-				env.xhr.setRequestHeader(header, env.headers[header]);
-			}
-		}
-
-		var promise = new Promise(function(resolve, reject) {
-			env.xhr.onload = function() {
-				document.body.removeAttribute("data-loading");
-
-				if (env.xhr.status === 0 || env.xhr.status >= 200 && env.xhr.status < 300 || env.xhr.status === 304) {
-					// Success!
-					resolve(env.xhr);
-				}
-				else {
-					reject($.extend(Error(env.xhr.statusText), {
-						xhr: env.xhr,
-						get status() {
-							return this.xhr.status;
-						}
-					}));
-				}
-			};
-
-			env.xhr.onerror = function() {
-				document.body.removeAttribute("data-loading");
-				reject($.extend(Error("Network Error"), {xhr: env.xhr}));
-			};
-
-			env.xhr.ontimeout = function() {
-				document.body.removeAttribute("data-loading");
-				reject($.extend(Error("Network Timeout"), {xhr: env.xhr}));
-			};
-
-			env.xhr.send(env.method === "GET"? null : env.data);
-		});
-		// Hack: Expose xhr.abort(), by attaching xhr to the promise.
-		promise.xhr = env.xhr;
-		return promise;
-	},
-
-	value: function(obj) {
-		var hasRoot = typeof obj !== "string";
-
-		return $.$(arguments).slice(+hasRoot).reduce(function(obj, property) {
-			return obj && obj[property];
-		}, hasRoot? obj : self);
-	}
-});
-
-$.Hooks = new $.Class({
-	add: function (name, callback, first) {
-		if (typeof arguments[0] != "string") {
-			// Multiple hooks
-			for (var name in arguments[0]) {
-				this.add(name, arguments[0][name], arguments[1]);
-			}
-
-			return;
-		}
-
-		(Array.isArray(name)? name : [name]).forEach(function(name) {
-			this[name] = this[name] || [];
-
-			if (callback) {
-				this[name][first? "unshift" : "push"](callback);
-			}
-		}, this);
-	},
-
-	run: function (name, env) {
-		this[name] = this[name] || [];
-		this[name].forEach(function(callback) {
-			callback.call(env && env.context? env.context : env, env);
-		});
-	}
-});
-
-$.hooks = new $.Hooks();
-
-var _ = $.property;
-
-$.Element = function (subject) {
-	this.subject = subject;
-
-	// Author-defined element-related data
-	this.data = {};
-
-	// Internal Bliss element-related data
-	this.bliss = {};
-};
-
-$.Element.prototype = {
-	set: overload(function(property, value) {
-		if (property in $.setProps) {
-			$.setProps[property].call(this, value);
-		}
-		else if (property in this) {
-			this[property] = value;
-		}
-		else {
-			this.setAttribute(property, value);
-		}
-
-	}, 0),
-
-	// Run a CSS transition, return promise
-	transition: function(props, duration) {
-		return new Promise(function(resolve, reject) {
-			if ("transition" in this.style && duration !== 0) {
-				// Get existing style
-				var previous = $.extend({}, this.style, /^transition(Duration|Property)$/);
-
-				$.style(this, {
-					transitionDuration: (duration || 400) + "ms",
-					transitionProperty: Object.keys(props).join(", ")
-				});
-
-				$.once(this, "transitionend", function() {
-					clearTimeout(i);
-					$.style(this, previous);
-					resolve(this);
-				});
-
-				// Failsafe, in case transitionend doesn’t fire
-				var i = setTimeout(resolve, duration+50, this);
-
-				$.style(this, props);
-			}
-			else {
-				$.style(this, props);
-				resolve(this);
-			}
-		}.bind(this));
-	},
-
-	// Fire a synthesized event on the element
-	fire: function (type, properties) {
-		var evt = document.createEvent("HTMLEvents");
-
-		evt.initEvent(type, true, true );
-
-		// Return the result of dispatching the event, so we
-		// can know if `e.preventDefault` was called inside it
-		return this.dispatchEvent($.extend(evt, properties));
-	},
-
-	bind: overload(function(types, options) {
-		if (arguments.length > 1 && ($.type(options) === "function" || options.handleEvent)) {
-			// options is actually callback
-			var callback = options;
-			options = $.type(arguments[2]) === "object"? arguments[2] : {
-				capture: !!arguments[2] // in case it's passed as a boolean 3rd arg
-			};
-			options.callback = callback;
-		}
-
-		var listeners = $.listeners.get(this) || {};
-
-		types.trim().split(/\s+/).forEach(function (type) {
-			if (type.indexOf(".") > -1) {
-				type = type.split(".");
-				var className = type[1];
-				type = type[0];
-			}
-
-			listeners[type] = listeners[type] || [];
-
-			if (listeners[type].filter(function(l) {
-				return l.callback === options.callback && l.capture == options.capture;
-			}).length === 0) {
-				listeners[type].push($.extend({className: className}, options));
-			}
-
-			$.original.addEventListener.call(this, type, options.callback, options);
-		}, this);
-
-		$.listeners.set(this, listeners);
-	}, 0),
-
-	unbind: overload(function(types, options) {
-		if (options && ($.type(options) === "function" || options.handleEvent)) {
-			var callback = options;
-			options = arguments[2];
-		}
-
-		if ($.type(options) == "boolean") {
-			options = {capture: options};
-		}
-
-		options = options || {};
-		options.callback = options.callback || callback;
-
-		var listeners = $.listeners.get(this);
-
-		(types || "").trim().split(/\s+/).forEach(function (type) {
-			if (type.indexOf(".") > -1) {
-				type = type.split(".");
-				var className = type[1];
-				type = type[0];
-			}
-
-			//if listeners exist, always go through listeners to clean up
-			if (!listeners) {
-				if (type && options.callback) {
-					return $.original.removeEventListener.call(this, type, options.callback, options.capture);
-				}
-				return;
-			}
-
-			// Mass unbinding, need to go through listeners
-			for (var ltype in listeners) {
-				if (!type || ltype === type) {
-					// No forEach, because we’re mutating the array
-					for (var i=0, l; l=listeners[ltype][i]; i++) {
-						if ((!className || className === l.className)
-							&& (!options.callback || options.callback === l.callback)
-							&& (!!options.capture == !!l.capture || 
-						    		!type && !options.callback && undefined === options.capture)
-						   ) {
-								listeners[ltype].splice(i, 1);
-								$.original.removeEventListener.call(this, ltype, l.callback, l.capture);
-								i--;
-						}
-					}
-				}
-			}
-		}, this);
-	}, 0),
-
-	// Return a promise that resolves when an event fires, then unbind
-	when: function(type, test) {
-		var me = this;
-		return new Promise(function(resolve) {
-			me.addEventListener(type, function callee(evt) {
-				if (!test || test.call(this, evt)) {
-					this.removeEventListener(type, callee);
-					resolve(evt);
-				}
-			});
-		});
-	},
-
-	toggleAttribute: function(name, value, test) {
-		if (arguments.length < 3) {
-			test = value !== null;
-		}
-
-		if (test) {
-			this.setAttribute(name, value);
-		}
-		else {
-			this.removeAttribute(name);
-		}
-	}
-};
-
-/*
- * Properties with custom handling in $.set()
- * Also available as functions directly on element._ and on $
- */
-$.setProps = {
-	// Set a bunch of inline CSS styles
-	style: function (val) {
-		for (var property in val) {
-			if (property in this.style) {
-				// camelCase versions
-				this.style[property] = val[property];
-			}
-			else {
-				// This way we can set CSS Variables too and use normal property names
-				this.style.setProperty(property, val[property]);
-			}
-		}
-	},
-
-	// Set a bunch of attributes
-	attributes: function (o) {
-		for (var attribute in o) {
-			this.setAttribute(attribute, o[attribute]);
-		}
-	},
-
-	// Set a bunch of properties on the element
-	properties: function (val) {
-		$.extend(this, val);
-	},
-
-	// Bind one or more events to the element
-	events: function (val) {
-		if (arguments.length == 1 && val && val.addEventListener) {
-			// Copy events from other element (requires Bliss Full)
-			var me = this;
-
-			// Copy listeners
-			if ($.listeners) {
-				var listeners = $.listeners.get(val);
-
-				for (var type in listeners) {
-					listeners[type].forEach(function(l) {
-						$.bind(me, type, l.callback, l.capture);
-					});
-				}
-			}
-
-			// Copy inline events
-			for (var onevent in val) {
-				if (onevent.indexOf("on") === 0) {
-					this[onevent] = val[onevent];
-				}
-			}
-		}
-		else {
-			return $.bind.apply(this, [this].concat($.$(arguments)));
-		}
-	},
-
-	once: overload(function(types, callback) {
-		var me = this;
-		var once = function() {
-			$.unbind(me, types, once);
-
-			return callback.apply(me, arguments);
-		};
-
-		$.bind(this, types, once, {once: true});
-	}, 0),
-
-	// Event delegation
-	delegate: overload(function (type, selector, callback) {
-		$.bind(this, type, function(evt) {
-			if (evt.target.closest(selector)) {
-				callback.call(this, evt);
-			}
-		});
-	}, 0, 2),
-
-	// Set the contents as a string, an element, an object to create an element or an array of these
-	contents: function (val) {
-		if (val || val === 0) {
-			(Array.isArray(val)? val : [val]).forEach(function (child) {
-				var type = $.type(child);
-
-				if (/^(string|number)$/.test(type)) {
-					child = document.createTextNode(child + "");
-				}
-				else if (type === "object") {
-					child = $.create(child);
-				}
-
-				if (child instanceof Node) {
-					this.appendChild(child);
-				}
-			}, this);
-		}
-	},
-
-	// Append the element inside another element
-	inside: function (element) {
-		element && element.appendChild(this);
-	},
-
-	// Insert the element before another element
-	before: function (element) {
-		element && element.parentNode.insertBefore(this, element);
-	},
-
-	// Insert the element after another element
-	after: function (element) {
-		element && element.parentNode.insertBefore(this, element.nextSibling);
-	},
-
-	// Insert the element before another element's contents
-	start: function (element) {
-		element && element.insertBefore(this, element.firstChild);
-	},
-
-	// Wrap the element around another element
-	around: function (element) {
-		if (element && element.parentNode) {
-			$.before(this, element);
-		}
-
-		this.appendChild(element);
-	}
-};
-
-$.Array = function (subject) {
-	this.subject = subject;
-};
-
-$.Array.prototype = {
-	all: function(method) {
-		var args = $.$(arguments).slice(1);
-
-		return this[method].apply(this, args);
-	}
-};
-
-// Extends Bliss with more methods
-$.add = overload(function(method, callback, on, noOverwrite) {
-	on = $.extend({$: true, element: true, array: true}, on);
-
-	if ($.type(callback) == "function") {
-		if (on.element && (!(method in $.Element.prototype) || !noOverwrite)) {
-			$.Element.prototype[method] = function () {
-				return this.subject && $.defined(callback.apply(this.subject, arguments), this.subject);
-			};
-		}
-
-		if (on.array && (!(method in $.Array.prototype) || !noOverwrite)) {
-			$.Array.prototype[method] = function() {
-				var args = arguments;
-				return this.subject.map(function(element) {
-					return element && $.defined(callback.apply(element, args), element);
-				});
-			};
-		}
-
-		if (on.$) {
-			$.sources[method] = $[method] = callback;
-
-			if (on.array || on.element) {
-				$[method] = function () {
-					var args = [].slice.apply(arguments);
-					var subject = args.shift();
-					var Type = on.array && Array.isArray(subject)? "Array" : "Element";
-
-					return $[Type].prototype[method].apply({subject: subject}, args);
-				};
-			}
-		}
-	}
-}, 0);
-
-$.add($.Array.prototype, {element: false});
-$.add($.Element.prototype);
-$.add($.setProps);
-$.add($.classProps, {element: false, array: false});
-
-// Add native methods on $ and _
-var dummy = document.createElement("_");
-$.add($.extend({}, HTMLElement.prototype, function(method) {
-	return $.type(dummy[method]) === "function";
-}), null, true);
-
-
-})();
-
-(function($) {
-"use strict";
-
-if (!Bliss || Bliss.shy) {
-	return;
-}
-
-var _ = Bliss.property;
-
-// Methods requiring Bliss Full
-$.add({
-	// Clone elements, with events and data
-	clone: function () {
-		console.warn("$.clone() is deprecated and will be removed in a future version of Bliss.");
-		var clone = this.cloneNode(true);
-		var descendants = $.$("*", clone).concat(clone);
-
-		$.$("*", this).concat(this).forEach(function(element, i, arr) {
-			$.events(descendants[i], element);
-			descendants[i]._.data = $.extend({}, element._.data);
-		});
-
-		return clone;
-	}
-}, {array: false});
-
-// Define the _ property on arrays and elements
-
-Object.defineProperty(Node.prototype, _, {
-	// Written for IE compatability (see #49)
-	get: function getter () {
-		Object.defineProperty(Node.prototype, _, {
-			get: undefined
-		});
-		Object.defineProperty(this, _, {
-			value: new $.Element(this)
-		});
-		Object.defineProperty(Node.prototype, _, {
-			get: getter
-		});
-		return this[_];
-	},
-	configurable: true
-});
-
-Object.defineProperty(Array.prototype, _, {
-	get: function () {
-		Object.defineProperty(this, _, {
-			value: new $.Array(this)
-		});
-
-		return this[_];
-	},
-	configurable: true
-});
-
-// Hijack addEventListener and removeEventListener to store callbacks
-
-if (self.EventTarget && "addEventListener" in EventTarget.prototype) {
-	EventTarget.prototype.addEventListener = function(type, callback, options) {
-		return $.bind(this, type, callback, options);
-	};
-
-	EventTarget.prototype.removeEventListener = function(type, callback, options) {
-		return $.unbind(this, type, callback, options);
-	};
-}
-
-// Set $ and $$ convenience methods, if not taken
-self.$ = self.$ || $;
-self.$$ = self.$$ || $.$;
-
-})(Bliss);
-
-
-/***/ }),
-
-/***/ "./node_modules/cash-dom/dist/cash.esm.js":
-/*!************************************************!*\
-  !*** ./node_modules/cash-dom/dist/cash.esm.js ***!
-  \************************************************/
-/*! namespace exports */
-/*! export Cash [provided] [maybe used (runtime-defined)] [usage prevents renaming] */
-/*! export default [provided] [maybe used (runtime-defined)] [usage prevents renaming] */
-/*! other exports [not provided] [maybe used (runtime-defined)] */
-/*! runtime requirements: __webpack_exports__, __webpack_require__.r, __webpack_require__.d, __webpack_require__.* */
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => __WEBPACK_DEFAULT_EXPORT__,
-/* harmony export */   "Cash": () => /* binding */ Cash
-/* harmony export */ });
 /* MIT https://github.com/kenwheeler/cash */
-const propMap = {
-    /* GENERAL */
-    class: 'className',
-    contenteditable: 'contentEditable',
-    /* LABEL */
-    for: 'htmlFor',
-    /* INPUT */
-    readonly: 'readOnly',
-    maxlength: 'maxLength',
-    tabindex: 'tabIndex',
-    /* TABLE */
-    colspan: 'colSpan',
-    rowspan: 'rowSpan',
-    /* IMAGE */
-    usemap: 'useMap'
+(function(){
+"use strict";
+
+var propMap = {
+  /* GENERAL */
+  "class": 'className',
+  contenteditable: 'contentEditable',
+
+  /* LABEL */
+  "for": 'htmlFor',
+
+  /* INPUT */
+  readonly: 'readOnly',
+  maxlength: 'maxLength',
+  tabindex: 'tabIndex',
+
+  /* TABLE */
+  colspan: 'colSpan',
+  rowspan: 'rowSpan',
+
+  /* IMAGE */
+  usemap: 'useMap'
 };
+
 function attempt(fn, arg) {
-    try {
-        return fn(arg);
-    }
-    catch (_a) {
-        return arg;
-    }
+  try {
+    return fn(arg);
+  } catch (_a) {
+    return arg;
+  }
 }
-const doc = document, win = window, docEle = doc.documentElement, createElement = doc.createElement.bind(doc), div = createElement('div'), table = createElement('table'), tbody = createElement('tbody'), tr = createElement('tr'), { isArray, prototype: ArrayPrototype } = Array, { concat, filter, indexOf, map, push, slice, some, splice } = ArrayPrototype;
-const idRe = /^#[\w-]*$/, classRe = /^\.[\w-]*$/, htmlRe = /<.+>/, tagRe = /^\w+$/;
-// @require ./variables.ts
+
+var doc = document,
+    win = window,
+    docEle = doc.documentElement,
+    createElement = doc.createElement.bind(doc),
+    div = createElement('div'),
+    table = createElement('table'),
+    tbody = createElement('tbody'),
+    tr = createElement('tr'),
+    isArray = Array.isArray,
+    ArrayPrototype = Array.prototype,
+    concat = ArrayPrototype.concat,
+    filter = ArrayPrototype.filter,
+    indexOf = ArrayPrototype.indexOf,
+    map = ArrayPrototype.map,
+    push = ArrayPrototype.push,
+    slice = ArrayPrototype.slice,
+    some = ArrayPrototype.some,
+    splice = ArrayPrototype.splice;
+var idRe = /^#[\w-]*$/,
+    classRe = /^\.[\w-]*$/,
+    htmlRe = /<.+>/,
+    tagRe = /^\w+$/; // @require ./variables.ts
+
 function find(selector, context) {
-    return !selector || (!isDocument(context) && !isElement(context))
-        ? []
-        : classRe.test(selector)
-            ? context.getElementsByClassName(selector.slice(1))
-            : tagRe.test(selector)
-                ? context.getElementsByTagName(selector)
-                : context.querySelectorAll(selector);
-}
-// @require ./find.ts
+  return !selector || !isDocument(context) && !isElement(context) ? [] : classRe.test(selector) ? context.getElementsByClassName(selector.slice(1)) : tagRe.test(selector) ? context.getElementsByTagName(selector) : context.querySelectorAll(selector);
+} // @require ./find.ts
 // @require ./variables.ts
-class Cash {
-    constructor(selector, context) {
-        if (!selector)
-            return;
-        if (isCash(selector))
-            return selector;
-        let eles = selector;
-        if (isString(selector)) {
-            const ctx = (isCash(context) ? context[0] : context) || doc;
-            eles = idRe.test(selector)
-                ? ctx.getElementById(selector.slice(1))
-                : htmlRe.test(selector)
-                    ? parseHTML(selector)
-                    : find(selector, ctx);
-            if (!eles)
-                return;
-        }
-        else if (isFunction(selector)) {
-            return this.ready(selector); //FIXME: `fn.ready` is not included in `core`, but it's actually a core functionality
-        }
-        if (eles.nodeType || eles === win)
-            eles = [eles];
-        this.length = eles.length;
-        for (let i = 0, l = this.length; i < l; i++) {
-            this[i] = eles[i];
-        }
+
+
+var Cash =
+/** @class */
+function () {
+  function Cash(selector, context) {
+    if (!selector) return;
+    if (isCash(selector)) return selector;
+    var eles = selector;
+
+    if (isString(selector)) {
+      var ctx = (isCash(context) ? context[0] : context) || doc;
+      eles = idRe.test(selector) ? ctx.getElementById(selector.slice(1)) : htmlRe.test(selector) ? parseHTML(selector) : find(selector, ctx);
+      if (!eles) return;
+    } else if (isFunction(selector)) {
+      return this.ready(selector); //FIXME: `fn.ready` is not included in `core`, but it's actually a core functionality
     }
-    init(selector, context) {
-        return new Cash(selector, context);
+
+    if (eles.nodeType || eles === win) eles = [eles];
+    this.length = eles.length;
+
+    for (var i = 0, l = this.length; i < l; i++) {
+      this[i] = eles[i];
     }
-}
-const fn = Cash.prototype, cash = fn.init;
+  }
+
+  Cash.prototype.init = function (selector, context) {
+    return new Cash(selector, context);
+  };
+
+  return Cash;
+}();
+
+var fn = Cash.prototype,
+    cash = fn.init;
 cash.fn = cash.prototype = fn; // Ensuring that `cash () instanceof cash`
+
 fn.length = 0;
 fn.splice = splice; // Ensuring a cash collection gets printed as array-like in Chrome's devtools
-if (typeof Symbol === 'function') { // Ensuring a cash collection is iterable
-    fn[Symbol['iterator']] = ArrayPrototype[Symbol['iterator']];
+
+if (typeof Symbol === 'function') {
+  // Ensuring a cash collection is iterable
+  fn[Symbol['iterator']] = ArrayPrototype[Symbol['iterator']];
 }
+
 fn.map = function (callback) {
-    return cash(concat.apply([], map.call(this, (ele, i) => callback.call(ele, i, ele))));
+  return cash(concat.apply([], map.call(this, function (ele, i) {
+    return callback.call(ele, i, ele);
+  })));
 };
+
 fn.slice = function (start, end) {
-    return cash(slice.call(this, start, end));
-};
-// @require ./cash.ts
-const dashAlphaRe = /-([a-z])/g;
+  return cash(slice.call(this, start, end));
+}; // @require ./cash.ts
+
+
+var dashAlphaRe = /-([a-z])/g;
+
 function camelCase(str) {
-    return str.replace(dashAlphaRe, (match, letter) => letter.toUpperCase());
+  return str.replace(dashAlphaRe, function (match, letter) {
+    return letter.toUpperCase();
+  });
 }
+
 function each(arr, callback, _reverse) {
-    if (_reverse) {
-        let i = arr.length;
-        while (i--) {
-            if (callback.call(arr[i], i, arr[i]) === false)
-                return arr;
-        }
+  if (_reverse) {
+    var i = arr.length;
+
+    while (i--) {
+      if (callback.call(arr[i], i, arr[i]) === false) return arr;
     }
-    else {
-        for (let i = 0, l = arr.length; i < l; i++) {
-            if (callback.call(arr[i], i, arr[i]) === false)
-                return arr;
-        }
+  } else {
+    for (var i = 0, l = arr.length; i < l; i++) {
+      if (callback.call(arr[i], i, arr[i]) === false) return arr;
     }
-    return arr;
+  }
+
+  return arr;
 }
+
 cash.each = each;
+
 fn.each = function (callback) {
-    return each(this, callback);
+  return each(this, callback);
 };
+
 fn.removeProp = function (prop) {
-    return this.each((i, ele) => { delete ele[propMap[prop] || prop]; });
+  return this.each(function (i, ele) {
+    delete ele[propMap[prop] || prop];
+  });
 };
-function extend(target, ...objs) {
-    const length = arguments.length;
-    if (!length)
-        return {};
-    if (length === 1)
-        return extend(cash, target);
-    for (let i = 1; i < length; i++) {
-        for (const key in arguments[i]) {
-            target[key] = arguments[i][key];
-        }
+
+function extend(target) {
+  var objs = [];
+
+  for (var _i = 1; _i < arguments.length; _i++) {
+    objs[_i - 1] = arguments[_i];
+  }
+
+  var length = arguments.length;
+  if (!length) return {};
+  if (length === 1) return extend(cash, target);
+
+  for (var i = 1; i < length; i++) {
+    for (var key in arguments[i]) {
+      target[key] = arguments[i][key];
     }
-    return target;
+  }
+
+  return target;
 }
+
 cash.extend = extend;
+
 fn.extend = function (plugins) {
-    return extend(fn, plugins);
+  return extend(fn, plugins);
 };
-cash.guid = 1;
-// @require ./cash.ts
+
+cash.guid = 1; // @require ./cash.ts
+
 function matches(ele, selector) {
-    const matches = ele && (ele['matches'] || ele['webkitMatchesSelector'] || ele['msMatchesSelector']);
-    return !!matches && !!selector && matches.call(ele, selector);
+  var matches = ele && (ele['matches'] || ele['webkitMatchesSelector'] || ele['msMatchesSelector']);
+  return !!matches && !!selector && matches.call(ele, selector);
 }
+
 function isCash(x) {
-    return x instanceof Cash;
+  return x instanceof Cash;
 }
+
 function isWindow(x) {
-    return !!x && x === x.window;
+  return !!x && x === x.window;
 }
+
 function isDocument(x) {
-    return !!x && x.nodeType === 9;
+  return !!x && x.nodeType === 9;
 }
+
 function isElement(x) {
-    return !!x && x.nodeType === 1;
+  return !!x && x.nodeType === 1;
 }
+
 function isFunction(x) {
-    return typeof x === 'function';
+  return typeof x === 'function';
 }
+
 function isString(x) {
-    return typeof x === 'string';
+  return typeof x === 'string';
 }
+
 function isUndefined(x) {
-    return x === undefined;
+  return x === undefined;
 }
+
 function isNull(x) {
-    return x === null;
+  return x === null;
 }
+
 function isNumeric(x) {
-    return !isNaN(parseFloat(x)) && isFinite(x);
+  return !isNaN(parseFloat(x)) && isFinite(x);
 }
+
 cash.isWindow = isWindow;
 cash.isFunction = isFunction;
 cash.isNumeric = isNumeric;
 cash.isArray = isArray;
+
 fn.prop = function (prop, value) {
-    if (!prop)
-        return;
-    if (isString(prop)) {
-        prop = propMap[prop] || prop;
-        if (arguments.length < 2)
-            return this[0] && this[0][prop];
-        return this.each((i, ele) => { ele[prop] = value; });
-    }
-    for (const key in prop) {
-        this.prop(key, prop[key]);
-    }
-    return this;
+  if (!prop) return;
+
+  if (isString(prop)) {
+    prop = propMap[prop] || prop;
+    if (arguments.length < 2) return this[0] && this[0][prop];
+    return this.each(function (i, ele) {
+      ele[prop] = value;
+    });
+  }
+
+  for (var key in prop) {
+    this.prop(key, prop[key]);
+  }
+
+  return this;
 };
+
 fn.get = function (index) {
-    if (isUndefined(index))
-        return slice.call(this);
-    index = Number(index);
-    return this[index < 0 ? index + this.length : index];
+  if (isUndefined(index)) return slice.call(this);
+  index = Number(index);
+  return this[index < 0 ? index + this.length : index];
 };
+
 fn.eq = function (index) {
-    return cash(this.get(index));
+  return cash(this.get(index));
 };
+
 fn.first = function () {
-    return this.eq(0);
+  return this.eq(0);
 };
+
 fn.last = function () {
-    return this.eq(-1);
-};
-// @require ./matches.ts
+  return this.eq(-1);
+}; // @require ./matches.ts
 // @require ./type_checking.ts
+
+
 function getCompareFunction(comparator) {
-    return isString(comparator)
-        ? (i, ele) => matches(ele, comparator)
-        : isFunction(comparator)
-            ? comparator
-            : isCash(comparator)
-                ? (i, ele) => comparator.is(ele)
-                : !comparator
-                    ? () => false
-                    : (i, ele) => ele === comparator;
+  return isString(comparator) ? function (i, ele) {
+    return matches(ele, comparator);
+  } : isFunction(comparator) ? comparator : isCash(comparator) ? function (i, ele) {
+    return comparator.is(ele);
+  } : !comparator ? function () {
+    return false;
+  } : function (i, ele) {
+    return ele === comparator;
+  };
 }
+
 fn.filter = function (comparator) {
-    const compare = getCompareFunction(comparator);
-    return cash(filter.call(this, (ele, i) => compare.call(ele, i, ele)));
-};
-// @require collection/filter.ts
+  var compare = getCompareFunction(comparator);
+  return cash(filter.call(this, function (ele, i) {
+    return compare.call(ele, i, ele);
+  }));
+}; // @require collection/filter.ts
+
+
 function filtered(collection, comparator) {
-    return !comparator ? collection : collection.filter(comparator);
-}
-// @require ./type_checking.ts
-const splitValuesRe = /\S+/g;
+  return !comparator ? collection : collection.filter(comparator);
+} // @require ./type_checking.ts
+
+
+var splitValuesRe = /\S+/g;
+
 function getSplitValues(str) {
-    return isString(str) ? str.match(splitValuesRe) || [] : [];
+  return isString(str) ? str.match(splitValuesRe) || [] : [];
 }
+
 fn.hasClass = function (cls) {
-    return !!cls && some.call(this, (ele) => isElement(ele) && ele.classList.contains(cls));
+  return !!cls && some.call(this, function (ele) {
+    return isElement(ele) && ele.classList.contains(cls);
+  });
 };
+
 fn.removeAttr = function (attr) {
-    const attrs = getSplitValues(attr);
-    return this.each((i, ele) => {
-        if (!isElement(ele))
-            return;
-        each(attrs, (i, a) => {
-            ele.removeAttribute(a);
-        });
+  var attrs = getSplitValues(attr);
+  return this.each(function (i, ele) {
+    if (!isElement(ele)) return;
+    each(attrs, function (i, a) {
+      ele.removeAttribute(a);
     });
+  });
 };
+
 function attr(attr, value) {
-    if (!attr)
-        return;
-    if (isString(attr)) {
-        if (arguments.length < 2) {
-            if (!this[0] || !isElement(this[0]))
-                return;
-            const value = this[0].getAttribute(attr);
-            return isNull(value) ? undefined : value;
-        }
-        if (isUndefined(value))
-            return this;
-        if (isNull(value))
-            return this.removeAttr(attr);
-        return this.each((i, ele) => {
-            if (!isElement(ele))
-                return;
-            ele.setAttribute(attr, value);
-        });
+  if (!attr) return;
+
+  if (isString(attr)) {
+    if (arguments.length < 2) {
+      if (!this[0] || !isElement(this[0])) return;
+      var value_1 = this[0].getAttribute(attr);
+      return isNull(value_1) ? undefined : value_1;
     }
-    for (const key in attr) {
-        this.attr(key, attr[key]);
-    }
-    return this;
-}
-fn.attr = attr;
-fn.toggleClass = function (cls, force) {
-    const classes = getSplitValues(cls), isForce = !isUndefined(force);
-    return this.each((i, ele) => {
-        if (!isElement(ele))
-            return;
-        each(classes, (i, c) => {
-            if (isForce) {
-                force ? ele.classList.add(c) : ele.classList.remove(c);
-            }
-            else {
-                ele.classList.toggle(c);
-            }
-        });
+
+    if (isUndefined(value)) return this;
+    if (isNull(value)) return this.removeAttr(attr);
+    return this.each(function (i, ele) {
+      if (!isElement(ele)) return;
+      ele.setAttribute(attr, value);
     });
+  }
+
+  for (var key in attr) {
+    this.attr(key, attr[key]);
+  }
+
+  return this;
+}
+
+fn.attr = attr;
+
+fn.toggleClass = function (cls, force) {
+  var classes = getSplitValues(cls),
+      isForce = !isUndefined(force);
+  return this.each(function (i, ele) {
+    if (!isElement(ele)) return;
+    each(classes, function (i, c) {
+      if (isForce) {
+        force ? ele.classList.add(c) : ele.classList.remove(c);
+      } else {
+        ele.classList.toggle(c);
+      }
+    });
+  });
 };
+
 fn.addClass = function (cls) {
-    return this.toggleClass(cls, true);
+  return this.toggleClass(cls, true);
 };
+
 fn.removeClass = function (cls) {
-    if (arguments.length)
-        return this.toggleClass(cls, false);
-    return this.attr('class', '');
+  if (arguments.length) return this.toggleClass(cls, false);
+  return this.attr('class', '');
 };
+
 function pluck(arr, prop, deep, until) {
-    const plucked = [], isCallback = isFunction(prop), compare = until && getCompareFunction(until);
-    for (let i = 0, l = arr.length; i < l; i++) {
-        if (isCallback) {
-            const val = prop(arr[i]);
-            if (val.length)
-                push.apply(plucked, val);
-        }
-        else {
-            let val = arr[i][prop];
-            while (val != null) {
-                if (until && compare(-1, val))
-                    break;
-                plucked.push(val);
-                val = deep ? val[prop] : null;
-            }
-        }
+  var plucked = [],
+      isCallback = isFunction(prop),
+      compare = until && getCompareFunction(until);
+
+  for (var i = 0, l = arr.length; i < l; i++) {
+    if (isCallback) {
+      var val_1 = prop(arr[i]);
+      if (val_1.length) push.apply(plucked, val_1);
+    } else {
+      var val_2 = arr[i][prop];
+
+      while (val_2 != null) {
+        if (until && compare(-1, val_2)) break;
+        plucked.push(val_2);
+        val_2 = deep ? val_2[prop] : null;
+      }
     }
-    return plucked;
+  }
+
+  return plucked;
 }
+
 function unique(arr) {
-    return arr.length > 1 ? filter.call(arr, (item, index, self) => indexOf.call(self, item) === index) : arr;
+  return arr.length > 1 ? filter.call(arr, function (item, index, self) {
+    return indexOf.call(self, item) === index;
+  }) : arr;
 }
+
 cash.unique = unique;
+
 fn.add = function (selector, context) {
-    return cash(unique(this.get().concat(cash(selector, context).get())));
-};
-// @require core/type_checking.ts
+  return cash(unique(this.get().concat(cash(selector, context).get())));
+}; // @require core/type_checking.ts
 // @require core/variables.ts
+
+
 function computeStyle(ele, prop, isVariable) {
-    if (!isElement(ele))
-        return;
-    const style = win.getComputedStyle(ele, null);
-    return isVariable ? style.getPropertyValue(prop) || undefined : style[prop];
-}
-// @require ./compute_style.ts
+  if (!isElement(ele)) return;
+  var style = win.getComputedStyle(ele, null);
+  return isVariable ? style.getPropertyValue(prop) || undefined : style[prop];
+} // @require ./compute_style.ts
+
+
 function computeStyleInt(ele, prop) {
-    return parseInt(computeStyle(ele, prop), 10) || 0;
+  return parseInt(computeStyle(ele, prop), 10) || 0;
 }
-const cssVariableRe = /^--/;
-// @require ./variables.ts
+
+var cssVariableRe = /^--/; // @require ./variables.ts
+
 function isCSSVariable(prop) {
-    return cssVariableRe.test(prop);
-}
-// @require core/camel_case.ts
+  return cssVariableRe.test(prop);
+} // @require core/camel_case.ts
 // @require core/cash.ts
 // @require core/each.ts
 // @require core/variables.ts
 // @require ./is_css_variable.ts
-const prefixedProps = {}, { style } = div, vendorsPrefixes = ['webkit', 'moz', 'ms'];
-function getPrefixedProp(prop, isVariable = isCSSVariable(prop)) {
-    if (isVariable)
-        return prop;
-    if (!prefixedProps[prop]) {
-        const propCC = camelCase(prop), propUC = `${propCC[0].toUpperCase()}${propCC.slice(1)}`, props = (`${propCC} ${vendorsPrefixes.join(`${propUC} `)}${propUC}`).split(' ');
-        each(props, (i, p) => {
-            if (p in style) {
-                prefixedProps[prop] = p;
-                return false;
-            }
-        });
-    }
-    return prefixedProps[prop];
-}
-;
-// @require core/type_checking.ts
-// @require ./is_css_variable.ts
-const numericProps = {
-    animationIterationCount: true,
-    columnCount: true,
-    flexGrow: true,
-    flexShrink: true,
-    fontWeight: true,
-    gridArea: true,
-    gridColumn: true,
-    gridColumnEnd: true,
-    gridColumnStart: true,
-    gridRow: true,
-    gridRowEnd: true,
-    gridRowStart: true,
-    lineHeight: true,
-    opacity: true,
-    order: true,
-    orphans: true,
-    widows: true,
-    zIndex: true
-};
-function getSuffixedValue(prop, value, isVariable = isCSSVariable(prop)) {
-    return !isVariable && !numericProps[prop] && isNumeric(value) ? `${value}px` : value;
-}
-function css(prop, value) {
-    if (isString(prop)) {
-        const isVariable = isCSSVariable(prop);
-        prop = getPrefixedProp(prop, isVariable);
-        if (arguments.length < 2)
-            return this[0] && computeStyle(this[0], prop, isVariable);
-        if (!prop)
-            return this;
-        value = getSuffixedValue(prop, value, isVariable);
-        return this.each((i, ele) => {
-            if (!isElement(ele))
-                return;
-            if (isVariable) {
-                ele.style.setProperty(prop, value);
-            }
-            else {
-                ele.style[prop] = value;
-            }
-        });
-    }
-    for (const key in prop) {
-        this.css(key, prop[key]);
-    }
-    return this;
-}
-;
-fn.css = css;
-// @optional ./css.ts
-// @require core/attempt.ts
-// @require core/camel_case.ts
-const JSONStringRe = /^\s+|\s+$/;
-function getData(ele, key) {
-    const value = ele.dataset[key] || ele.dataset[camelCase(key)];
-    if (JSONStringRe.test(value))
-        return value;
-    return attempt(JSON.parse, value);
-}
-// @require core/attempt.ts
-// @require core/camel_case.ts
-function setData(ele, key, value) {
-    value = attempt(JSON.stringify, value);
-    ele.dataset[camelCase(key)] = value;
-}
-function data(name, value) {
-    if (!name) {
-        if (!this[0])
-            return;
-        const datas = {};
-        for (const key in this[0].dataset) {
-            datas[key] = getData(this[0], key);
-        }
-        return datas;
-    }
-    if (isString(name)) {
-        if (arguments.length < 2)
-            return this[0] && getData(this[0], name);
-        if (isUndefined(value))
-            return this;
-        return this.each((i, ele) => { setData(ele, name, value); });
-    }
-    for (const key in name) {
-        this.data(key, name[key]);
-    }
-    return this;
-}
-fn.data = data;
-// @optional ./data.ts
-function getDocumentDimension(doc, dimension) {
-    const docEle = doc.documentElement;
-    return Math.max(doc.body[`scroll${dimension}`], docEle[`scroll${dimension}`], doc.body[`offset${dimension}`], docEle[`offset${dimension}`], docEle[`client${dimension}`]);
-}
-// @require css/helpers/compute_style_int.ts
-function getExtraSpace(ele, xAxis) {
-    return computeStyleInt(ele, `border${xAxis ? 'Left' : 'Top'}Width`) + computeStyleInt(ele, `padding${xAxis ? 'Left' : 'Top'}`) + computeStyleInt(ele, `padding${xAxis ? 'Right' : 'Bottom'}`) + computeStyleInt(ele, `border${xAxis ? 'Right' : 'Bottom'}Width`);
-}
-each([true, false], (i, outer) => {
-    each(['Width', 'Height'], (i, prop) => {
-        const name = `${outer ? 'outer' : 'inner'}${prop}`;
-        fn[name] = function (includeMargins) {
-            if (!this[0])
-                return;
-            if (isWindow(this[0]))
-                return outer ? this[0][`inner${prop}`] : this[0].document.documentElement[`client${prop}`];
-            if (isDocument(this[0]))
-                return getDocumentDimension(this[0], prop);
-            return this[0][`${outer ? 'offset' : 'client'}${prop}`] + (includeMargins && outer ? computeStyleInt(this[0], `margin${i ? 'Top' : 'Left'}`) + computeStyleInt(this[0], `margin${i ? 'Bottom' : 'Right'}`) : 0);
-        };
+
+
+var prefixedProps = {},
+    style = div.style,
+    vendorsPrefixes = ['webkit', 'moz', 'ms'];
+
+function getPrefixedProp(prop, isVariable) {
+  if (isVariable === void 0) {
+    isVariable = isCSSVariable(prop);
+  }
+
+  if (isVariable) return prop;
+
+  if (!prefixedProps[prop]) {
+    var propCC = camelCase(prop),
+        propUC = "" + propCC[0].toUpperCase() + propCC.slice(1),
+        props = (propCC + " " + vendorsPrefixes.join(propUC + " ") + propUC).split(' ');
+    each(props, function (i, p) {
+      if (p in style) {
+        prefixedProps[prop] = p;
+        return false;
+      }
     });
-});
-each(['Width', 'Height'], (index, prop) => {
-    const propLC = prop.toLowerCase();
-    fn[propLC] = function (value) {
-        if (!this[0])
-            return isUndefined(value) ? undefined : this;
-        if (!arguments.length) {
-            if (isWindow(this[0]))
-                return this[0].document.documentElement[`client${prop}`];
-            if (isDocument(this[0]))
-                return getDocumentDimension(this[0], prop);
-            return this[0].getBoundingClientRect()[propLC] - getExtraSpace(this[0], !index);
-        }
-        const valueNumber = parseInt(value, 10);
-        return this.each((i, ele) => {
-            if (!isElement(ele))
-                return;
-            const boxSizing = computeStyle(ele, 'boxSizing');
-            ele.style[propLC] = getSuffixedValue(propLC, valueNumber + (boxSizing === 'border-box' ? getExtraSpace(ele, !index) : 0));
-        });
+  }
+
+  return prefixedProps[prop];
+}
+
+; // @require core/type_checking.ts
+// @require ./is_css_variable.ts
+
+var numericProps = {
+  animationIterationCount: true,
+  columnCount: true,
+  flexGrow: true,
+  flexShrink: true,
+  fontWeight: true,
+  gridArea: true,
+  gridColumn: true,
+  gridColumnEnd: true,
+  gridColumnStart: true,
+  gridRow: true,
+  gridRowEnd: true,
+  gridRowStart: true,
+  lineHeight: true,
+  opacity: true,
+  order: true,
+  orphans: true,
+  widows: true,
+  zIndex: true
+};
+
+function getSuffixedValue(prop, value, isVariable) {
+  if (isVariable === void 0) {
+    isVariable = isCSSVariable(prop);
+  }
+
+  return !isVariable && !numericProps[prop] && isNumeric(value) ? value + "px" : value;
+}
+
+function css(prop, value) {
+  if (isString(prop)) {
+    var isVariable_1 = isCSSVariable(prop);
+    prop = getPrefixedProp(prop, isVariable_1);
+    if (arguments.length < 2) return this[0] && computeStyle(this[0], prop, isVariable_1);
+    if (!prop) return this;
+    value = getSuffixedValue(prop, value, isVariable_1);
+    return this.each(function (i, ele) {
+      if (!isElement(ele)) return;
+
+      if (isVariable_1) {
+        ele.style.setProperty(prop, value);
+      } else {
+        ele.style[prop] = value;
+      }
+    });
+  }
+
+  for (var key in prop) {
+    this.css(key, prop[key]);
+  }
+
+  return this;
+}
+
+;
+fn.css = css; // @optional ./css.ts
+// @require core/attempt.ts
+// @require core/camel_case.ts
+
+var JSONStringRe = /^\s+|\s+$/;
+
+function getData(ele, key) {
+  var value = ele.dataset[key] || ele.dataset[camelCase(key)];
+  if (JSONStringRe.test(value)) return value;
+  return attempt(JSON.parse, value);
+} // @require core/attempt.ts
+// @require core/camel_case.ts
+
+
+function setData(ele, key, value) {
+  value = attempt(JSON.stringify, value);
+  ele.dataset[camelCase(key)] = value;
+}
+
+function data(name, value) {
+  if (!name) {
+    if (!this[0]) return;
+    var datas = {};
+
+    for (var key in this[0].dataset) {
+      datas[key] = getData(this[0], key);
+    }
+
+    return datas;
+  }
+
+  if (isString(name)) {
+    if (arguments.length < 2) return this[0] && getData(this[0], name);
+    if (isUndefined(value)) return this;
+    return this.each(function (i, ele) {
+      setData(ele, name, value);
+    });
+  }
+
+  for (var key in name) {
+    this.data(key, name[key]);
+  }
+
+  return this;
+}
+
+fn.data = data; // @optional ./data.ts
+
+function getDocumentDimension(doc, dimension) {
+  var docEle = doc.documentElement;
+  return Math.max(doc.body["scroll" + dimension], docEle["scroll" + dimension], doc.body["offset" + dimension], docEle["offset" + dimension], docEle["client" + dimension]);
+} // @require css/helpers/compute_style_int.ts
+
+
+function getExtraSpace(ele, xAxis) {
+  return computeStyleInt(ele, "border" + (xAxis ? 'Left' : 'Top') + "Width") + computeStyleInt(ele, "padding" + (xAxis ? 'Left' : 'Top')) + computeStyleInt(ele, "padding" + (xAxis ? 'Right' : 'Bottom')) + computeStyleInt(ele, "border" + (xAxis ? 'Right' : 'Bottom') + "Width");
+}
+
+each([true, false], function (i, outer) {
+  each(['Width', 'Height'], function (i, prop) {
+    var name = "" + (outer ? 'outer' : 'inner') + prop;
+
+    fn[name] = function (includeMargins) {
+      if (!this[0]) return;
+      if (isWindow(this[0])) return outer ? this[0]["inner" + prop] : this[0].document.documentElement["client" + prop];
+      if (isDocument(this[0])) return getDocumentDimension(this[0], prop);
+      return this[0]["" + (outer ? 'offset' : 'client') + prop] + (includeMargins && outer ? computeStyleInt(this[0], "margin" + (i ? 'Top' : 'Left')) + computeStyleInt(this[0], "margin" + (i ? 'Bottom' : 'Right')) : 0);
     };
+  });
 });
-// @optional ./inner_outer.ts
+each(['Width', 'Height'], function (index, prop) {
+  var propLC = prop.toLowerCase();
+
+  fn[propLC] = function (value) {
+    if (!this[0]) return isUndefined(value) ? undefined : this;
+
+    if (!arguments.length) {
+      if (isWindow(this[0])) return this[0].document.documentElement["client" + prop];
+      if (isDocument(this[0])) return getDocumentDimension(this[0], prop);
+      return this[0].getBoundingClientRect()[propLC] - getExtraSpace(this[0], !index);
+    }
+
+    var valueNumber = parseInt(value, 10);
+    return this.each(function (i, ele) {
+      if (!isElement(ele)) return;
+      var boxSizing = computeStyle(ele, 'boxSizing');
+      ele.style[propLC] = getSuffixedValue(propLC, valueNumber + (boxSizing === 'border-box' ? getExtraSpace(ele, !index) : 0));
+    });
+  };
+}); // @optional ./inner_outer.ts
 // @optional ./normal.ts
 // @require css/helpers/compute_style.ts
-const defaultDisplay = {};
+
+var defaultDisplay = {};
+
 function getDefaultDisplay(tagName) {
-    if (defaultDisplay[tagName])
-        return defaultDisplay[tagName];
-    const ele = createElement(tagName);
-    doc.body.insertBefore(ele, null);
-    const display = computeStyle(ele, 'display');
-    doc.body.removeChild(ele);
-    return defaultDisplay[tagName] = display !== 'none' ? display : 'block';
-}
-// @require css/helpers/compute_style.ts
+  if (defaultDisplay[tagName]) return defaultDisplay[tagName];
+  var ele = createElement(tagName);
+  doc.body.insertBefore(ele, null);
+  var display = computeStyle(ele, 'display');
+  doc.body.removeChild(ele);
+  return defaultDisplay[tagName] = display !== 'none' ? display : 'block';
+} // @require css/helpers/compute_style.ts
+
+
 function isHidden(ele) {
-    return computeStyle(ele, 'display') === 'none';
+  return computeStyle(ele, 'display') === 'none';
 }
-const displayProperty = '___cd';
+
+var displayProperty = '___cd';
+
 fn.toggle = function (force) {
-    return this.each((i, ele) => {
-        if (!isElement(ele))
-            return;
-        const show = isUndefined(force) ? isHidden(ele) : force;
-        if (show) {
-            ele.style.display = ele[displayProperty] || '';
-            if (isHidden(ele)) {
-                ele.style.display = getDefaultDisplay(ele.tagName);
-            }
-        }
-        else {
-            ele[displayProperty] = computeStyle(ele, 'display');
-            ele.style.display = 'none';
-        }
-    });
+  return this.each(function (i, ele) {
+    if (!isElement(ele)) return;
+    var show = isUndefined(force) ? isHidden(ele) : force;
+
+    if (show) {
+      ele.style.display = ele[displayProperty] || '';
+
+      if (isHidden(ele)) {
+        ele.style.display = getDefaultDisplay(ele.tagName);
+      }
+    } else {
+      ele[displayProperty] = computeStyle(ele, 'display');
+      ele.style.display = 'none';
+    }
+  });
 };
+
 fn.hide = function () {
-    return this.toggle(false);
+  return this.toggle(false);
 };
+
 fn.show = function () {
-    return this.toggle(true);
-};
-// @optional ./hide.ts
+  return this.toggle(true);
+}; // @optional ./hide.ts
 // @optional ./show.ts
 // @optional ./toggle.ts
+
+
 function hasNamespaces(ns1, ns2) {
-    return !ns2 || !some.call(ns2, (ns) => ns1.indexOf(ns) < 0);
+  return !ns2 || !some.call(ns2, function (ns) {
+    return ns1.indexOf(ns) < 0;
+  });
 }
-const eventsNamespace = '___ce', eventsNamespacesSeparator = '.', eventsFocus = { focus: 'focusin', blur: 'focusout' }, eventsHover = { mouseenter: 'mouseover', mouseleave: 'mouseout' }, eventsMouseRe = /^(mouse|pointer|contextmenu|drag|drop|click|dblclick)/i;
-// @require ./variables.ts
+
+var eventsNamespace = '___ce',
+    eventsNamespacesSeparator = '.',
+    eventsFocus = {
+  focus: 'focusin',
+  blur: 'focusout'
+},
+    eventsHover = {
+  mouseenter: 'mouseover',
+  mouseleave: 'mouseout'
+},
+    eventsMouseRe = /^(mouse|pointer|contextmenu|drag|drop|click|dblclick)/i; // @require ./variables.ts
+
 function getEventNameBubbling(name) {
-    return eventsHover[name] || eventsFocus[name] || name;
-}
-// @require ./variables.ts
+  return eventsHover[name] || eventsFocus[name] || name;
+} // @require ./variables.ts
+
+
 function getEventsCache(ele) {
-    return ele[eventsNamespace] = (ele[eventsNamespace] || {});
-}
-// @require core/guid.ts
+  return ele[eventsNamespace] = ele[eventsNamespace] || {};
+} // @require core/guid.ts
 // @require events/helpers/get_events_cache.ts
+
+
 function addEvent(ele, name, namespaces, selector, callback) {
-    const eventCache = getEventsCache(ele);
-    eventCache[name] = (eventCache[name] || []);
-    eventCache[name].push([namespaces, selector, callback]);
-    ele.addEventListener(name, callback);
-}
-// @require ./variables.ts
+  var eventCache = getEventsCache(ele);
+  eventCache[name] = eventCache[name] || [];
+  eventCache[name].push([namespaces, selector, callback]);
+  ele.addEventListener(name, callback);
+} // @require ./variables.ts
+
+
 function parseEventName(eventName) {
-    const parts = eventName.split(eventsNamespacesSeparator);
-    return [parts[0], parts.slice(1).sort()]; // [name, namespace[]]
-}
-// @require ./get_events_cache.ts
+  var parts = eventName.split(eventsNamespacesSeparator);
+  return [parts[0], parts.slice(1).sort()]; // [name, namespace[]]
+} // @require ./get_events_cache.ts
 // @require ./has_namespaces.ts
 // @require ./parse_event_name.ts
+
+
 function removeEvent(ele, name, namespaces, selector, callback) {
-    const cache = getEventsCache(ele);
-    if (!name) {
-        for (name in cache) {
-            removeEvent(ele, name, namespaces, selector, callback);
-        }
+  var cache = getEventsCache(ele);
+
+  if (!name) {
+    for (name in cache) {
+      removeEvent(ele, name, namespaces, selector, callback);
     }
-    else if (cache[name]) {
-        cache[name] = cache[name].filter(([ns, sel, cb]) => {
-            if ((callback && cb.guid !== callback.guid) || !hasNamespaces(ns, namespaces) || (selector && selector !== sel))
-                return true;
-            ele.removeEventListener(name, cb);
-        });
-    }
-}
-fn.off = function (eventFullName, selector, callback) {
-    if (isUndefined(eventFullName)) {
-        this.each((i, ele) => {
-            if (!isElement(ele) && !isDocument(ele) && !isWindow(ele))
-                return;
-            removeEvent(ele);
-        });
-    }
-    else if (!isString(eventFullName)) {
-        for (const key in eventFullName) {
-            this.off(key, eventFullName[key]);
-        }
-    }
-    else {
-        if (isFunction(selector)) {
-            callback = selector;
-            selector = '';
-        }
-        each(getSplitValues(eventFullName), (i, eventFullName) => {
-            const [name, namespaces] = parseEventName(getEventNameBubbling(eventFullName));
-            this.each((i, ele) => {
-                if (!isElement(ele) && !isDocument(ele) && !isWindow(ele))
-                    return;
-                removeEvent(ele, name, namespaces, selector, callback);
-            });
-        });
-    }
-    return this;
-};
-function on(eventFullName, selector, data, callback, _one) {
-    if (!isString(eventFullName)) {
-        for (const key in eventFullName) {
-            this.on(key, selector, data, eventFullName[key], _one);
-        }
-        return this;
-    }
-    if (!isString(selector)) {
-        if (isUndefined(selector) || isNull(selector)) {
-            selector = '';
-        }
-        else if (isUndefined(data)) {
-            data = selector;
-            selector = '';
-        }
-        else {
-            callback = data;
-            data = selector;
-            selector = '';
-        }
-    }
-    if (!isFunction(callback)) {
-        callback = data;
-        data = undefined;
-    }
-    if (!callback)
-        return this;
-    each(getSplitValues(eventFullName), (i, eventFullName) => {
-        const [name, namespaces] = parseEventName(getEventNameBubbling(eventFullName));
-        if (!name)
-            return;
-        this.each((i, ele) => {
-            if (!isElement(ele) && !isDocument(ele) && !isWindow(ele))
-                return;
-            const finalCallback = function (event) {
-                if (event.namespace && !hasNamespaces(namespaces, event.namespace.split(eventsNamespacesSeparator)))
-                    return;
-                let thisArg = ele;
-                if (selector) {
-                    let target = event.target;
-                    while (!matches(target, selector)) {
-                        if (target === ele)
-                            return;
-                        target = target.parentNode;
-                        if (!target)
-                            return;
-                    }
-                    thisArg = target;
-                    event.___cd = true; // Delegate
-                }
-                if (event.___cd) {
-                    Object.defineProperty(event, 'currentTarget', {
-                        configurable: true,
-                        get() {
-                            return thisArg;
-                        }
-                    });
-                }
-                Object.defineProperty(event, 'data', {
-                    configurable: true,
-                    get() {
-                        return data;
-                    }
-                });
-                const returnValue = callback.call(thisArg, event, event.___td);
-                if (_one) {
-                    removeEvent(ele, name, namespaces, selector, finalCallback);
-                }
-                if (returnValue === false) {
-                    event.preventDefault();
-                    event.stopPropagation();
-                }
-            };
-            finalCallback.guid = callback.guid = (callback.guid || cash.guid++);
-            addEvent(ele, name, namespaces, selector, finalCallback);
-        });
+  } else if (cache[name]) {
+    cache[name] = cache[name].filter(function (_a) {
+      var ns = _a[0],
+          sel = _a[1],
+          cb = _a[2];
+      if (callback && cb.guid !== callback.guid || !hasNamespaces(ns, namespaces) || selector && selector !== sel) return true;
+      ele.removeEventListener(name, cb);
     });
+  }
+}
+
+fn.off = function (eventFullName, selector, callback) {
+  var _this = this;
+
+  if (isUndefined(eventFullName)) {
+    this.each(function (i, ele) {
+      if (!isElement(ele) && !isDocument(ele) && !isWindow(ele)) return;
+      removeEvent(ele);
+    });
+  } else if (!isString(eventFullName)) {
+    for (var key in eventFullName) {
+      this.off(key, eventFullName[key]);
+    }
+  } else {
+    if (isFunction(selector)) {
+      callback = selector;
+      selector = '';
+    }
+
+    each(getSplitValues(eventFullName), function (i, eventFullName) {
+      var _a = parseEventName(getEventNameBubbling(eventFullName)),
+          name = _a[0],
+          namespaces = _a[1];
+
+      _this.each(function (i, ele) {
+        if (!isElement(ele) && !isDocument(ele) && !isWindow(ele)) return;
+        removeEvent(ele, name, namespaces, selector, callback);
+      });
+    });
+  }
+
+  return this;
+};
+
+function on(eventFullName, selector, data, callback, _one) {
+  var _this = this;
+
+  if (!isString(eventFullName)) {
+    for (var key in eventFullName) {
+      this.on(key, selector, data, eventFullName[key], _one);
+    }
+
     return this;
+  }
+
+  if (!isString(selector)) {
+    if (isUndefined(selector) || isNull(selector)) {
+      selector = '';
+    } else if (isUndefined(data)) {
+      data = selector;
+      selector = '';
+    } else {
+      callback = data;
+      data = selector;
+      selector = '';
+    }
+  }
+
+  if (!isFunction(callback)) {
+    callback = data;
+    data = undefined;
+  }
+
+  if (!callback) return this;
+  each(getSplitValues(eventFullName), function (i, eventFullName) {
+    var _a = parseEventName(getEventNameBubbling(eventFullName)),
+        name = _a[0],
+        namespaces = _a[1];
+
+    if (!name) return;
+
+    _this.each(function (i, ele) {
+      if (!isElement(ele) && !isDocument(ele) && !isWindow(ele)) return;
+
+      var finalCallback = function finalCallback(event) {
+        if (event.namespace && !hasNamespaces(namespaces, event.namespace.split(eventsNamespacesSeparator))) return;
+        var thisArg = ele;
+
+        if (selector) {
+          var target = event.target;
+
+          while (!matches(target, selector)) {
+            if (target === ele) return;
+            target = target.parentNode;
+            if (!target) return;
+          }
+
+          thisArg = target;
+          event.___cd = true; // Delegate
+        }
+
+        if (event.___cd) {
+          Object.defineProperty(event, 'currentTarget', {
+            configurable: true,
+            get: function get() {
+              return thisArg;
+            }
+          });
+        }
+
+        Object.defineProperty(event, 'data', {
+          configurable: true,
+          get: function get() {
+            return data;
+          }
+        });
+        var returnValue = callback.call(thisArg, event, event.___td);
+
+        if (_one) {
+          removeEvent(ele, name, namespaces, selector, finalCallback);
+        }
+
+        if (returnValue === false) {
+          event.preventDefault();
+          event.stopPropagation();
+        }
+      };
+
+      finalCallback.guid = callback.guid = callback.guid || cash.guid++;
+      addEvent(ele, name, namespaces, selector, finalCallback);
+    });
+  });
+  return this;
 }
+
 fn.on = on;
+
 function one(eventFullName, selector, data, callback) {
-    return this.on(eventFullName, selector, data, callback, true);
+  return this.on(eventFullName, selector, data, callback, true);
 }
+
 ;
 fn.one = one;
+
 fn.ready = function (callback) {
-    const cb = () => setTimeout(callback, 0, cash);
-    if (doc.readyState !== 'loading') {
-        cb();
-    }
-    else {
-        doc.addEventListener('DOMContentLoaded', cb);
-    }
-    return this;
+  var cb = function cb() {
+    return setTimeout(callback, 0, cash);
+  };
+
+  if (doc.readyState !== 'loading') {
+    cb();
+  } else {
+    doc.addEventListener('DOMContentLoaded', cb);
+  }
+
+  return this;
 };
+
 fn.trigger = function (event, data) {
-    if (isString(event)) {
-        const [name, namespaces] = parseEventName(event);
-        if (!name)
-            return this;
-        const type = eventsMouseRe.test(name) ? 'MouseEvents' : 'HTMLEvents';
-        event = doc.createEvent(type);
-        event.initEvent(name, true, true);
-        event.namespace = namespaces.join(eventsNamespacesSeparator);
+  if (isString(event)) {
+    var _a = parseEventName(event),
+        name_1 = _a[0],
+        namespaces = _a[1];
+
+    if (!name_1) return this;
+    var type = eventsMouseRe.test(name_1) ? 'MouseEvents' : 'HTMLEvents';
+    event = doc.createEvent(type);
+    event.initEvent(name_1, true, true);
+    event.namespace = namespaces.join(eventsNamespacesSeparator);
+  }
+
+  event.___td = data;
+  var isEventFocus = event.type in eventsFocus;
+  return this.each(function (i, ele) {
+    if (isEventFocus && isFunction(ele[event.type])) {
+      ele[event.type]();
+    } else {
+      ele.dispatchEvent(event);
     }
-    event.___td = data;
-    const isEventFocus = (event.type in eventsFocus);
-    return this.each((i, ele) => {
-        if (isEventFocus && isFunction(ele[event.type])) {
-            ele[event.type]();
-        }
-        else {
-            ele.dispatchEvent(event);
-        }
-    });
-};
-// @optional ./off.ts
+  });
+}; // @optional ./off.ts
 // @optional ./on.ts
 // @optional ./one.ts
 // @optional ./ready.ts
 // @optional ./trigger.ts
 // @require core/pluck.ts
 // @require core/variables.ts
+
+
 function getValue(ele) {
-    if (ele.multiple && ele.options)
-        return pluck(filter.call(ele.options, option => option.selected && !option.disabled && !option.parentNode.disabled), 'value');
-    return ele.value || '';
+  if (ele.multiple && ele.options) return pluck(filter.call(ele.options, function (option) {
+    return option.selected && !option.disabled && !option.parentNode.disabled;
+  }), 'value');
+  return ele.value || '';
 }
-const queryEncodeSpaceRe = /%20/g, queryEncodeCRLFRe = /\r?\n/g;
+
+var queryEncodeSpaceRe = /%20/g,
+    queryEncodeCRLFRe = /\r?\n/g;
+
 function queryEncode(prop, value) {
-    return `&${encodeURIComponent(prop)}=${encodeURIComponent(value.replace(queryEncodeCRLFRe, '\r\n')).replace(queryEncodeSpaceRe, '+')}`;
+  return "&" + encodeURIComponent(prop) + "=" + encodeURIComponent(value.replace(queryEncodeCRLFRe, '\r\n')).replace(queryEncodeSpaceRe, '+');
 }
-const skippableRe = /file|reset|submit|button|image/i, checkableRe = /radio|checkbox/i;
+
+var skippableRe = /file|reset|submit|button|image/i,
+    checkableRe = /radio|checkbox/i;
+
 fn.serialize = function () {
-    let query = '';
-    this.each((i, ele) => {
-        each(ele.elements || [ele], (i, ele) => {
-            if (ele.disabled || !ele.name || ele.tagName === 'FIELDSET' || skippableRe.test(ele.type) || (checkableRe.test(ele.type) && !ele.checked))
-                return;
-            const value = getValue(ele);
-            if (!isUndefined(value)) {
-                const values = isArray(value) ? value : [value];
-                each(values, (i, value) => {
-                    query += queryEncode(ele.name, value);
-                });
-            }
+  var query = '';
+  this.each(function (i, ele) {
+    each(ele.elements || [ele], function (i, ele) {
+      if (ele.disabled || !ele.name || ele.tagName === 'FIELDSET' || skippableRe.test(ele.type) || checkableRe.test(ele.type) && !ele.checked) return;
+      var value = getValue(ele);
+
+      if (!isUndefined(value)) {
+        var values = isArray(value) ? value : [value];
+        each(values, function (i, value) {
+          query += queryEncode(ele.name, value);
         });
+      }
     });
-    return query.slice(1);
+  });
+  return query.slice(1);
 };
+
 function val(value) {
-    if (!arguments.length)
-        return this[0] && getValue(this[0]);
-    return this.each((i, ele) => {
-        const isSelect = ele.multiple && ele.options;
-        if (isSelect || checkableRe.test(ele.type)) {
-            const eleValue = isArray(value) ? map.call(value, String) : (isNull(value) ? [] : [String(value)]);
-            if (isSelect) {
-                each(ele.options, (i, option) => {
-                    option.selected = eleValue.indexOf(option.value) >= 0;
-                }, true);
-            }
-            else {
-                ele.checked = eleValue.indexOf(ele.value) >= 0;
-            }
-        }
-        else {
-            ele.value = isUndefined(value) || isNull(value) ? '' : value;
-        }
-    });
+  if (!arguments.length) return this[0] && getValue(this[0]);
+  return this.each(function (i, ele) {
+    var isSelect = ele.multiple && ele.options;
+
+    if (isSelect || checkableRe.test(ele.type)) {
+      var eleValue_1 = isArray(value) ? map.call(value, String) : isNull(value) ? [] : [String(value)];
+
+      if (isSelect) {
+        each(ele.options, function (i, option) {
+          option.selected = eleValue_1.indexOf(option.value) >= 0;
+        }, true);
+      } else {
+        ele.checked = eleValue_1.indexOf(ele.value) >= 0;
+      }
+    } else {
+      ele.value = isUndefined(value) || isNull(value) ? '' : value;
+    }
+  });
 }
+
 fn.val = val;
+
 fn.clone = function () {
-    return this.map((i, ele) => ele.cloneNode(true));
+  return this.map(function (i, ele) {
+    return ele.cloneNode(true);
+  });
 };
+
 fn.detach = function (comparator) {
-    filtered(this, comparator).each((i, ele) => {
-        if (ele.parentNode) {
-            ele.parentNode.removeChild(ele);
-        }
-    });
-    return this;
+  filtered(this, comparator).each(function (i, ele) {
+    if (ele.parentNode) {
+      ele.parentNode.removeChild(ele);
+    }
+  });
+  return this;
 };
-const fragmentRe = /^\s*<(\w+)[^>]*>/, singleTagRe = /^<(\w+)\s*\/?>(?:<\/\1>)?$/;
-const containers = {
-    '*': div,
-    tr: tbody,
-    td: tr,
-    th: tr,
-    thead: table,
-    tbody: table,
-    tfoot: table
-};
-//TODO: Create elements inside a document fragment, in order to prevent inline event handlers from firing
+
+var fragmentRe = /^\s*<(\w+)[^>]*>/,
+    singleTagRe = /^<(\w+)\s*\/?>(?:<\/\1>)?$/;
+var containers = {
+  '*': div,
+  tr: tbody,
+  td: tr,
+  th: tr,
+  thead: table,
+  tbody: table,
+  tfoot: table
+}; //TODO: Create elements inside a document fragment, in order to prevent inline event handlers from firing
 //TODO: Ensure the created elements have the fragment as their parent instead of null, this also ensures we can deal with detatched nodes more reliably
+
 function parseHTML(html) {
-    if (!isString(html))
-        return [];
-    if (singleTagRe.test(html))
-        return [createElement(RegExp.$1)];
-    const fragment = fragmentRe.test(html) && RegExp.$1, container = containers[fragment] || containers['*'];
-    container.innerHTML = html;
-    return cash(container.childNodes).detach().get();
+  if (!isString(html)) return [];
+  if (singleTagRe.test(html)) return [createElement(RegExp.$1)];
+  var fragment = fragmentRe.test(html) && RegExp.$1,
+      container = containers[fragment] || containers['*'];
+  container.innerHTML = html;
+  return cash(container.childNodes).detach().get();
 }
+
 cash.parseHTML = parseHTML;
+
 fn.empty = function () {
-    return this.each((i, ele) => {
-        while (ele.firstChild) {
-            ele.removeChild(ele.firstChild);
-        }
-    });
+  return this.each(function (i, ele) {
+    while (ele.firstChild) {
+      ele.removeChild(ele.firstChild);
+    }
+  });
 };
+
 function html(html) {
-    if (!arguments.length)
-        return this[0] && this[0].innerHTML;
-    if (isUndefined(html))
-        return this;
-    return this.each((i, ele) => {
-        if (!isElement(ele))
-            return;
-        ele.innerHTML = html;
-    });
+  if (!arguments.length) return this[0] && this[0].innerHTML;
+  if (isUndefined(html)) return this;
+  return this.each(function (i, ele) {
+    if (!isElement(ele)) return;
+    ele.innerHTML = html;
+  });
 }
+
 fn.html = html;
+
 fn.remove = function (comparator) {
-    filtered(this, comparator).detach().off();
-    return this;
+  filtered(this, comparator).detach().off();
+  return this;
 };
+
 function text(text) {
-    if (isUndefined(text))
-        return this[0] ? this[0].textContent : '';
-    return this.each((i, ele) => {
-        if (!isElement(ele))
-            return;
-        ele.textContent = text;
-    });
+  if (isUndefined(text)) return this[0] ? this[0].textContent : '';
+  return this.each(function (i, ele) {
+    if (!isElement(ele)) return;
+    ele.textContent = text;
+  });
 }
+
 ;
 fn.text = text;
+
 fn.unwrap = function () {
-    this.parent().each((i, ele) => {
-        if (ele.tagName === 'BODY')
-            return;
-        const $ele = cash(ele);
-        $ele.replaceWith($ele.children());
-    });
-    return this;
+  this.parent().each(function (i, ele) {
+    if (ele.tagName === 'BODY') return;
+    var $ele = cash(ele);
+    $ele.replaceWith($ele.children());
+  });
+  return this;
 };
+
 fn.offset = function () {
-    const ele = this[0];
-    if (!ele)
-        return;
-    const rect = ele.getBoundingClientRect();
-    return {
-        top: rect.top + win.pageYOffset,
-        left: rect.left + win.pageXOffset
-    };
+  var ele = this[0];
+  if (!ele) return;
+  var rect = ele.getBoundingClientRect();
+  return {
+    top: rect.top + win.pageYOffset,
+    left: rect.left + win.pageXOffset
+  };
 };
+
 fn.offsetParent = function () {
-    return this.map((i, ele) => {
-        let offsetParent = ele.offsetParent;
-        while (offsetParent && computeStyle(offsetParent, 'position') === 'static') {
-            offsetParent = offsetParent.offsetParent;
-        }
-        return offsetParent || docEle;
-    });
-};
-fn.position = function () {
-    const ele = this[0];
-    if (!ele)
-        return;
-    const isFixed = (computeStyle(ele, 'position') === 'fixed'), offset = isFixed ? ele.getBoundingClientRect() : this.offset();
-    if (!isFixed) {
-        const doc = ele.ownerDocument;
-        let offsetParent = ele.offsetParent || doc.documentElement;
-        while ((offsetParent === doc.body || offsetParent === doc.documentElement) && computeStyle(offsetParent, 'position') === 'static') {
-            offsetParent = offsetParent.parentNode;
-        }
-        if (offsetParent !== ele && isElement(offsetParent)) {
-            const parentOffset = cash(offsetParent).offset();
-            offset.top -= parentOffset.top + computeStyleInt(offsetParent, 'borderTopWidth');
-            offset.left -= parentOffset.left + computeStyleInt(offsetParent, 'borderLeftWidth');
-        }
+  return this.map(function (i, ele) {
+    var offsetParent = ele.offsetParent;
+
+    while (offsetParent && computeStyle(offsetParent, 'position') === 'static') {
+      offsetParent = offsetParent.offsetParent;
     }
-    return {
-        top: offset.top - computeStyleInt(ele, 'marginTop'),
-        left: offset.left - computeStyleInt(ele, 'marginLeft')
-    };
+
+    return offsetParent || docEle;
+  });
 };
+
+fn.position = function () {
+  var ele = this[0];
+  if (!ele) return;
+  var isFixed = computeStyle(ele, 'position') === 'fixed',
+      offset = isFixed ? ele.getBoundingClientRect() : this.offset();
+
+  if (!isFixed) {
+    var doc_1 = ele.ownerDocument;
+    var offsetParent = ele.offsetParent || doc_1.documentElement;
+
+    while ((offsetParent === doc_1.body || offsetParent === doc_1.documentElement) && computeStyle(offsetParent, 'position') === 'static') {
+      offsetParent = offsetParent.parentNode;
+    }
+
+    if (offsetParent !== ele && isElement(offsetParent)) {
+      var parentOffset = cash(offsetParent).offset();
+      offset.top -= parentOffset.top + computeStyleInt(offsetParent, 'borderTopWidth');
+      offset.left -= parentOffset.left + computeStyleInt(offsetParent, 'borderLeftWidth');
+    }
+  }
+
+  return {
+    top: offset.top - computeStyleInt(ele, 'marginTop'),
+    left: offset.left - computeStyleInt(ele, 'marginLeft')
+  };
+};
+
 fn.children = function (comparator) {
-    return filtered(cash(unique(pluck(this, ele => ele.children))), comparator);
+  return filtered(cash(unique(pluck(this, function (ele) {
+    return ele.children;
+  }))), comparator);
 };
+
 fn.contents = function () {
-    return cash(unique(pluck(this, ele => ele.tagName === 'IFRAME' ? [ele.contentDocument] : (ele.tagName === 'TEMPLATE' ? ele.content.childNodes : ele.childNodes))));
+  return cash(unique(pluck(this, function (ele) {
+    return ele.tagName === 'IFRAME' ? [ele.contentDocument] : ele.tagName === 'TEMPLATE' ? ele.content.childNodes : ele.childNodes;
+  })));
 };
+
 fn.find = function (selector) {
-    return cash(unique(pluck(this, ele => find(selector, ele))));
-};
-// @require core/variables.ts
+  return cash(unique(pluck(this, function (ele) {
+    return find(selector, ele);
+  })));
+}; // @require core/variables.ts
 // @require collection/filter.ts
 // @require traversal/find.ts
-const HTMLCDATARe = /^\s*<!(?:\[CDATA\[|--)|(?:\]\]|--)>\s*$/g, scriptTypeRe = /^$|^module$|\/(java|ecma)script/i, scriptAttributes = ['type', 'src', 'nonce', 'noModule'];
+
+
+var HTMLCDATARe = /^\s*<!(?:\[CDATA\[|--)|(?:\]\]|--)>\s*$/g,
+    scriptTypeRe = /^$|^module$|\/(java|ecma)script/i,
+    scriptAttributes = ['type', 'src', 'nonce', 'noModule'];
+
 function evalScripts(node, doc) {
-    const collection = cash(node);
-    collection.filter('script').add(collection.find('script')).each((i, ele) => {
-        if (scriptTypeRe.test(ele.type) && docEle.contains(ele)) { // The script type is supported // The element is attached to the DOM // Using `documentElement` for broader browser support
-            const script = createElement('script');
-            script.text = ele.textContent.replace(HTMLCDATARe, '');
-            each(scriptAttributes, (i, attr) => {
-                if (ele[attr])
-                    script[attr] = ele[attr];
-            });
-            doc.head.insertBefore(script, null);
-            doc.head.removeChild(script);
-        }
-    });
-}
-// @require ./eval_scripts.ts
+  var collection = cash(node);
+  collection.filter('script').add(collection.find('script')).each(function (i, ele) {
+    if (scriptTypeRe.test(ele.type) && docEle.contains(ele)) {
+      // The script type is supported // The element is attached to the DOM // Using `documentElement` for broader browser support
+      var script_1 = createElement('script');
+      script_1.text = ele.textContent.replace(HTMLCDATARe, '');
+      each(scriptAttributes, function (i, attr) {
+        if (ele[attr]) script_1[attr] = ele[attr];
+      });
+      doc.head.insertBefore(script_1, null);
+      doc.head.removeChild(script_1);
+    }
+  });
+} // @require ./eval_scripts.ts
+
+
 function insertElement(anchor, target, left, inside, evaluate) {
-    if (inside) { // prepend/append
-        anchor.insertBefore(target, left ? anchor.firstChild : null);
-    }
-    else { // before/after
-        anchor.parentNode.insertBefore(target, left ? anchor : anchor.nextSibling);
-    }
-    if (evaluate) {
-        evalScripts(target, anchor.ownerDocument);
-    }
-}
-// @require ./insert_element.ts
+  if (inside) {
+    // prepend/append
+    anchor.insertBefore(target, left ? anchor.firstChild : null);
+  } else {
+    // before/after
+    anchor.parentNode.insertBefore(target, left ? anchor : anchor.nextSibling);
+  }
+
+  if (evaluate) {
+    evalScripts(target, anchor.ownerDocument);
+  }
+} // @require ./insert_element.ts
+
+
 function insertSelectors(selectors, anchors, inverse, left, inside, reverseLoop1, reverseLoop2, reverseLoop3) {
-    each(selectors, (si, selector) => {
-        each(cash(selector), (ti, target) => {
-            each(cash(anchors), (ai, anchor) => {
-                const anchorFinal = inverse ? target : anchor, targetFinal = inverse ? anchor : target, indexFinal = inverse ? ti : ai;
-                insertElement(anchorFinal, !indexFinal ? targetFinal : targetFinal.cloneNode(true), left, inside, !indexFinal);
-            }, reverseLoop3);
-        }, reverseLoop2);
-    }, reverseLoop1);
-    return anchors;
+  each(selectors, function (si, selector) {
+    each(cash(selector), function (ti, target) {
+      each(cash(anchors), function (ai, anchor) {
+        var anchorFinal = inverse ? target : anchor,
+            targetFinal = inverse ? anchor : target,
+            indexFinal = inverse ? ti : ai;
+        insertElement(anchorFinal, !indexFinal ? targetFinal : targetFinal.cloneNode(true), left, inside, !indexFinal);
+      }, reverseLoop3);
+    }, reverseLoop2);
+  }, reverseLoop1);
+  return anchors;
 }
+
 fn.after = function () {
-    return insertSelectors(arguments, this, false, false, false, true, true);
+  return insertSelectors(arguments, this, false, false, false, true, true);
 };
+
 fn.append = function () {
-    return insertSelectors(arguments, this, false, false, true);
+  return insertSelectors(arguments, this, false, false, true);
 };
+
 fn.appendTo = function (selector) {
-    return insertSelectors(arguments, this, true, false, true);
+  return insertSelectors(arguments, this, true, false, true);
 };
+
 fn.before = function () {
-    return insertSelectors(arguments, this, false, true);
+  return insertSelectors(arguments, this, false, true);
 };
+
 fn.insertAfter = function (selector) {
-    return insertSelectors(arguments, this, true, false, false, false, false, true);
+  return insertSelectors(arguments, this, true, false, false, false, false, true);
 };
+
 fn.insertBefore = function (selector) {
-    return insertSelectors(arguments, this, true, true);
+  return insertSelectors(arguments, this, true, true);
 };
+
 fn.prepend = function () {
-    return insertSelectors(arguments, this, false, true, true, true, true);
+  return insertSelectors(arguments, this, false, true, true, true, true);
 };
+
 fn.prependTo = function (selector) {
-    return insertSelectors(arguments, this, true, true, true, false, false, true);
+  return insertSelectors(arguments, this, true, true, true, false, false, true);
 };
+
 fn.replaceWith = function (selector) {
-    return this.before(selector).remove();
+  return this.before(selector).remove();
 };
+
 fn.replaceAll = function (selector) {
-    cash(selector).replaceWith(this);
-    return this;
+  cash(selector).replaceWith(this);
+  return this;
 };
+
 fn.wrapAll = function (selector) {
-    let structure = cash(selector), wrapper = structure[0];
-    while (wrapper.children.length)
-        wrapper = wrapper.firstElementChild;
-    this.first().before(structure);
-    return this.appendTo(wrapper);
+  var structure = cash(selector),
+      wrapper = structure[0];
+
+  while (wrapper.children.length) {
+    wrapper = wrapper.firstElementChild;
+  }
+
+  this.first().before(structure);
+  return this.appendTo(wrapper);
 };
+
 fn.wrap = function (selector) {
-    return this.each((i, ele) => {
-        const wrapper = cash(selector)[0];
-        cash(ele).wrapAll(!i ? wrapper : wrapper.cloneNode(true));
-    });
+  return this.each(function (i, ele) {
+    var wrapper = cash(selector)[0];
+    cash(ele).wrapAll(!i ? wrapper : wrapper.cloneNode(true));
+  });
 };
+
 fn.wrapInner = function (selector) {
-    return this.each((i, ele) => {
-        const $ele = cash(ele), contents = $ele.contents();
-        contents.length ? contents.wrapAll(selector) : $ele.append(selector);
-    });
+  return this.each(function (i, ele) {
+    var $ele = cash(ele),
+        contents = $ele.contents();
+    contents.length ? contents.wrapAll(selector) : $ele.append(selector);
+  });
 };
+
 fn.has = function (selector) {
-    const comparator = isString(selector)
-        ? (i, ele) => find(selector, ele).length
-        : (i, ele) => ele.contains(selector);
-    return this.filter(comparator);
+  var comparator = isString(selector) ? function (i, ele) {
+    return find(selector, ele).length;
+  } : function (i, ele) {
+    return ele.contains(selector);
+  };
+  return this.filter(comparator);
 };
+
 fn.is = function (comparator) {
-    const compare = getCompareFunction(comparator);
-    return some.call(this, (ele, i) => compare.call(ele, i, ele));
+  var compare = getCompareFunction(comparator);
+  return some.call(this, function (ele, i) {
+    return compare.call(ele, i, ele);
+  });
 };
+
 fn.next = function (comparator, _all, _until) {
-    return filtered(cash(unique(pluck(this, 'nextElementSibling', _all, _until))), comparator);
+  return filtered(cash(unique(pluck(this, 'nextElementSibling', _all, _until))), comparator);
 };
+
 fn.nextAll = function (comparator) {
-    return this.next(comparator, true);
+  return this.next(comparator, true);
 };
+
 fn.nextUntil = function (until, comparator) {
-    return this.next(comparator, true, until);
+  return this.next(comparator, true, until);
 };
+
 fn.not = function (comparator) {
-    const compare = getCompareFunction(comparator);
-    return this.filter((i, ele) => (!isString(comparator) || isElement(ele)) && !compare.call(ele, i, ele));
+  var compare = getCompareFunction(comparator);
+  return this.filter(function (i, ele) {
+    return (!isString(comparator) || isElement(ele)) && !compare.call(ele, i, ele);
+  });
 };
+
 fn.parent = function (comparator) {
-    return filtered(cash(unique(pluck(this, 'parentNode'))), comparator);
+  return filtered(cash(unique(pluck(this, 'parentNode'))), comparator);
 };
+
 fn.index = function (selector) {
-    const child = selector ? cash(selector)[0] : this[0], collection = selector ? this : cash(child).parent().children();
-    return indexOf.call(collection, child);
+  var child = selector ? cash(selector)[0] : this[0],
+      collection = selector ? this : cash(child).parent().children();
+  return indexOf.call(collection, child);
 };
+
 fn.closest = function (comparator) {
-    const filtered = this.filter(comparator);
-    if (filtered.length)
-        return filtered;
-    const $parent = this.parent();
-    if (!$parent.length)
-        return filtered;
-    return $parent.closest(comparator);
+  var filtered = this.filter(comparator);
+  if (filtered.length) return filtered;
+  var $parent = this.parent();
+  if (!$parent.length) return filtered;
+  return $parent.closest(comparator);
 };
+
 fn.parents = function (comparator, _until) {
-    return filtered(cash(unique(pluck(this, 'parentElement', true, _until))), comparator);
+  return filtered(cash(unique(pluck(this, 'parentElement', true, _until))), comparator);
 };
+
 fn.parentsUntil = function (until, comparator) {
-    return this.parents(comparator, until);
+  return this.parents(comparator, until);
 };
+
 fn.prev = function (comparator, _all, _until) {
-    return filtered(cash(unique(pluck(this, 'previousElementSibling', _all, _until))), comparator);
+  return filtered(cash(unique(pluck(this, 'previousElementSibling', _all, _until))), comparator);
 };
+
 fn.prevAll = function (comparator) {
-    return this.prev(comparator, true);
+  return this.prev(comparator, true);
 };
+
 fn.prevUntil = function (until, comparator) {
-    return this.prev(comparator, true, until);
+  return this.prev(comparator, true, until);
 };
+
 fn.siblings = function (comparator) {
-    return filtered(cash(unique(pluck(this, ele => cash(ele).parent().children().not(ele)))), comparator);
-};
-// @optional ./children.ts
+  return filtered(cash(unique(pluck(this, function (ele) {
+    return cash(ele).parent().children().not(ele);
+  }))), comparator);
+}; // @optional ./children.ts
 // @optional ./closest.ts
 // @optional ./contents.ts
 // @optional ./find.ts
@@ -2070,10 +1346,14 @@ fn.siblings = function (comparator) {
 // @require core/index.ts
 // @priority -100
 // @require ./cash.ts
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (cash);
+// @require ./variables.ts
 
 
-
+if (true) {
+  // Node.js
+  module.exports = cash;
+} else {}
+})();
 
 /***/ }),
 
@@ -6984,8 +6264,7 @@ exports.CLASSES = {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-const $$ = __webpack_require__(/*! blissfuljs */ "./node_modules/blissfuljs/bliss.js");
-const cash_dom_1 = __webpack_require__(/*! cash-dom */ "./node_modules/cash-dom/dist/cash.esm.js");
+const cash_dom_1 = __webpack_require__(/*! cash-dom */ "./node_modules/cash-dom/dist/cash.js");
 const mobx_1 = __webpack_require__(/*! mobx */ "./node_modules/mobx/lib/mobx.module.js");
 const tovnode_1 = __webpack_require__(/*! snabbdom/tovnode */ "./node_modules/snabbdom/tovnode.js");
 const constants_1 = __webpack_require__(/*! ./constants */ "./src/youtubeHighlights/constants.ts");
@@ -7033,7 +6312,7 @@ class VideoThumbnail {
     // try this https://github.com/snabbdom/snabbdom#snabbdomtovnode
     render() {
         this.init();
-        $$.set(this.$self.get(0), {});
+        // $$.set(this.$self.get(0)!, {});
     }
 }
 function Renderer() {
@@ -7071,32 +6350,25 @@ function findThumbnailsOnPage() {
 /*!****************************************!*\
   !*** ./src/youtubeHighlights/index.ts ***!
   \****************************************/
-/*! unknown exports (runtime-defined) */
-/*! exports [maybe provided (runtime-defined)] [maybe used (runtime-defined)] */
-/*! runtime requirements: top-level-this-exports, __webpack_exports__, __webpack_require__ */
-/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+/*! flagged exports */
+/*! export __esModule [provided] [unused] [could be renamed] */
+/*! other exports [not provided] [unused] */
+/*! runtime requirements: __webpack_exports__, __webpack_require__ */
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 "use strict";
+var __webpack_unused_export__;
 
-var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
-    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
-};
-Object.defineProperty(exports, "__esModule", ({ value: true }));
-const cash_dom_1 = __webpack_require__(/*! cash-dom */ "./node_modules/cash-dom/dist/cash.esm.js");
+__webpack_unused_export__ = ({ value: true });
+const cash_dom_1 = __webpack_require__(/*! cash-dom */ "./node_modules/cash-dom/dist/cash.js");
 const highlights_1 = __webpack_require__(/*! ./highlights */ "./src/youtubeHighlights/highlights.ts");
-void (() => __awaiter(void 0, void 0, void 0, function* () {
+void (async () => {
     console.log('/|{z1111111111111111 starting...');
     cash_dom_1.default(() => {
         const render = highlights_1.Renderer();
         render();
     });
-}))();
+})();
 
 
 /***/ })
@@ -7120,7 +6392,7 @@ void (() => __awaiter(void 0, void 0, void 0, function* () {
 /******/ 		};
 /******/ 	
 /******/ 		// Execute the module function
-/******/ 		__webpack_modules__[moduleId].call(module.exports, module, module.exports, __webpack_require__);
+/******/ 		__webpack_modules__[moduleId](module, module.exports, __webpack_require__);
 /******/ 	
 /******/ 		// Return the exports of the module
 /******/ 		return module.exports;
@@ -7170,7 +6442,7 @@ void (() => __awaiter(void 0, void 0, void 0, function* () {
 /************************************************************************/
 /******/ 	// startup
 /******/ 	// Load entry module
-/******/ 	// This entry module is referenced by other modules so it can't be inlined
 /******/ 	__webpack_require__("./src/youtubeHighlights/index.ts");
+/******/ 	// This entry module used 'exports' so it can't be inlined
 /******/ })()
 ;

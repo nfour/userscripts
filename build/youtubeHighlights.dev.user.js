@@ -7,6 +7,8 @@
 // @author      nfour
 // @license     MIT
 // @homepageURL https://github.com/nfour/userscripts
-// @updateURL   http://localhost:9002/youtubeMarks.dev.user.js
-// @require     http://localhost:9002/youtubeMarks.user.js
+// @updateURL   http://localhost:9002/youtubeHighlights.dev.user.js
+// @downloadURL https://github.com/nfour/userscripts/master/tree/build/youtubeHighlights.user.js
+// @require     http://localhost:9002/youtubeHighlights.user.js
 // ==/UserScript==
+

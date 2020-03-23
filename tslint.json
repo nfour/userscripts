@@ -1,9 +1,0 @@
-{
-  "extends": "tslint-config-temando",
-  "rules": {
-    "no-console": false,
-    "no-implicit-dependencies": [true, "dev"],
-    "no-default-export": false,
-    "semicolon": [true, "always"]
-  }
-}

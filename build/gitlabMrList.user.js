@@ -3,12 +3,12 @@
 // @version     0.0.2
 // @namespace   nfour
 // @description Enhances the Gitlab MR List of a project
-// @include     *src.temando.io/*
 // @include     *gitlab.com*
 // @author      nfour
 // @license     MIT
 // @homepageURL https://github.com/nfour/userscripts
-// @updateURL   http://localhost:9002/gitlabMrList.dev.user.js
+// @updateURL   https://github.com/nfour/userscripts/master/tree/build/gitlabMrList.user.js
+// @downloadURL https://github.com/nfour/userscripts/master/tree/build/gitlabMrList.user.js
 // ==/UserScript==
 
 /******/ (() => { // webpackBootstrap
@@ -11078,31 +11078,24 @@ exports.paths = {
 /*!***********************************!*\
   !*** ./src/gitlabMrList/index.ts ***!
   \***********************************/
-/*! unknown exports (runtime-defined) */
-/*! exports [maybe provided (runtime-defined)] [maybe used (runtime-defined)] */
-/*! runtime requirements: top-level-this-exports, __webpack_exports__, __webpack_require__ */
-/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+/*! flagged exports */
+/*! export __esModule [provided] [unused] [could be renamed] */
+/*! other exports [not provided] [unused] */
+/*! runtime requirements: __webpack_exports__, __webpack_require__ */
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 "use strict";
+var __webpack_unused_export__;
 
-var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
-    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
-};
-Object.defineProperty(exports, "__esModule", ({ value: true }));
+__webpack_unused_export__ = ({ value: true });
 __webpack_require__(/*! ./styles.less */ "./src/gitlabMrList/styles.less");
 const $ = __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js");
 const constants_1 = __webpack_require__(/*! ./constants */ "./src/gitlabMrList/constants.ts");
 const views_1 = __webpack_require__(/*! ./views */ "./src/gitlabMrList/views.ts");
-void (() => __awaiter(void 0, void 0, void 0, function* () {
+void (async () => {
     const $mrList = $(constants_1.paths.mrListContainer);
-    yield views_1.setupMrList($mrList);
-}))();
+    await views_1.setupMrList($mrList);
+})();
 
 
 /***/ }),
@@ -11111,63 +11104,50 @@ void (() => __awaiter(void 0, void 0, void 0, function* () {
 /*!***********************************!*\
   !*** ./src/gitlabMrList/views.ts ***!
   \***********************************/
-/*! unknown exports (runtime-defined) */
-/*! exports [maybe provided (runtime-defined)] [maybe used (runtime-defined)] */
-/*! runtime requirements: top-level-this-exports, __webpack_exports__, __webpack_require__ */
-/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+/*! flagged exports */
+/*! export __esModule [provided] [maybe used (runtime-defined)] [usage prevents renaming] */
+/*! export setupMrList [provided] [maybe used (runtime-defined)] [usage prevents renaming] */
+/*! other exports [not provided] [maybe used (runtime-defined)] */
+/*! runtime requirements: __webpack_exports__, __webpack_require__ */
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 "use strict";
 
-var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
-    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
-};
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 const $ = __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js");
 const constants_1 = __webpack_require__(/*! ./constants */ "./src/gitlabMrList/constants.ts");
-function setupMrList($mrList) {
-    return __awaiter(this, void 0, void 0, function* () {
-        const users = new Map();
-        const items = $mrList.find(constants_1.paths.mrListItem).toArray().map((el) => $(el));
-        const operations = items.map(($listItem) => addAvatarToMrItem({ $listItem, users }));
-        return Promise.all(operations);
-    });
+async function setupMrList($mrList) {
+    const users = new Map();
+    const items = $mrList.find(constants_1.paths.mrListItem).toArray().map((el) => $(el));
+    const operations = items.map(($listItem) => addAvatarToMrItem({ $listItem, users }));
+    return Promise.all(operations);
 }
 exports.setupMrList = setupMrList;
-function addAvatarToMrItem({ $listItem, users }) {
-    return __awaiter(this, void 0, void 0, function* () {
-        const userId = $listItem.find(constants_1.paths.mrListItemAuthor).attr('data-user-id');
-        const user = yield (() => __awaiter(this, void 0, void 0, function* () {
-            if (users.has(userId)) {
-                return users.get(userId);
-            }
-            const userPromise = fetchUser({ userId });
-            users.set(userId, userPromise);
-            return userPromise;
-        }))();
-        const $avatar = $(`<img
+async function addAvatarToMrItem({ $listItem, users }) {
+    const userId = $listItem.find(constants_1.paths.mrListItemAuthor).attr('data-user-id');
+    const user = await (async () => {
+        if (users.has(userId)) {
+            return users.get(userId);
+        }
+        const userPromise = fetchUser({ userId });
+        users.set(userId, userPromise);
+        return userPromise;
+    })();
+    const $avatar = $(`<img
     src="${user.avatar_url}"
     width="50" height="50"
     alt="user avatar"
     data-src="${user.avatar_url}"
     class="avatar s50 mr-2 ${constants_1.classes.MrItemAvatar}"
   />`);
-        // TODO: add it better than this
-        $listItem.prepend($avatar);
-        return $avatar;
-    });
+    // TODO: add it better than this
+    $listItem.prepend($avatar);
+    return $avatar;
 }
-function fetchUser({ userId }) {
-    return __awaiter(this, void 0, void 0, function* () {
-        const user = yield fetch(`/api/v4/users/${userId}`, { headers: { accept: 'application/json' } })
-            .then((res) => res.json());
-        return user;
-    });
+async function fetchUser({ userId }) {
+    const user = await fetch(`/api/v4/users/${userId}`, { headers: { accept: 'application/json' } })
+        .then((res) => res.json());
+    return user;
 }
 
 
@@ -11201,7 +11181,7 @@ function fetchUser({ userId }) {
 /************************************************************************/
 /******/ 	// startup
 /******/ 	// Load entry module
-/******/ 	// This entry module is referenced by other modules so it can't be inlined
 /******/ 	__webpack_require__("./src/gitlabMrList/index.ts");
+/******/ 	// This entry module used 'exports' so it can't be inlined
 /******/ })()
 ;

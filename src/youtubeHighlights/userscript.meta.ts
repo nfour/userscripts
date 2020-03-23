@@ -1,7 +1,6 @@
-import { repository } from '../../package.json';
-import { IMetaSchema } from '../types/meta';
+import { IMetaSchema } from 'tiny-webpack-userscript-plugin';
 
-export default <IMetaSchema> {
+export default {
   name: 'youtubeMarks',
   version: '0.0.1',
   namespace: 'nfour',
@@ -9,5 +8,4 @@ export default <IMetaSchema> {
   include: ['*.youtube.com/*'],
   author: 'nfour',
   license: 'MIT',
-  homepageURL: repository.url,
-};
+} as IMetaSchema;

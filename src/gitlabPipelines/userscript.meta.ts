@@ -1,13 +1,11 @@
-import { repository } from '../../package.json';
-import { IMetaSchema } from '../types/meta';
+import { IMetaSchema } from 'tiny-webpack-userscript-plugin';
 
-export default <IMetaSchema> {
+export default {
   name: 'gitlabPipelines',
   version: '0.2.3',
   namespace: 'nfour',
   description: 'Shows job output when interacting with MR job dropdowns',
-  include: ['*src.temando.io/*', '*gitlab.com*'],
+  include: ['*gitlab.com*'],
   author: 'nfour',
   license: 'MIT',
-  homepageURL: repository.url,
-};
+} as IMetaSchema;

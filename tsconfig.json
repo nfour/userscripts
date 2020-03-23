@@ -1,12 +1,11 @@
 {
   "compilerOptions": {
-    "target": "es2015",
+    "target": "esnext",
     "module": "commonjs",
-    "lib": ["es2015", "dom"],
+    "lib": ["esnext", "dom"],
     "strict": true,
-    "incremental": true,
     "resolveJsonModule": true,
     "moduleResolution": "node"
   },
-  "include": ["typings.d.ts", "src", "scripts", "webpack.config.ts"]
+  "include": ["typings.d.ts", "src", "webpack.config.ts"]
 }
