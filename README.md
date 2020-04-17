@@ -1,6 +1,6 @@
 # Userscripts
 
-> A repository dedicated to providing a good userscript development experience, and some scripts.
+> This project is designed for a good userscript development experience
 
 - [Userscripts](#userscripts)
   - [Scripts](#scripts)
@@ -37,15 +37,15 @@ Shows the MR authors avatar on any MR listing.
 
 > ![./src/gitlabMrList/docs/example.png](./src/gitlabMrList/docs/example.png)
 
-
-### Gitlab MR diff performance (WIP)
-
-Objective:
-- On the MR diff section:
-  - [ ] Do not show all files - show only the selected file from the sidebar tree
-  - [ ] Do not collapse diffs
-
 -------------------------------------------------------------------------------------------
+
+## Configure Tampermonkey for development
+
+See this issue https://github.com/Tampermonkey/tampermonkey/issues/475
+
+You'll want to configure Tampermonkey to allow for `@require` resources to `Always` be requested in order to prevent caching.
+
+Even then, it may cost 2 page refreshes to see changes. 
 
 ## Contributing
 
@@ -53,4 +53,4 @@ Objective:
 - Install `./build/<name>.dev.js` as a new userscript in Tampermonkey.
 
 From then, the script will always reload whatever is at `./build/<name>.js`.
-Refesh your browser to see changes after file save.
+Refesh your browser to see changes after file save. This may require 2 refreshes due to issues within tampermonkey.
