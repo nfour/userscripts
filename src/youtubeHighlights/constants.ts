@@ -1,4 +1,3 @@
-
 export const SELECTORS = {
   thumbnail: 'ytd-thumbnail',
 };

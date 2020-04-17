@@ -26,18 +26,6 @@ class VideoThumbnail {
         text-align: center;
         content: "✓";
       `,
-      // highlightButton: {
-      //   display: 'inline-block',
-      //   position: 'relative',
-      //   bottom: '0',
-      //   right: '0',
-      //   width: '30px',
-      //   height: '30px',
-      //   outline: '2px solid rgb(29, 185, 84, 0.5)',
-      //   padding: '1em',
-      //   textAlign: 'center',
-      //   content: '"✓"',
-      // }
     },
   });
 
