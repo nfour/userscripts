@@ -2,12 +2,11 @@
 
 > This project is designed for a good userscript development experience
 
-- [Userscripts](#userscripts)
-  - [Scripts](#scripts)
-    - [Gitlab Inline Pipelines](#gitlab-inline-pipelines)
-    - [Gitlab MR list avatars](#gitlab-mr-list-avatars)
-    - [Gitlab MR diff performance (WIP)](#gitlab-mr-diff-performance-wip)
-  - [Contributing](#contributing)
++ [Scripts](#scripts)
+  + [Gitlab Inline Pipelines](#gitlab-inline-pipelines)
+  + [Gitlab MR list avatars](#gitlab-mr-list-avatars)
++ [Configure Tampermonkey for development](#configure-tampermonkey-for-development)
++ [Contributing](#contributing)
 
 ## Scripts
 
@@ -45,7 +44,7 @@ See this issue https://github.com/Tampermonkey/tampermonkey/issues/475
 
 You'll want to configure Tampermonkey to allow for `@require` resources to `Always` be requested in order to prevent caching.
 
-Even then, it may cost 2 page refreshes to see changes. 
+Even then, it may cost 2 page refreshes to see changes.
 
 ## Contributing
 
