@@ -39,6 +39,14 @@ Shows the MR authors avatar on any MR listing.
 
 -------------------------------------------------------------------------------------------
 
+## Configure Tampermonkey for development
+
+See this issue https://github.com/Tampermonkey/tampermonkey/issues/475
+
+You'll want to configure Tampermonkey to allow for `@require` resources to `Always` be requested in order to prevent caching.
+
+Even then, it may cost 2 page refreshes to see changes. 
+
 ## Contributing
 
 - `yarn build --watch`
